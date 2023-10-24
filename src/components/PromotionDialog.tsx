@@ -1,6 +1,6 @@
 import React from 'react'
 import PromotionOption from './PromotionOption'
-
+import '../styles/PromotionDialog.css'
 interface Props{
 	promotionChoiceFunction:(symbol:'q'|'r'|'b'|'n')=>void
 	isVisible:boolean,
@@ -24,11 +24,8 @@ export default function PromotionDialog({isVisible, top, bottom,
 		<div>
 			{
 				isVisible ? 
-				<div className='absolute 
-				flex flex-col' 
+				<div className='dialog' 
 				style={{
-					width:'12.5%',
-					height: '50%',
 					top:top,
 					bottom:bottom,
 					left:`${(file/8)*100}%`

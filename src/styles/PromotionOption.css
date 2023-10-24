@@ -1,0 +1,10 @@
+button{
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+}

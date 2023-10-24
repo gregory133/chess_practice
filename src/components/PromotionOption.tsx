@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import '../styles/PromotionOption.css'
 
 interface Props{
 	promotionChoiceFunction:(symbol:'q'|'r'|'b'|'n')=>void
@@ -41,9 +42,7 @@ symbol, image}:Props) {
 	return (
 		<button onMouseEnter={onMouseEnter} 
 		onMouseLeave={onMouseLeave}
-		className=' bg-contain flex items-center justify-center flex-grow bg-center 
-		bg-no-repeat'
-
+		
 		style={{
 			width:'100%',
 			height:'100%',
