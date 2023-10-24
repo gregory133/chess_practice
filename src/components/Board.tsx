@@ -1,11 +1,13 @@
 import Chessground from '@react-chess/chessground'
 import React, {useEffect, useState, useMemo} from 'react'
 import { Chess, Square } from 'chess.js'
+import { Config } from 'chessground/config';
 import * as cg from 'chessground/types.js';
 import PromotionDialog from './PromotionDialog';
 import "../styles/chessground.base.css";
 import "../styles/chessground.brown.css";
 import "../styles/chessground.cburnett.css";
+import ResponsiveSquare from './ResponsiveSquare';
 
 interface Props{
 	isMovable:boolean
@@ -46,15 +48,22 @@ export default function Board(props:Props) {
 		setLength(smallerParentDimension)
 	}
 
+	/**
+	 * 
+	 * @returns the config object required by Chessground
+	 */
+	function getConfig():Config{
+
+		
+		return {coordinates:false}
+	}
+
 	useEffect(()=>{
 		window.addEventListener('resize', ()=>{
 			adjustBoardLength()
 		})
 	}, [])
 
-	useEffect(()=>{
-		console.log('length', length);
-	}, [length])
 
 	useEffect(()=>{
 		adjustBoardLength()
@@ -62,13 +71,10 @@ export default function Board(props:Props) {
 
 	return (
 
-		<div style={{height: length, width: length}}>
-			<Chessground contained={true}/>
-		</div>
-
+		<ResponsiveSquare child={
+			<Chessground config={getConfig()} contained={true}/>
+		} 
+		squareLength={length}/>
 	)
-	
-	
-	
 
 }
