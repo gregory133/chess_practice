@@ -43,8 +43,8 @@ export default function Board(props:Props) {
 	 */
 	function getSmallerParentDimension(){
 		if (props.parentRef.current){
-			const parentWidth=props.parentRef.current.offsetWidth
-			const parentHeight=props.parentRef.current.offsetHeight
+			const parentWidth=props.parentRef.current.clientWidth
+			const parentHeight=props.parentRef.current.clientHeight
 			const smallerParentDimension=(parentHeight>parentWidth)
 				?parentWidth
 				:parentHeight
@@ -57,7 +57,6 @@ export default function Board(props:Props) {
 
 	function adjustBoardLength(){
 		const smallerParentDimension=getSmallerParentDimension()
-		
 		setLength(smallerParentDimension)
 	}
 

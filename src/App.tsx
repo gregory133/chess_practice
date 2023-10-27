@@ -7,6 +7,8 @@ import { fetchMastersDB, getSanListFromMasterDB } from './api/mastersDBApi';
 import TrainingModeStrategy from './interfaces/TrainingModeStrategy';
 import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
 import Sidebar from './components/Sidebar';
+import './styles/Colors.css'
+import './styles/Fonts.css'
 
 function App() {
 
@@ -20,7 +22,7 @@ function App() {
   useState<'white'|'black'|null>('white')
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
   useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName))
-  const divRef=useRef(null)
+  const boardParentRef=useRef(null)
 
   useEffect(()=>{
     const {fen, colorPlayerCanControl, orientation, canPlayerMove, onInit
@@ -53,12 +55,14 @@ function App() {
   }
   
   return (
-    <div className='container' ref={divRef}>
-      <Board parentRef={divRef} lastMove={undefined} 
-      fen={currentFen} 
-      colorPlayerCanControl={colorPlayerCanControl} 
-      orientation={orientation}
-       afterMove={afterMove} />
+    <div className='container'>
+      <div className='boardParent' ref={boardParentRef}>
+        <Board parentRef={boardParentRef} lastMove={undefined} 
+        fen={currentFen} 
+        colorPlayerCanControl={colorPlayerCanControl} 
+        orientation={orientation}
+        afterMove={afterMove} />
+      </div> 
       <Sidebar openingName={openingName}/>
     </div>
    
