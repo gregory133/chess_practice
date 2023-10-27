@@ -13,6 +13,8 @@ export default interface TrainingModeStrategy{
   afterMove(newFen:string, previousMove:Move, makeEngineMove?:
     (san:string)=>void):void
 
-  initialValues: InitialValues
+  afterEngineMove(newFen:string, previousMove:Move):void
+
+  initialValues: InitialValues,
 
 }

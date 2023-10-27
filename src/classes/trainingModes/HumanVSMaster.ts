@@ -7,12 +7,15 @@ export default class HumanVSMaster implements TrainingModeStrategy{
 
   private STARTING_FEN= 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
   private makeEngineMove:(san:string)=>void
+  private setOpeningName: (name:string)=>void
 
   public initialValues: InitialValues
 
-  public constructor(makeEngineMove:(san:string)=>void){
+  public constructor(makeEngineMove:(san:string)=>void, 
+  setOpeningName:(newName:string)=>void){
     this.makeEngineMove=makeEngineMove
     this.initialValues= this.initializeInitialValues()
+    this.setOpeningName=setOpeningName;
   }
 
   /**
@@ -45,8 +48,26 @@ export default class HumanVSMaster implements TrainingModeStrategy{
       const responsesList=getSanListFromMasterDB(json)
       const chosenResponse = this.pickRandomResponse(responsesList)
       this.makeEngineMove(chosenResponse)
+      const openingName=this.extractOpeningName(json)
+      if (openingName){
+        console.log(json);
+        this.setOpeningName(openingName)
+      }
     })
     
+  }
+
+  public afterEngineMove(newFen: string, previousMove: Move): void {
+    
+    fetchMastersDB(newFen)
+    .then(json=>{
+      const openingName=this.extractOpeningName(json)
+      if (openingName){
+        console.log(json);
+        this.setOpeningName(openingName)
+      }
+    })
+
   }
 
   /**
@@ -66,6 +87,19 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     const chosenResponse=cummulativeFrequenciesMap.ceilingEntry(randomNumber)?.[1]!
 
     return chosenResponse;
+  }
+
+  /**
+   * 
+   * @param json 
+   * @returns the opening name described by the json object
+   */
+  private extractOpeningName(json:any){
+    try{
+      return json.opening.name as string|null
+    }
+    catch (err){return null}
+    
   }
 
 }

@@ -6,18 +6,20 @@ import { Chess, Move } from 'chess.js';
 import { fetchMastersDB, getSanListFromMasterDB } from './api/mastersDBApi';
 import TrainingModeStrategy from './interfaces/TrainingModeStrategy';
 import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
+import Sidebar from './components/Sidebar';
 
 function App() {
 
   const STARTING_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+  const [openingName, setOpeningName]=useState<string>('')
   const [orientation, setOrientation]=useState<'black'|'white'>('white')
   const [currentFen, setCurrentFen]=useState<string>(STARTING_FEN)
   const currentFenRef=useRef<string>(currentFen)
   const [colorPlayerCanControl, setColorPlayerCanControl]=
   useState<'white'|'black'|null>('white')
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
-  useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove))
+  useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName))
   const divRef=useRef(null)
 
   useEffect(()=>{
@@ -46,15 +48,18 @@ function App() {
     let chess:Chess=new Chess(currentFenRef.current)
     chess.move(san)
     setCurrentFen(chess.fen())
+    const previousMove:Move=chess.history({verbose:true})[chess.history().length-1]
+    currentTrainingModeStrategy.afterEngineMove(chess.fen(), previousMove)
   }
   
   return (
-    <div ref={divRef} style={{width: '100vw', height: '100vh'}}>
+    <div className='container' ref={divRef}>
       <Board parentRef={divRef} lastMove={undefined} 
       fen={currentFen} 
       colorPlayerCanControl={colorPlayerCanControl} 
       orientation={orientation}
        afterMove={afterMove} />
+      <Sidebar openingName={openingName}/>
     </div>
    
   );
