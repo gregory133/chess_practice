@@ -22,11 +22,21 @@ export function fetchMastersDB(fen:string):Promise<any>{
   
 }
 
-export function getSanListFromMasterDB(json:any):string[]{
-  return json.moves.map((item:any)=>item.san);
+/**
+ * @param json a json object representing the response from the lichess API
+ * @returns the list of objects containing
+ * the SAN notation moves belonging to the masters databasea and their associated
+ * frequency
+ */
+export function getSanListFromMasterDB(json:any):{san:string, frequency:number}[]{
+  let totalFrequency=json.moves.reduce((totalFrequency:number, move:any)=>{
+    return totalFrequency+move.white+move.black+move.draws
+  }, 0)
+  return json.moves.map((move:any)=>{
+    return {san: move.san, frequency:(move.white+move.black+move.draws)/totalFrequency} 
+  })
 }
 
- 
 /**
  * utility function to construct and obtain the url of the lichess
  * masters database
