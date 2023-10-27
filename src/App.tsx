@@ -11,13 +11,25 @@ function App() {
 
   const STARTING_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+  const [orientation, setOrientation]=useState<'black'|'white'>('white')
   const [currentFen, setCurrentFen]=useState<string>(STARTING_FEN)
   const currentFenRef=useRef<string>(currentFen)
   const [colorPlayerCanControl, setColorPlayerCanControl]=
   useState<'white'|'black'|null>('white')
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
-  useState<TrainingModeStrategy>(new HumanVSMaster())
+  useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove))
   const divRef=useRef(null)
+
+  useEffect(()=>{
+    const {fen, colorPlayerCanControl, orientation, canPlayerMove, onInit
+    }=currentTrainingModeStrategy.initialValues; 
+
+    currentFenRef.current=fen
+    setColorPlayerCanControl(colorPlayerCanControl)
+    setOrientation(orientation)
+    onInit()
+    
+  }, [])
 
   /**
    * callback function that is run after a human player makes a move on the 
@@ -27,11 +39,10 @@ function App() {
    */
   function afterMove(newFen:string, previousMove:Move){
     currentFenRef.current=newFen
-    currentTrainingModeStrategy?.afterMove(newFen, previousMove, makeEngineMove);
+    currentTrainingModeStrategy?.afterMove(newFen, previousMove);
   }
 
   function makeEngineMove(san:string){
-    // console.log('currentFen', currentFenRef.current);
     let chess:Chess=new Chess(currentFenRef.current)
     chess.move(san)
     setCurrentFen(chess.fen())
@@ -41,8 +52,8 @@ function App() {
     <div ref={divRef} style={{width: '100vw', height: '100vh'}}>
       <Board parentRef={divRef} lastMove={undefined} 
       fen={currentFen} 
-      colorPlayerCanControl={'white'} 
-      orientation='white'
+      colorPlayerCanControl={colorPlayerCanControl} 
+      orientation={orientation}
        afterMove={afterMove} />
     </div>
    
