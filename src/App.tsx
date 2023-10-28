@@ -9,6 +9,8 @@ import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
 import Sidebar from './components/Sidebar';
 import './styles/Colors.css'
 import './styles/Fonts.css'
+import WinrateBar from './components/WinrateBar';
+import Winrate from './classes/Winrate';
 
 function App() {
 
@@ -24,6 +26,9 @@ function App() {
   useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName))
   const boardParentRef=useRef(null)
 
+  /**
+   * on application start
+   */
   useEffect(()=>{
     const {fen, colorPlayerCanControl, orientation, canPlayerMove, onInit
     }=currentTrainingModeStrategy.initialValues; 
@@ -46,6 +51,10 @@ function App() {
     currentTrainingModeStrategy?.afterMove(newFen, previousMove);
   }
 
+  /**
+   * function to be called to allow the engine to make the given move
+   * @param san 
+   */
   function makeEngineMove(san:string){
     let chess:Chess=new Chess(currentFenRef.current)
     chess.move(san)
