@@ -2,20 +2,23 @@ import { Move } from "chess.js";
 import TrainingModeStrategy, { InitialValues } from "../../interfaces/TrainingModeStrategy";
 import { fetchMastersDB, getSanListFromMasterDB } from "../../api/mastersDBApi";
 import TreeMap from "ts-treemap";
+import Winrate from "../Winrate";
 
 export default class HumanVSMaster implements TrainingModeStrategy{
 
   private STARTING_FEN= 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
   private makeEngineMove:(san:string)=>void
   private setOpeningName: (name:string)=>void
+  private setWinrate: (winrate:Winrate|null)=>void
 
   public initialValues: InitialValues
 
   public constructor(makeEngineMove:(san:string)=>void, 
-  setOpeningName:(newName:string)=>void){
+  setOpeningName:(newName:string)=>void, setWinrate: (winrate:Winrate|null)=>void){
     this.makeEngineMove=makeEngineMove
     this.initialValues= this.initializeInitialValues()
-    this.setOpeningName=setOpeningName;
+    this.setWinrate=setWinrate
+    this.setOpeningName=setOpeningName
   }
 
   /**
@@ -28,7 +31,7 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     const orientation=colorPlayerCanControl
     const onInit=()=>{
       if (!canPlayerMove){
-        this.afterMove(this.STARTING_FEN)
+        this.afterPlayerMove(this.STARTING_FEN)
       }
     }
     return {fen:fen, canPlayerMove: canPlayerMove, 
@@ -41,31 +44,31 @@ export default class HumanVSMaster implements TrainingModeStrategy{
    * @param newFen 
    * @param previousMove 
    */
-  public afterMove(newFen:string, previousMove?:Move): void {
+  public afterPlayerMove(newFen:string, previousMove?:Move): void {
 
     fetchMastersDB(newFen)
     .then(json=>{
       const responsesList=getSanListFromMasterDB(json)
       const chosenResponse = this.pickRandomResponse(responsesList)
       this.makeEngineMove(chosenResponse)
-      const openingName=this.extractOpeningName(json)
-      if (openingName){
-        console.log(json);
-        this.setOpeningName(openingName)
-      }
+
+      this.updateStateAfterAnyMove(json)
     })
     
   }
 
+  /**
+   * called after a move has been made automatically by the engine. takes
+   * info about the move that was made
+   * @param newFen 
+   * @param previousMove 
+   */
   public afterEngineMove(newFen: string, previousMove: Move): void {
     
     fetchMastersDB(newFen)
     .then(json=>{
-      const openingName=this.extractOpeningName(json)
-      if (openingName){
-        console.log(json);
-        this.setOpeningName(openingName)
-      }
+
+      this.updateStateAfterAnyMove(json)
     })
 
   }
@@ -100,6 +103,33 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     }
     catch (err){return null}
     
+  }
+
+  /**
+   * extracts and returns the winrate object associated with the given json
+   * response
+   * @param json 
+   */
+  private extractWinrate(json:any):Winrate{
+    const white=json.white
+    const black=json.black
+    const draws=json.draws
+    const sum=white+black+draws
+    return new Winrate(black/sum, white/sum)
+  }
+
+  /**
+   * contains code that is run to update state variables, after whoever made
+   * a move (player or engine)
+   */
+  private updateStateAfterAnyMove(json:any){
+    const winrate=this.extractWinrate(json)
+      const openingName=this.extractOpeningName(json)
+
+      if (openingName){
+        this.setOpeningName(openingName)
+      }
+      this.setWinrate(winrate)
   }
 
 }

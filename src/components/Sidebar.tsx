@@ -5,6 +5,7 @@ import Winrate from '../classes/Winrate'
 
 interface Props{
   openingName:string
+  winrate: Winrate|null
 }
 
 export default function Sidebar(props:Props) {
@@ -12,8 +13,9 @@ export default function Sidebar(props:Props) {
   return (
     <div className='sidebar'>
       <p>{props.openingName}</p>
-      {/* <div>hello</div> */}
-      <WinrateBar winrate={new Winrate(1/3, 1/3)}/>
+      {
+        props.winrate ? <WinrateBar winrate={props.winrate}/> : null
+      }
     </div>
   )
 }

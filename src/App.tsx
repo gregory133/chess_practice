@@ -11,11 +11,13 @@ import Sidebar from './components/Sidebar';
 import './styles/App.css'
 import './styles/Colors.css'
 import './styles/Fonts.css'
+import Winrate from './classes/Winrate';
 
 function App() {
 
   const STARTING_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+  const [winrate, setWinrate]=useState<Winrate|null>(null)
   const [openingName, setOpeningName]=useState<string>('')
   const [orientation, setOrientation]=useState<'black'|'white'>('white')
   const [currentFen, setCurrentFen]=useState<string>(STARTING_FEN)
@@ -23,7 +25,8 @@ function App() {
   const [colorPlayerCanControl, setColorPlayerCanControl]=
   useState<'white'|'black'|null>('white')
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
-  useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName))
+  useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName, 
+    setWinrate))
   const boardParentRef=useRef(null)
 
   /**
@@ -48,7 +51,7 @@ function App() {
    */
   function afterMove(newFen:string, previousMove:Move){
     currentFenRef.current=newFen
-    currentTrainingModeStrategy?.afterMove(newFen, previousMove);
+    currentTrainingModeStrategy?.afterPlayerMove(newFen, previousMove);
   }
 
   /**
@@ -72,7 +75,7 @@ function App() {
         orientation={orientation}
         afterMove={afterMove} />
       </div> 
-      <Sidebar openingName={openingName}/>
+      <Sidebar winrate={winrate} openingName={openingName}/>
     </div>
    
   );

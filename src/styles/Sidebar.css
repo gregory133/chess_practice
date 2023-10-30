@@ -2,14 +2,16 @@
   height: 100%;
   /* width: 10px; */
   flex:1;
-  background-color: var(--primary-bg-color);
+  background-color: var(--sidebar-bg);
   max-width: 300px;
   color: white;
   font-family: var(--default-font);
-  border: 1px solid white;
+  border: white;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 0px 1px white;
+  
   align-items: center;
 }
 

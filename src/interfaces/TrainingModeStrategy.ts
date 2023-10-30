@@ -10,7 +10,7 @@ export interface InitialValues{
 
 export default interface TrainingModeStrategy{
 
-  afterMove(newFen:string, previousMove:Move, makeEngineMove?:
+  afterPlayerMove(newFen:string, previousMove:Move, makeEngineMove?:
     (san:string)=>void):void
 
   afterEngineMove(newFen:string, previousMove:Move):void
