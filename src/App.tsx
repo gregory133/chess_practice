@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Board from './components/Board';
-import './styles/App.css'
+
 import * as cg from 'chessground/types.js';
 import { Chess, Move } from 'chess.js';
 import { fetchMastersDB, getSanListFromMasterDB } from './api/mastersDBApi';
 import TrainingModeStrategy from './interfaces/TrainingModeStrategy';
 import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
 import Sidebar from './components/Sidebar';
+
+import './styles/App.css'
 import './styles/Colors.css'
 import './styles/Fonts.css'
-import WinrateBar from './components/WinrateBar';
-import Winrate from './classes/Winrate';
 
 function App() {
 

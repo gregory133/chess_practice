@@ -18,11 +18,26 @@ export default function WinrateBar(props:Props) {
     flex: props.winrate.white
   }
 
+  /**
+   * returns the pretty-printed text representing the percentage visible in the 
+   * bar for the given section
+   * @param winrate winrate at a decimal 0 <= x <= 1
+   */
+  function computeTextPercentage(winrate:number){
+    return ""+(winrate*100).toFixed(0).toString()+'%'
+  }
+
   return (
-    <div className='container'>
-      <div style={blackStyle} className='blackBar'></div>
-      <div style={drawStyle} className='drawBar'></div>
-      <div style={whiteStyle} className='whiteBar'></div>
+    <div className='bar'>
+      <div style={blackStyle} className='blackBar'>
+        {computeTextPercentage(props.winrate.black)}
+      </div>
+      <div style={drawStyle} className='drawBar'>
+        {computeTextPercentage(props.winrate.draw)}
+      </div>
+      <div style={whiteStyle} className='whiteBar'>
+        {computeTextPercentage(props.winrate.white)}
+      </div>
     </div>
   )
 }
