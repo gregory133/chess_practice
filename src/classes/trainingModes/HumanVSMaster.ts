@@ -20,7 +20,7 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     this.setWinrate=setWinrate
     this.setOpeningName=setOpeningName
   }
-
+ 
   /**
    * contains the business logic to initialize the instance variable initialValues
    */
