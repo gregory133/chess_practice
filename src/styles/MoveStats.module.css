@@ -1,0 +1,13 @@
+.container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: fit-content;
+
+}
+
+.container > p{
+  text-align: center;
+  padding: 0px 15px;
+  font-size: 1.5cqw;
+}

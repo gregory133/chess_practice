@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/MoveStats.css'
+import styles from '../styles/MoveStats.module.css'
 
 interface Props{
   numMovesInDB:number
@@ -9,7 +9,7 @@ interface Props{
 export default function MoveStats(props:Props) {
 
   return (
-    <div className='containerz'>
+    <div className={styles.container}>
       <p>{`${props.numGamesInDB} games in database`}</p>
       <p>{`${props.numMovesInDB} possible moves in database`}</p>
     </div>

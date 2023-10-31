@@ -1,6 +1,6 @@
 import React from 'react'
 import Winrate from '../classes/Winrate'
-import '../styles/WinrateBar.css'
+import styles from '../styles/WinrateBar.module.css'
 
 interface Props{
   winrate:Winrate
@@ -28,14 +28,14 @@ export default function WinrateBar(props:Props) {
   }
 
   return (
-    <div className='bar'>
-      <div style={blackStyle} className='blackBar'>
+    <div className={styles.bar}>
+      <div style={blackStyle} className={styles.blackBar}>
         {computeTextPercentage(props.winrate.black)}
       </div>
-      <div style={drawStyle} className='drawBar'>
+      <div style={drawStyle} className={styles.drawBar}>
         {computeTextPercentage(props.winrate.draw)}
       </div>
-      <div style={whiteStyle} className='whiteBar'>
+      <div style={whiteStyle} className={styles.whiteBar}>
         {computeTextPercentage(props.winrate.white)}
       </div>
     </div>

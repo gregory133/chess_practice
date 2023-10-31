@@ -1,6 +1,6 @@
 import React from 'react'
 import PromotionOption from './PromotionOption'
-import '../styles/PromotionDialog.css'
+import styles from '../styles/PromotionDialog.module.css'
 interface Props{
 	promotionChoiceFunction:(symbol:'q'|'r'|'b'|'n')=>void
 	isVisible:boolean,
@@ -24,7 +24,7 @@ export default function PromotionDialog({isVisible, top, bottom,
 		<div>
 			{
 				isVisible ? 
-				<div className='dialog' 
+				<div className={styles.dialog}
 				style={{
 					top:top,
 					bottom:bottom,

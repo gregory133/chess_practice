@@ -8,9 +8,10 @@ import TrainingModeStrategy from './interfaces/TrainingModeStrategy';
 import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
 import Sidebar from './components/Sidebar';
 
-import './styles/App.css'
+import styles from './styles/App.module.css'
 import './styles/Colors.css'
 import './styles/Fonts.css'
+
 import Winrate from './classes/Winrate';
 
 function App() {
@@ -67,8 +68,8 @@ function App() {
   }
   
   return (
-    <div className='container'>
-      <div className='boardParent' ref={boardParentRef}>
+    <div className={styles.container}>
+      <div className={styles.boardParent} ref={boardParentRef}>
         <Board parentRef={boardParentRef} lastMove={undefined} 
         fen={currentFen} 
         colorPlayerCanControl={colorPlayerCanControl} 

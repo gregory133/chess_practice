@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import '../styles/PromotionOption.css'
+import styles from '../styles/PromotionOption.module.css'
 
 interface Props{
 	promotionChoiceFunction:(symbol:'q'|'r'|'b'|'n')=>void
@@ -44,8 +44,6 @@ symbol, image}:Props) {
 		onMouseLeave={onMouseLeave}
 		
 		style={{
-			width:'100%',
-			height:'100%',
 			backgroundImage:`radial-gradient(circle, ${bgColorRim}, 
 			${bgColorCentre})`, 
 			borderRadius:roundedness,
