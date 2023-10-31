@@ -9,16 +9,23 @@ export default class HumanVSMaster implements TrainingModeStrategy{
   private STARTING_FEN= 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
   private makeEngineMove:(san:string)=>void
   private setOpeningName: (name:string)=>void
-  private setWinrate: (winrate:Winrate|null)=>void
+  
+  public setWinrate: (winrate:Winrate|null)=>void
+  public setNumGamesInDB: (num:number|null)=>void
+  public setNumMovesInDB: (num:number|null)=>void
 
   public initialValues: InitialValues
 
   public constructor(makeEngineMove:(san:string)=>void, 
-  setOpeningName:(newName:string)=>void, setWinrate: (winrate:Winrate|null)=>void){
+  setOpeningName:(newName:string)=>void, setWinrate: (winrate:Winrate|null)=>void,
+  setNumGamesInDB: (num:number|null)=>void, 
+  setNumMovesInDB: (num:number|null)=>void){
     this.makeEngineMove=makeEngineMove
     this.initialValues= this.initializeInitialValues()
     this.setWinrate=setWinrate
     this.setOpeningName=setOpeningName
+    this.setNumMovesInDB=setNumMovesInDB
+    this.setNumGamesInDB=setNumGamesInDB
   }
  
   /**
@@ -118,18 +125,30 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     return new Winrate(black/sum, white/sum)
   }
 
+  private extractNumMovesInDB(json:any):number{
+    return json.moves.length
+  }
+
+  private extractNumGamesInDB(json:any):number{
+    return json.white+json.black+json.draws
+  }
+
   /**
    * contains code that is run to update state variables, after whoever made
    * a move (player or engine)
    */
   private updateStateAfterAnyMove(json:any){
     const winrate=this.extractWinrate(json)
-      const openingName=this.extractOpeningName(json)
+    const numMovesInDB=this.extractNumMovesInDB(json)
+    const numGamesInDB=this.extractNumGamesInDB(json)
+    const openingName=this.extractOpeningName(json)
 
-      if (openingName){
-        this.setOpeningName(openingName)
-      }
-      this.setWinrate(winrate)
+    console.log(numMovesInDB, numGamesInDB);
+
+    if (openingName){
+      this.setOpeningName(openingName)
+    }
+    this.setWinrate(winrate)
   }
 
 }

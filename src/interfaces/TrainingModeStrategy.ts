@@ -1,4 +1,5 @@
 import { Move } from "chess.js";
+import Winrate from "../classes/Winrate";
 
 export interface InitialValues{
   fen:string,
@@ -14,6 +15,9 @@ export default interface TrainingModeStrategy{
     (san:string)=>void):void
 
   afterEngineMove(newFen:string, previousMove:Move):void
+  setWinrate: (winrate:Winrate|null)=>void
+  setNumGamesInDB: (num:number|null)=>void
+  setNumMovesInDB: (num:number|null)=>void
 
   initialValues: InitialValues,
 

@@ -18,6 +18,8 @@ function App() {
 
   const STARTING_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+  const [numGamesInDB, setNumGamesInDB]=useState<number|null>(null)
+  const [numMovesInDB, setNumMovesInDB]=useState<number|null>(null)
   const [winrate, setWinrate]=useState<Winrate|null>(null)
   const [openingName, setOpeningName]=useState<string>('')
   const [orientation, setOrientation]=useState<'black'|'white'>('white')
@@ -27,7 +29,7 @@ function App() {
   useState<'white'|'black'|null>('white')
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
   useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName, 
-    setWinrate))
+    setWinrate, setNumGamesInDB, setNumMovesInDB))
   const boardParentRef=useRef(null)
 
   /**
@@ -76,7 +78,8 @@ function App() {
         orientation={orientation}
         afterMove={afterMove} />
       </div> 
-      <Sidebar winrate={winrate} openingName={openingName}/>
+      <Sidebar numGamesInDB={numGamesInDB} numMovesInDB={numMovesInDB}
+       winrate={winrate} openingName={openingName}/>
     </div>
    
   );

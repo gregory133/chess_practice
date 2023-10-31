@@ -7,6 +7,8 @@ import MoveStats from './MoveStats'
 interface Props{
   openingName:string
   winrate: Winrate|null
+  numGamesInDB: number|null
+  numMovesInDB: number|null
 }
 
 export default function Sidebar(props:Props) {
@@ -19,7 +21,13 @@ export default function Sidebar(props:Props) {
           props.winrate ? <WinrateBar winrate={props.winrate}/> : null
         }
       </div>
-      <MoveStats numGamesInDB={700} numMovesInDB={8}/>
+      {
+        (props.numGamesInDB && props.numMovesInDB) 
+          ? (<MoveStats numGamesInDB={props.numGamesInDB} 
+          numMovesInDB={props.numMovesInDB}/>)
+          : null
+      }
+      
       
     </div>
   )
