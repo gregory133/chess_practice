@@ -142,9 +142,9 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     const numMovesInDB=this.extractNumMovesInDB(json)
     const numGamesInDB=this.extractNumGamesInDB(json)
     const openingName=this.extractOpeningName(json)
-
-    console.log(numMovesInDB, numGamesInDB);
-
+    
+    this.setNumGamesInDB(numGamesInDB)
+    this.setNumMovesInDB(numMovesInDB)
     if (openingName){
       this.setOpeningName(openingName)
     }
