@@ -3,7 +3,6 @@ import Board from './components/Board';
 
 import * as cg from 'chessground/types.js';
 import { Chess, Move } from 'chess.js';
-import { fetchMastersDB, getSanListFromMasterDB } from './api/mastersDBApi';
 import TrainingModeStrategy from './interfaces/TrainingModeStrategy';
 import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
 import Sidebar from './components/Sidebar';

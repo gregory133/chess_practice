@@ -1,8 +1,8 @@
 import { Move } from "chess.js";
 import TrainingModeStrategy, { InitialValues } from "../../interfaces/TrainingModeStrategy";
-import { fetchMastersDB, getSanListFromMasterDB } from "../../api/mastersDBApi";
 import TreeMap from "ts-treemap";
 import Winrate from "../Winrate";
+import { fetchDB, getSanListFromDB } from "../../api/DBApi";
 
 export default class HumanVSMaster implements TrainingModeStrategy{
 
@@ -53,9 +53,9 @@ export default class HumanVSMaster implements TrainingModeStrategy{
    */
   public afterPlayerMove(newFen:string, previousMove?:Move): void {
 
-    fetchMastersDB(newFen)
+    fetchDB(newFen, 'masters')
     .then(json=>{
-      const responsesList=getSanListFromMasterDB(json)
+      const responsesList=getSanListFromDB(json)
       const chosenResponse = this.pickRandomResponse(responsesList)
       this.makeEngineMove(chosenResponse)
 
@@ -72,7 +72,7 @@ export default class HumanVSMaster implements TrainingModeStrategy{
    */
   public afterEngineMove(newFen: string, previousMove: Move): void {
     
-    fetchMastersDB(newFen)
+    fetchDB(newFen, 'masters')
     .then(json=>{
 
       this.updateStateAfterAnyMove(json)
