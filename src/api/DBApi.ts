@@ -1,6 +1,6 @@
 const baseHost='https://explorer.lichess.ovh'
 
-type Database='masters'|'lichess'
+export type Database='masters'|'lichess'
 
 /**
  * fetches the url and returns a promise that resolves with the json

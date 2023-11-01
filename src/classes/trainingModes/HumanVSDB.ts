@@ -2,21 +2,22 @@ import { Move } from "chess.js";
 import TrainingModeStrategy, { InitialValues } from "../../interfaces/TrainingModeStrategy";
 import TreeMap from "ts-treemap";
 import Winrate from "../Winrate";
-import { fetchDB, getSanListFromDB } from "../../api/DBApi";
+import { Database, fetchDB, getSanListFromDB } from "../../api/DBApi";
 
-export default class HumanVSMaster implements TrainingModeStrategy{
+export default class HumanVSDB implements TrainingModeStrategy{
 
   private STARTING_FEN= 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
   private makeEngineMove:(san:string)=>void
   private setOpeningName: (name:string)=>void
-  
+  private database: Database
+
   public setWinrate: (winrate:Winrate|null)=>void
   public setNumGamesInDB: (num:number|null)=>void
   public setNumMovesInDB: (num:number|null)=>void
 
   public initialValues: InitialValues
 
-  public constructor(makeEngineMove:(san:string)=>void, 
+  public constructor(makeEngineMove:(san:string)=>void, database:Database,
   setOpeningName:(newName:string)=>void, setWinrate: (winrate:Winrate|null)=>void,
   setNumGamesInDB: (num:number|null)=>void, 
   setNumMovesInDB: (num:number|null)=>void){
@@ -26,6 +27,7 @@ export default class HumanVSMaster implements TrainingModeStrategy{
     this.setOpeningName=setOpeningName
     this.setNumMovesInDB=setNumMovesInDB
     this.setNumGamesInDB=setNumGamesInDB
+    this.database=database
   }
  
   /**
@@ -53,7 +55,7 @@ export default class HumanVSMaster implements TrainingModeStrategy{
    */
   public afterPlayerMove(newFen:string, previousMove?:Move): void {
 
-    fetchDB(newFen, 'masters')
+    fetchDB(newFen, this.database)
     .then(json=>{
       const responsesList=getSanListFromDB(json)
       const chosenResponse = this.pickRandomResponse(responsesList)
@@ -72,7 +74,7 @@ export default class HumanVSMaster implements TrainingModeStrategy{
    */
   public afterEngineMove(newFen: string, previousMove: Move): void {
     
-    fetchDB(newFen, 'masters')
+    fetchDB(newFen, this.database)
     .then(json=>{
 
       this.updateStateAfterAnyMove(json)
@@ -87,7 +89,8 @@ export default class HumanVSMaster implements TrainingModeStrategy{
    */
   private pickRandomResponse(responsesList:{san:string, frequency:number}[]):string {
     const cummulativeFrequenciesMap=new TreeMap<number, string>()
-    responsesList.reduce((cummulativeFreqency:number, response:{san:string, frequency:number})=>{
+    responsesList.reduce((cummulativeFreqency:number, response:{san:string, 
+      frequency:number})=>{
       const newCummulativeFrequency=cummulativeFreqency+response.frequency
       cummulativeFrequenciesMap.set(newCummulativeFrequency, response.san)
       return newCummulativeFrequency

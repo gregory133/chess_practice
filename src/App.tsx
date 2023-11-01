@@ -4,7 +4,7 @@ import Board from './components/Board';
 import * as cg from 'chessground/types.js';
 import { Chess, Move } from 'chess.js';
 import TrainingModeStrategy from './interfaces/TrainingModeStrategy';
-import HumanVSMaster from './classes/trainingModes/HumanVSMaster';
+import HumanVSDB from './classes/trainingModes/HumanVSDB';
 import Sidebar from './components/Sidebar';
 
 import styles from './styles/App.module.css'
@@ -27,8 +27,8 @@ function App() {
   const [colorPlayerCanControl, setColorPlayerCanControl]=
   useState<'white'|'black'|null>('white')
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
-  useState<TrainingModeStrategy>(new HumanVSMaster(makeEngineMove, setOpeningName, 
-    setWinrate, setNumGamesInDB, setNumMovesInDB))
+  useState<TrainingModeStrategy>(new HumanVSDB(makeEngineMove, 'lichess',
+  setOpeningName, setWinrate, setNumGamesInDB, setNumMovesInDB))
   const boardParentRef=useRef(null)
 
   /**
