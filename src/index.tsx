@@ -5,6 +5,7 @@ import WinrateBar from './components/WinrateBar';
 import Winrate from './classes/Winrate';
 import './styles/Index.css'
 import Sidebar from './components/Sidebar';
+import SetFen from './components/SetFen';
 
 
 const root = ReactDOM.createRoot(
@@ -12,6 +13,5 @@ const root = ReactDOM.createRoot(
 );
 root.render(
 
-  <App/>
-  
+  <App/>  
 );

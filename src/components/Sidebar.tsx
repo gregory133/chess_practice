@@ -3,6 +3,7 @@ import styles from '../styles/Sidebar.module.css'
 import WinrateBar from './WinrateBar'
 import Winrate from '../classes/Winrate'
 import MoveStats from './MoveStats'
+import SetFen from './SetFen'
 
 interface Props{
   openingName:string
@@ -27,6 +28,7 @@ export default function Sidebar(props:Props) {
           numMovesInDB={props.numMovesInDB}/>)
           : null
       }
+      <SetFen/>
       
       
     </div>
