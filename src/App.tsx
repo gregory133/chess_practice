@@ -16,14 +16,14 @@ import RefreshButton from './components/RefreshButton';
 
 function App() {
 
-  const STARTING_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-
+  const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+  const [startingFen, setStartingFen]=useState<string>(INITIAL_FEN)
   const [numGamesInDB, setNumGamesInDB]=useState<number|null>(null)
   const [numMovesInDB, setNumMovesInDB]=useState<number|null>(null)
   const [winrate, setWinrate]=useState<Winrate|null>(null)
   const [openingName, setOpeningName]=useState<string>('')
   const [orientation, setOrientation]=useState<'black'|'white'>('white')
-  const [currentFen, setCurrentFen]=useState<string>(STARTING_FEN)
+  const [currentFen, setCurrentFen]=useState<string>(INITIAL_FEN)
   const currentFenRef=useRef<string>(currentFen)
   const [colorPlayerCanControl, setColorPlayerCanControl]=
   useState<'white'|'black'|null>('white')
@@ -32,19 +32,24 @@ function App() {
   setOpeningName, setWinrate, setNumGamesInDB, setNumMovesInDB))
   const boardParentRef=useRef(null)
 
-  /**
-   * on application start
-   */
+  
   useEffect(()=>{
+    onStart()
+  }, [])
+
+  /**
+   * function that must be ran everytime the application is created
+   * or reset
+   */
+  function onStart(){
     const {fen, colorPlayerCanControl, orientation, canPlayerMove, onInit
     }=currentTrainingModeStrategy.initialValues; 
 
     currentFenRef.current=fen
     setColorPlayerCanControl(colorPlayerCanControl)
     setOrientation(orientation)
-    onInit()
-    
-  }, [])
+    onInit()  
+  }
 
   /**
    * callback function that is run after a human player makes a move on the 
@@ -68,6 +73,18 @@ function App() {
     const previousMove:Move=chess.history({verbose:true})[chess.history().length-1]
     currentTrainingModeStrategy.afterEngineMove(chess.fen(), previousMove)
   }
+
+  /**
+   * resets every state variable of the board with the position indicated by startingFen
+   */
+  function resetBoard(){
+    setCurrentFen(startingFen)
+    setNumGamesInDB(null)
+    setNumMovesInDB(null)
+    setWinrate(null)
+    setOpeningName('')
+    onStart()
+  }
   
   return (
     <div className={styles.container}>
@@ -78,8 +95,9 @@ function App() {
         orientation={orientation}
         afterMove={afterMove} />
       </div> 
-      <RefreshButton onClick={()=>{}}/>
-      <Sidebar numGamesInDB={numGamesInDB} numMovesInDB={numMovesInDB}
+      <RefreshButton onClick={resetBoard}/>
+      <Sidebar setStartingFen={setStartingFen} numGamesInDB={numGamesInDB} 
+      numMovesInDB={numMovesInDB}
        winrate={winrate} openingName={openingName}/>
     </div>
    

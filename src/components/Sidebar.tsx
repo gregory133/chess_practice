@@ -11,6 +11,7 @@ interface Props{
   winrate: Winrate|null
   numGamesInDB: number|null
   numMovesInDB: number|null
+  setStartingFen: (fen:string)=>void
 }
 
 export default function Sidebar(props:Props) {
@@ -29,7 +30,7 @@ export default function Sidebar(props:Props) {
           numMovesInDB={props.numMovesInDB}/>)
           : null
       }
-      <SetFen/>
+      <SetFen setStartingFen={props.setStartingFen}/>
     </div>
   )
 }

@@ -3,7 +3,13 @@ import TextField from '@mui/material/TextField';
 import styles from '../styles/SetFen.module.css'
 import { Chess } from 'chess.js';
 
-export default function SetFen() {
+interface Props{
+  setStartingFen: (fen:string)=>void
+}
+
+export default function SetFen(props:Props) {
+
+  const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
   const inputRef=useRef<null|HTMLInputElement>(null)
   const [text, setText]=useState('')
@@ -32,9 +38,22 @@ export default function SetFen() {
     return true
   }
 
+  /**
+   * calls props.setStartingFen with the given fen string.
+   * @param fen fen string. If equal to the empty string, will be converted to
+   * the initial position fen
+   */
+  function updateStartingFen(fen:string){
+    if (fen==''){
+      fen=INITIAL_FEN
+    }
+    props.setStartingFen(fen)
+  }
+
   useEffect(()=>{
     if (text=='' || isValidFen(text)){
       setUnderlineColor('white')
+      updateStartingFen(text)
     }
     else{
       setUnderlineColor('red')
