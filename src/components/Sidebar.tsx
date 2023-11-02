@@ -4,6 +4,7 @@ import WinrateBar from './WinrateBar'
 import Winrate from '../classes/Winrate'
 import MoveStats from './MoveStats'
 import SetFen from './SetFen'
+import RefreshButton from './RefreshButton'
 
 interface Props{
   openingName:string
@@ -29,8 +30,6 @@ export default function Sidebar(props:Props) {
           : null
       }
       <SetFen/>
-      
-      
     </div>
   )
 }

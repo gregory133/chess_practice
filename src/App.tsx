@@ -12,6 +12,7 @@ import './styles/Colors.css'
 import './styles/Fonts.css'
 
 import Winrate from './classes/Winrate';
+import RefreshButton from './components/RefreshButton';
 
 function App() {
 
@@ -77,6 +78,7 @@ function App() {
         orientation={orientation}
         afterMove={afterMove} />
       </div> 
+      <RefreshButton onClick={()=>{}}/>
       <Sidebar numGamesInDB={numGamesInDB} numMovesInDB={numMovesInDB}
        winrate={winrate} openingName={openingName}/>
     </div>

@@ -1,25 +1,51 @@
-import React from 'react'
+import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import styles from '../styles/SetFen.module.css'
+import { Chess } from 'chess.js';
 
 export default function SetFen() {
+
+  const inputRef=useRef<null|HTMLInputElement>(null)
+  const [text, setText]=useState('')
+  const [underlineColor, setUnderlineColor]=useState<'white'|'red'>('white')
  
-  return (
-    <div>
+  /**
+   * called when form receives input
+   * @param event 
+   */
+  function handleOnInput(event:any){
     
-      <TextField sx={{
-        '& fieldset': {
-          borderColor: '#696765', // Change this to your desired border color
-        },
-        
-        '&:hover fieldset': {
-          borderColor: '#696765' + '!important', // Change this to the hover border color
-        },
-        '& .MuiOutlinedInput-root':{borderColor: 'white', color: 'white'},
-        '& .MuiInputLabel-formControl' : {
-          color: 'white'
-        }
-      }} label='Starting FEN' variant='outlined'/>
+    const inputElement = inputRef.current
+    if (inputElement){
+      const inputValue = inputElement.value
+      setText(inputValue)
+    }
+  }
+
+  function isValidFen(potentialFen:string){
+    try{
+      new Chess(potentialFen)
+    }
+    catch (err){
+      return false
+    }
+    return true
+  }
+
+  useEffect(()=>{
+    if (text=='' || isValidFen(text)){
+      setUnderlineColor('white')
+    }
+    else{
+      setUnderlineColor('red')
+    }
+  }, [text])
+
+  return (
+    <div className={styles.container}>
+      <p>Starting FEN:</p>
+      <input style={{borderBottom: `1px solid ${underlineColor}`}} 
+      ref={inputRef} onInput={handleOnInput}/>
     </div>
   )
 }
