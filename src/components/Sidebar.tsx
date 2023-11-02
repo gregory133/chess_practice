@@ -5,32 +5,31 @@ import Winrate from '../classes/Winrate'
 import MoveStats from './MoveStats'
 import SetFen from './SetFen'
 import RefreshButton from './RefreshButton'
+import { useChessStore } from '../stores/chessStore'
 
-interface Props{
-  openingName:string
-  winrate: Winrate|null
-  numGamesInDB: number|null
-  numMovesInDB: number|null
-  setStartingFen: (fen:string)=>void
-}
 
-export default function Sidebar(props:Props) {
+export default function Sidebar() {
+
+  const openingName=useChessStore(state=>state.openingName)
+  const winrate=useChessStore(state=>state.winrate)
+  const numGamesInDB=useChessStore(state=>state.numGamesInDB)
+  const numMovesInDB=useChessStore(state=>state.numMovesInDB)
 
   return (
     <div className={styles.sidebar}>
-      <p className={styles.openingName}>{props.openingName}</p>
+      <p className={styles.openingName}>{openingName}</p>
       <div className={styles.winrateBarContainer}>
         {
-          props.winrate ? <WinrateBar winrate={props.winrate}/> : null
+          winrate ? <WinrateBar winrate={winrate}/> : null
         }
       </div>
       {
-        (props.numGamesInDB && props.numMovesInDB) 
-          ? (<MoveStats numGamesInDB={props.numGamesInDB} 
-          numMovesInDB={props.numMovesInDB}/>)
+        (numGamesInDB && numMovesInDB) 
+          ? (<MoveStats numGamesInDB={numGamesInDB} 
+          numMovesInDB={numMovesInDB}/>)
           : null
       }
-      <SetFen setStartingFen={props.setStartingFen}/>
+      <SetFen/>
     </div>
   )
 }

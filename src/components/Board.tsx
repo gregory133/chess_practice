@@ -1,5 +1,5 @@
 import Chessground from '@react-chess/chessground'
-import React, {useEffect, useState, useMemo} from 'react'
+import React, {useEffect, useState, useMemo, useRef} from 'react'
 import { Chess, Color, Move, Square } from 'chess.js'
 import { Config } from 'chessground/config';
 import * as cg from 'chessground/types.js';
@@ -8,23 +8,35 @@ import "../styles/chessground.base.css";
 import "../styles/chessground.brown.css";
 import "../styles/chessground.cburnett.css";
 import ResponsiveSquare from './ResponsiveSquare';
+import { useChessStore } from '../stores/chessStore';
+import Engine from '../classes/Engine';
+import { fetchDB } from '../api/DBApi';
+import LichessDatabaseJSONParser from '../api/LichessDatabaseJSONParser';
 
 interface Props{
-	colorPlayerCanControl: cg.Color|null
-	fen:string
-	lastMove: undefined|cg.Key[]
-	orientation: cg.Color
-	afterMove: (newFen:string, previousMove:Move)=>void
-	parentRef:React.MutableRefObject<null|HTMLElement>
+	parentRef: React.MutableRefObject<null|HTMLInputElement>
 }
 
 export default function Board(props:Props) {
 
-	const [fen, setFen]=useState<string>(props.fen)
+	const fen=useChessStore(state=>state.currentFen)
+	const setFen=useChessStore(state=>state.setCurrentFen)
+	const orientation=useChessStore(state=>state.orientation)
+	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
+	const setWinrate=useChessStore(state=>state.setWinrate)
+	const setOpeningName=useChessStore(state=>state.setOpeningName)
+	const setNumGamesInDB=useChessStore(state=>state.setNumGamesInDB)
+	const setNumMovesInDB=useChessStore(state=>state.setNumMovesInDB)
+
+	const engineRef=useRef(new Engine(fen))
+	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
+	
 	const [isPromotionVisible, setIsPromotionVisible]=useState(false)
 	const [length, setLength]=useState(0)
 	const [boardOpacity, setBoardOpacity]=useState<number>(1)
 	const [promotionFile, setPromotionFile]=useState<number>(0)
+
+	
 
 	const chess=new Chess(fen)
 
@@ -35,6 +47,36 @@ export default function Board(props:Props) {
 	'a4' , 'b4' , 'c4' , 'd4' , 'e4' , 'f4' , 'g4' , 'h4' , 'a3' , 'b3' , 'c3' , 'd3' , 
 	'e3' , 'f3' , 'g3' , 'h3' , 'a2' , 'b2' , 'c2' , 'd2' , 'e2' , 'f2' , 'g2' , 'h2' , 
 	'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
+
+	useEffect(()=>{
+		window.addEventListener('resize', ()=>{
+			adjustBoardLength()
+		})
+	}, [])
+
+	useEffect(()=>{
+		fetchDB(fen, 'lichess')
+		.then(json=>{
+			jsonParserRef.current.setJson(json)
+			makeEnginMoveIfNeeded(json)
+			updateSidebar()
+		})	
+	}, [fen])
+
+
+	/**
+	 * updates the state variables associated with the sidebar
+	 */
+	function updateSidebar(){
+		setWinrate(jsonParserRef.current.extractWinrate())
+		setNumGamesInDB(jsonParserRef.current.extractNumGamesInDB())
+		setNumMovesInDB(jsonParserRef.current.extractNumMovesInDB())
+		const openingName=jsonParserRef.current.extractOpeningName()
+		if (openingName){
+			setOpeningName(openingName)
+		}
+				
+	}
 
 	/**
 	 * 
@@ -59,6 +101,24 @@ export default function Board(props:Props) {
 		const smallerParentDimension=getSmallerParentDimension()
 		setLength(smallerParentDimension)
 	}
+
+	/**
+	 * causes the engine to make a move if it's its turn to move
+	 * and updates related variables
+	 * @param json 
+	 */
+	function makeEnginMoveIfNeeded(json:any){
+		const turnColor=fen.split(' ')[1]=='w' ? 'white' : 'black'
+		if (turnColor!=colorPlayerCanControl){
+			
+			const move:string=engineRef.current.getRandomResponseFromDB(json)
+			if (move){
+				updateChessObject(move)
+			}
+	
+		}		
+	}
+
 
 	/**
 	 * @param chess chess object encoding the current position
@@ -129,23 +189,25 @@ export default function Board(props:Props) {
 	 * updates the chess object with the given move
 	 * @param move 
 	 */
-	function updateChessObject(move:Move){
+	function updateChessObject(move:string){
 		chess.move(move)
-		setFen(chess.fen())
+		const newFen=chess.fen()
+		engineRef.current.setFen(newFen)
+		setFen(newFen)
 	}
 
 	/**
 	 * default function that runs after a move is made by the player
 	 */
-	function afterMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
-		if (isMovePromotion(props.fen, orig, dest)){
+	function afterHumanPlayerMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
+		if (isMovePromotion(fen, orig, dest)){
 			setPromotionFile(getFile(orig))
 			setIsPromotionVisible(true)
 		}
 		else{
-			updateChessObject((orig+dest) as unknown as Move)
-			props.afterMove(chess.fen(), 
-			chess.history({verbose:true})[chess.history().length-1])
+			updateChessObject(orig+dest)
+			const newFen=chess.fen()
+			setFen(newFen)
 		}
 	}
 
@@ -160,7 +222,7 @@ export default function Board(props:Props) {
 	 */
 	function promotionChoiceFunction(symbol: 'q'|'r'|'b'|'n'){
 		setIsPromotionVisible(false)
-		const move:Move|null=getPromotionMove(chess, promotionFile, symbol)
+		const move:string|null=getPromotionMove(chess, promotionFile, symbol)
 		if (move){
 			updateChessObject(move)
 		}
@@ -194,7 +256,7 @@ export default function Board(props:Props) {
 	 * @param color 
 	 */
 	function getPromotionMove(chess:Chess, promotionFile:number,
-		promotionSymbol: 'q'|'r'|'b'|'n'):Move|null{
+		promotionSymbol: 'q'|'r'|'b'|'n'):string|null{
 
 		const promotionColor:Color=chess.fen().split(' ')[1] as Color
 
@@ -212,7 +274,7 @@ export default function Board(props:Props) {
 						if ((pieceColor=='w' && getRank(pieceSquare)==7) || 
 						(pieceColor=='b' && getRank(pieceSquare)==2)){
 							const promotionSquare=getPromotionSquare(pieceColor, pieceSquare)
-							return pieceSquare+promotionSquare+promotionSymbol as unknown as Move
+							return pieceSquare+promotionSquare+promotionSymbol
 						}
 						
 					}
@@ -230,34 +292,26 @@ export default function Board(props:Props) {
 	 */
 	function getConfig():Config{
 
-		const turnColor:cg.Color = props.fen.split(' ')[1]=='w'
+		const turnColor:cg.Color = fen.split(' ')[1]=='w'
 		? 'white' : 'black'
 		
 		return {
 			fen: fen,
-			orientation: props.orientation,
+			orientation: orientation,
 			coordinates:false,
 			turnColor: turnColor,
-			lastMove: props.lastMove,
+			// lastMove: props.lastMove,
 			movable: {
 				free: false,
-				dests: getDests(chess, props.colorPlayerCanControl),
+				dests: getDests(chess, colorPlayerCanControl),
 				events: {
-					after: afterMove
+					after: afterHumanPlayerMove
 				}
 			}
 		}
 	}
 
-	useEffect(()=>{
-		window.addEventListener('resize', ()=>{
-			adjustBoardLength()
-		})
-	}, [])
-
-	useEffect(()=>{
-		setFen(props.fen)
-	}, [props.fen])
+	
 
 	useEffect(()=>{
 		if (isPromotionVisible){

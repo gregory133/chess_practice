@@ -2,18 +2,17 @@ import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import styles from '../styles/SetFen.module.css'
 import { Chess } from 'chess.js';
+import { useChessStore } from '../stores/chessStore';
 
-interface Props{
-  setStartingFen: (fen:string)=>void
-}
-
-export default function SetFen(props:Props) {
+export default function SetFen() {
 
   const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
   const inputRef=useRef<null|HTMLInputElement>(null)
   const [text, setText]=useState('')
   const [underlineColor, setUnderlineColor]=useState<'white'|'red'>('white')
+
+  const setStartingFen=useChessStore(state=>state.setStartingFen)
  
   /**
    * called when form receives input
@@ -47,7 +46,7 @@ export default function SetFen(props:Props) {
     if (fen==''){
       fen=INITIAL_FEN
     }
-    props.setStartingFen(fen)
+    setStartingFen(fen)
   }
 
   useEffect(()=>{
