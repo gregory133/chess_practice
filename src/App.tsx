@@ -26,10 +26,11 @@ function App() {
   const [currentFen, setCurrentFen]=useState<string>(INITIAL_FEN)
   const currentFenRef=useRef<string>(currentFen)
   const [colorPlayerCanControl, setColorPlayerCanControl]=
-  useState<'white'|'black'|null>('white')
+  useState<'white'|'black'|null>('white') 
+  const DEFAULT_TRAINING_MODE_STRATEGY:TrainingModeStrategy=new HumanVSDB(makeEngineMove,
+  'lichess', setOpeningName, setWinrate, setNumGamesInDB, setNumMovesInDB)
   const [currentTrainingModeStrategy, setCurrentTrainingModeStrategy]=
-  useState<TrainingModeStrategy>(new HumanVSDB(makeEngineMove, 'lichess',
-  setOpeningName, setWinrate, setNumGamesInDB, setNumMovesInDB))
+  useState<TrainingModeStrategy>(DEFAULT_TRAINING_MODE_STRATEGY)
   const boardParentRef=useRef(null)
 
   
@@ -83,6 +84,8 @@ function App() {
     setNumMovesInDB(null)
     setWinrate(null)
     setOpeningName('')
+    setCurrentTrainingModeStrategy(new HumanVSDB(makeEngineMove, 'lichess', 
+    setOpeningName, setWinrate, setNumGamesInDB, setNumMovesInDB, startingFen))
     onStart()
   }
   

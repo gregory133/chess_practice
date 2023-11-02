@@ -6,41 +6,49 @@ import { Database, fetchDB, getSanListFromDB } from "../../api/DBApi";
 
 export default class HumanVSDB implements TrainingModeStrategy{
 
-  private STARTING_FEN= 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+  private INITIAL_FEN= 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
   private makeEngineMove:(san:string)=>void
-  private setOpeningName: (name:string)=>void
+  
   private database: Database
+  private startingFen:string=this.INITIAL_FEN
 
+  public setOpeningName: (name:string)=>void
   public setWinrate: (winrate:Winrate|null)=>void
   public setNumGamesInDB: (num:number|null)=>void
   public setNumMovesInDB: (num:number|null)=>void
 
   public initialValues: InitialValues
 
-  public constructor(makeEngineMove:(san:string)=>void, database:Database,
+  public constructor(makeEngineMove:(san:string)=>void, database:Database, 
   setOpeningName:(newName:string)=>void, setWinrate: (winrate:Winrate|null)=>void,
   setNumGamesInDB: (num:number|null)=>void, 
-  setNumMovesInDB: (num:number|null)=>void){
+  setNumMovesInDB: (num:number|null)=>void, startingFen?:string,){
+
     this.makeEngineMove=makeEngineMove
+    if (startingFen){
+      this.startingFen=startingFen
+    }  
     this.initialValues= this.initializeInitialValues()
     this.setWinrate=setWinrate
     this.setOpeningName=setOpeningName
     this.setNumMovesInDB=setNumMovesInDB
     this.setNumGamesInDB=setNumGamesInDB
     this.database=database
+
+    this.afterEngineMove(this.startingFen)
   }
  
   /**
    * contains the business logic to initialize the instance variable initialValues
    */
   private initializeInitialValues(){
-    const fen:string=this.STARTING_FEN
+    const fen:string=this.startingFen
     const canPlayerMove=(Math.random()<0.5)
     const colorPlayerCanControl:'white'|'black'=canPlayerMove ? 'white' : 'black'
     const orientation=colorPlayerCanControl
     const onInit=()=>{
       if (!canPlayerMove){
-        this.afterPlayerMove(this.STARTING_FEN)
+        this.afterPlayerMove(this.startingFen)
       }
     }
     return {fen:fen, canPlayerMove: canPlayerMove, 
@@ -72,7 +80,7 @@ export default class HumanVSDB implements TrainingModeStrategy{
    * @param newFen 
    * @param previousMove 
    */
-  public afterEngineMove(newFen: string, previousMove: Move): void {
+  public afterEngineMove(newFen: string, previousMove?: Move): void {
     
     fetchDB(newFen, this.database)
     .then(json=>{
