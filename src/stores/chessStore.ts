@@ -130,7 +130,6 @@ function initialize(set:any):ChessStoreState{
         playerColor=state.selectedColor
       }
 
-      // console.log('to be fen', currentFen);
       return {
         currentFen: newFen,
         numGamesInDB: null,
