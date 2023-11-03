@@ -3,7 +3,7 @@ import styles from '../styles/OptionButton.module.css'
 
 interface Props{
   button: Button,
-  border: string,
+  isHighlighted: boolean
 }
 
 export interface Button{
@@ -14,9 +14,13 @@ export interface Button{
 
 export default function OptionButton(props:Props) {
 
+  const border=props.isHighlighted
+  ? ('2px solid green') 
+  : ('2px solid transparent')
+
   return (
     <div title={props.button.hoverText} className={styles.button} 
-    style={{border: props.border}} onClick={props.button.onClick}>
+    style={{border: border}} onClick={props.button.onClick}>
       <div className={styles.buttonImage} style={{
         backgroundImage: props.button.bgImage
       }}/>

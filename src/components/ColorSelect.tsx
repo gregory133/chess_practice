@@ -50,12 +50,11 @@ export default function ColorSelect() {
 
         {
           buttons.map((button:Button, key:number)=>{
-            const border=selectedIndex==key 
-              ? ('2px solid green') 
-              : ('2px solid transparent')
+           
 
             return (
-              <OptionButton button={button} key={key} border={border}/>
+              <OptionButton button={button} key={key} 
+              isHighlighted={selectedIndex==key }/>
             )
           })
         }

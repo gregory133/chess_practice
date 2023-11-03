@@ -7,6 +7,7 @@ import SetFen from './SetFen'
 import RefreshButton from './RefreshButton'
 import { useChessStore } from '../stores/chessStore'
 import ColorSelect from './ColorSelect'
+import DatabaseSelect from './DatabaseSelect'
 
 
 export default function Sidebar() {
@@ -32,6 +33,7 @@ export default function Sidebar() {
       }
       <SetFen/>
       <ColorSelect/>
+      <DatabaseSelect/>
     </div>
   )
 }
