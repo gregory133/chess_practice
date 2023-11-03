@@ -56,7 +56,7 @@ function varyFen(fen:string):string{
   }
 
   const patchedFen=fenParts.join(' ')+' '+fullMoveNumber
-  console.log(patchedFen);
+  // console.log(patchedFen);
   return patchedFen
 
 }
@@ -112,9 +112,14 @@ function initialize(set:any):ChessStoreState{
     }),
     reset: ()=>set((state:ChessStoreState)=>{
    
-      let currentFen=state.startingFen
-      if (INITIAL_FEN==state.currentFen){
-        currentFen=varyFen(currentFen)
+      const oldFen=state.currentFen
+      const startingFen=state.startingFen
+      let newFen:string
+      if (oldFen==startingFen){
+        newFen=varyFen(startingFen)
+      }
+      else{
+        newFen=startingFen
       }
 
       let playerColor
@@ -124,8 +129,10 @@ function initialize(set:any):ChessStoreState{
       else{
         playerColor=state.selectedColor
       }
+
+      // console.log('to be fen', currentFen);
       return {
-        currentFen: currentFen,
+        currentFen: newFen,
         numGamesInDB: null,
         numMovesInDB: null,
         winrate: null,

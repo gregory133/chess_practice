@@ -55,6 +55,7 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
+		console.log('actual fen', fen);
 		fetchDB(fen, database)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
