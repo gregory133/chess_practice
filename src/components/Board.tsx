@@ -10,7 +10,7 @@ import "../styles/chessground.cburnett.css";
 import ResponsiveSquare from './ResponsiveSquare';
 import { useChessStore } from '../stores/chessStore';
 import Engine from '../classes/Engine';
-import { fetchDB } from '../api/DBApi';
+import { Database, fetchDB } from '../api/DBApi';
 import LichessDatabaseJSONParser from '../api/LichessDatabaseJSONParser';
 
 interface Props{
@@ -37,7 +37,7 @@ export default function Board(props:Props) {
 	const [promotionFile, setPromotionFile]=useState<number>(0)
 
 	
-
+	const database:Database='masters'
 	const chess=new Chess(fen)
 
 	const DISABLED_BOARD_OPACITY=0.5
@@ -55,7 +55,7 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
-		fetchDB(fen, 'lichess')
+		fetchDB(fen, database)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
 			makeEnginMoveIfNeeded(json)

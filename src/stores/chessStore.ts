@@ -37,6 +37,29 @@ function getRandomColor(){
 }
 
 /**
+ * changes the fullmove number of the given fen every so slightly so as
+ * to return a different fen bearing the same position
+ */
+function varyFen(fen:string):string{
+      
+  const fenParts:string[]=fen.split(' ')
+  let fullMoveNumber=parseInt(fenParts[5])
+  fenParts.pop()
+
+  if (fullMoveNumber>1){
+    fullMoveNumber--;
+  }
+  else{
+    fullMoveNumber++;
+  }
+
+  const patchedFen=fenParts.join(' ')+' '+fullMoveNumber
+  console.log(patchedFen);
+  return patchedFen
+
+}
+
+/**
  * initializes the state
  * @param set 
  * @returns 
@@ -80,10 +103,16 @@ function initialize(set:any):ChessStoreState{
       return {colorPlayerCanControl: newVal}
     }),
     reset: ()=>set((state:ChessStoreState)=>{
+   
+      let currentFen=INITIAL_FEN
+      if (INITIAL_FEN==state.currentFen){
+        currentFen=varyFen(currentFen)
+      }
+
       const randomColor=getRandomColor()
       return {
         startingFen: INITIAL_FEN,
-        currentFen: INITIAL_FEN,
+        currentFen: currentFen,
         numGamesInDB: null,
         numMovesInDB: null,
         winrate: null,
