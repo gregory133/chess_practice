@@ -12,6 +12,7 @@ export interface ChessStoreState{
   openingName: string
   orientation: 'black'|'white'
   colorPlayerCanControl: 'black'|'white'|null
+  selectedColor: 'white'|'any'|'black'
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
@@ -21,6 +22,7 @@ export interface ChessStoreState{
   setOpeningName: (newVal: string)=>void
   setOrientation: (newVal: 'black'|'white')=>void
   setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>void
+  setSelectedColor: (newVal:'white'|'any'|'black')=>void
 
   reset:()=>void
 }
@@ -77,6 +79,7 @@ function initialize(set:any):ChessStoreState{
     openingName: '',
     colorPlayerCanControl: randomColor,
     orientation: randomColor,
+    selectedColor: 'any',
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {startingFen: newFen}
@@ -99,8 +102,13 @@ function initialize(set:any):ChessStoreState{
     setOrientation: (newVal: 'black'|'white')=>set((state:ChessStoreState)=>{
       return {orientation: newVal}
     }),
-    setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>set((state:ChessStoreState)=>{
+    setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>
+    set((state:ChessStoreState)=>{
       return {colorPlayerCanControl: newVal}
+    }),
+    setSelectedColor: (newVal:'white'|'any'|'black')=>
+    set((state:ChessStoreState)=>{
+      return {selectedColor: newVal}
     }),
     reset: ()=>set((state:ChessStoreState)=>{
    
@@ -109,15 +117,21 @@ function initialize(set:any):ChessStoreState{
         currentFen=varyFen(currentFen)
       }
 
-      const randomColor=getRandomColor()
+      let playerColor
+      if (state.selectedColor=='any'){
+        playerColor=getRandomColor()
+      }
+      else{
+        playerColor=state.selectedColor
+      }
       return {
         currentFen: currentFen,
         numGamesInDB: null,
         numMovesInDB: null,
         winrate: null,
         openingName: '',
-        colorPlayerCanControl: randomColor,
-        orientation: randomColor
+        colorPlayerCanControl: playerColor,
+        orientation: playerColor
       }
     })
   }

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../styles/ColorSelect.module.css'
+import { useChessStore } from '../stores/chessStore'
+import { Dictionary } from 'typescript-collections'
 
 interface Button{
   bgImage: string,
@@ -14,7 +16,10 @@ enum Color{
 export default function ColorSelect() {
 
   const [selectedIndex, setSelectedIndex]=useState<Color>(Color.ANY)
-  
+  const setSelectedColor=useChessStore(state=>state.setSelectedColor)
+  const colorDict=new Dictionary<Color, 'white'|'any'|'black'>()
+
+  initializeColorDict()
 
   const buttons: Button[]=[
     {bgImage: `url(${process.env.PUBLIC_URL}/images/white.png)`, onClick:()=>{
@@ -31,8 +36,15 @@ export default function ColorSelect() {
     hoverText: 'Play as Black'},
   ]
 
+  function initializeColorDict(){
+    colorDict.setValue(Color.WHITE, 'white')
+    colorDict.setValue(Color.ANY, 'any')
+    colorDict.setValue(Color.BLACK, 'black')
+  }
+
   function onClickChooseColorButton(color:Color){
     setSelectedIndex(color)
+    setSelectedColor(colorDict.getValue(color)!)
   }
 
   return (
