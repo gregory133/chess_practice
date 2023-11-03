@@ -104,14 +104,13 @@ function initialize(set:any):ChessStoreState{
     }),
     reset: ()=>set((state:ChessStoreState)=>{
    
-      let currentFen=INITIAL_FEN
+      let currentFen=state.startingFen
       if (INITIAL_FEN==state.currentFen){
         currentFen=varyFen(currentFen)
       }
 
       const randomColor=getRandomColor()
       return {
-        startingFen: INITIAL_FEN,
         currentFen: currentFen,
         numGamesInDB: null,
         numMovesInDB: null,
