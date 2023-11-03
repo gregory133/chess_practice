@@ -6,6 +6,7 @@ import MoveStats from './MoveStats'
 import SetFen from './SetFen'
 import RefreshButton from './RefreshButton'
 import { useChessStore } from '../stores/chessStore'
+import ColorSelect from './ColorSelect'
 
 
 export default function Sidebar() {
@@ -30,6 +31,7 @@ export default function Sidebar() {
           : null
       }
       <SetFen/>
+      <ColorSelect/>
     </div>
   )
 }

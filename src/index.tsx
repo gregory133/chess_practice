@@ -7,6 +7,7 @@ import './styles/Index.css'
 import Sidebar from './components/Sidebar';
 import SetFen from './components/SetFen';
 import RefreshButton from './components/RefreshButton';
+import ColorSelect from './components/ColorSelect';
 
 
 const root = ReactDOM.createRoot(
@@ -14,6 +15,6 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  // <RefreshButton/>
+  // <ColorSelect/>
   <App/>  
 );
