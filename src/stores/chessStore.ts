@@ -21,6 +21,8 @@ export interface ChessStoreState{
   setOpeningName: (newVal: string)=>void
   setOrientation: (newVal: 'black'|'white')=>void
   setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>void
+
+  reset:()=>void
 }
 
 /**
@@ -76,6 +78,19 @@ function initialize(set:any):ChessStoreState{
     }),
     setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>set((state:ChessStoreState)=>{
       return {colorPlayerCanControl: newVal}
+    }),
+    reset: ()=>set((state:ChessStoreState)=>{
+      const randomColor=getRandomColor()
+      return {
+        startingFen: INITIAL_FEN,
+        currentFen: INITIAL_FEN,
+        numGamesInDB: null,
+        numMovesInDB: null,
+        winrate: null,
+        openingName: '',
+        colorPlayerCanControl: randomColor,
+        orientation: randomColor
+      }
     })
   }
 }

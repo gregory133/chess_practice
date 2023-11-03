@@ -300,7 +300,7 @@ export default function Board(props:Props) {
 			orientation: orientation,
 			coordinates:false,
 			turnColor: turnColor,
-			// lastMove: props.lastMove,
+			lastMove: [],
 			movable: {
 				free: false,
 				dests: getDests(chess, colorPlayerCanControl),
@@ -310,8 +310,6 @@ export default function Board(props:Props) {
 			}
 		}
 	}
-
-	
 
 	useEffect(()=>{
 		if (isPromotionVisible){
