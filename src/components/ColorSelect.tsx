@@ -2,12 +2,7 @@ import React, { useState } from 'react'
 import styles from '../styles/ColorSelect.module.css'
 import { useChessStore } from '../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
-
-interface Button{
-  bgImage: string,
-  onClick:()=>void,
-  hoverText: string
-}
+import OptionButton, { Button } from './OptionButton'
 
 enum Color{
   WHITE, ANY, BLACK
@@ -49,6 +44,8 @@ export default function ColorSelect() {
 
   return (
     <div className={styles.parent}>
+      <p className={styles.title}>Play as:</p>
+      
       <div className={styles.container}>
 
         {
@@ -58,13 +55,8 @@ export default function ColorSelect() {
               : ('2px solid transparent')
 
             return (
-              <div title={button.hoverText} key={key} className={styles.button} 
-              style={{border: border}} onClick={button.onClick}>
-                <div className={styles.buttonImage} style={{
-                  backgroundImage: button.bgImage
-                }}/>
-              </div>
-            ) 
+              <OptionButton button={button} key={key} border={border}/>
+            )
           })
         }
 

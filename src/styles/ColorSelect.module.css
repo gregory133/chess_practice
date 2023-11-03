@@ -1,10 +1,17 @@
 .parent{
+  font-size: 1.5cqw;
   width: 100%;
   height: 50px;
   display: flex;
   justify-content: center;
   padding: 10px;
+  /* align-items: cen; */
   box-sizing: border-box;
+}
+
+.title{
+  display: flex;
+  align-items: center;
 }
 
 .container{
@@ -17,20 +24,3 @@
   flex: 1;
 }
 
-.button{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3px;
-  height: 100%;
-  border-radius: 3px;
-}
-
-.buttonImage{
-  border-radius: 2px;
-  height: 100%;
-  width: 30px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
