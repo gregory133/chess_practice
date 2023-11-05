@@ -37,7 +37,7 @@ export default function Board(props:Props) {
 	const [promotionFile, setPromotionFile]=useState<number>(0)
 
 	
-	const database:Database='masters'
+	const database:Database=useChessStore(state=>state.selectedDatabase)
 	const chess=new Chess(fen)
 
 	const DISABLED_BOARD_OPACITY=0.5
