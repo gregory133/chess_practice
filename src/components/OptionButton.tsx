@@ -7,6 +7,7 @@ interface Props{
 }
 
 export interface Button{
+  id: string,
   bgImage: string,
   onClick:()=>void,
   hoverText: string

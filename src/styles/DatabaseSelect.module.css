@@ -1,3 +1,22 @@
 .parent{
+  font-size: 1.5cqw;
+  width: 100%;
+  height: var(--sidebar-section-height);
   display: flex;
+  justify-content: center;
+  padding: 10px;
+  /* align-items: cen; */
+  box-sizing: border-box;
+}
+
+.container{
+  display: flex;
+  width: fit-content;
+  align-items: center;
+}
+
+.title{
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 }

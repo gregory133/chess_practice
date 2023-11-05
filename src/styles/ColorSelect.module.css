@@ -1,7 +1,9 @@
+@import './Variables.css';
+
 .parent{
   font-size: 1.5cqw;
   width: 100%;
-  height: 50px;
+  height: var(--sidebar-section-height);
   display: flex;
   justify-content: center;
   padding: 10px;
@@ -12,6 +14,7 @@
 .title{
   display: flex;
   align-items: center;
+  margin-right: 5px;
 }
 
 .container{

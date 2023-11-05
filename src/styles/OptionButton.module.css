@@ -10,7 +10,7 @@
 .buttonImage{
   border-radius: 2px;
   height: 100%;
-  width: 30px;
+  width: var(--button-length);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

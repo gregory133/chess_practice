@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import Winrate from '../classes/Winrate';
+import { Database } from '../api/DBApi';
 
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -13,6 +14,7 @@ export interface ChessStoreState{
   orientation: 'black'|'white'
   colorPlayerCanControl: 'black'|'white'|null
   selectedColor: 'white'|'any'|'black'
+  selectedDatabase: Database
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
@@ -23,6 +25,7 @@ export interface ChessStoreState{
   setOrientation: (newVal: 'black'|'white')=>void
   setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>void
   setSelectedColor: (newVal:'white'|'any'|'black')=>void
+  setSelectedDatabase: (newVal:Database)=>void
 
   reset:()=>void
 }
@@ -80,6 +83,7 @@ function initialize(set:any):ChessStoreState{
     colorPlayerCanControl: randomColor,
     orientation: randomColor,
     selectedColor: 'any',
+    selectedDatabase: 'masters',
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {startingFen: newFen}
@@ -109,6 +113,10 @@ function initialize(set:any):ChessStoreState{
     setSelectedColor: (newVal:'white'|'any'|'black')=>
     set((state:ChessStoreState)=>{
       return {selectedColor: newVal}
+    }),
+    setSelectedDatabase: (newVal: Database)=>
+    set((state: ChessStoreState)=>{
+      return {selectedDatabase: newVal}
     }),
     reset: ()=>set((state:ChessStoreState)=>{
    
