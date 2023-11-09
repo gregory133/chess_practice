@@ -29,7 +29,7 @@ export default function DatabaseSelect() {
   }
 
   useEffect(()=>{
-    console.log(selectedDatabase);
+    // console.log(selectedDatabase);
   }, [selectedDatabase])
 
   return (
