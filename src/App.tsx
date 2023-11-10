@@ -15,14 +15,48 @@ import { useChessStore } from './stores/chessStore';
 import Stockfish, { Eval } from './classes/Stockfish';
 
 import LinkedList from 'dbly-linked-list'
-import MoveList from './classes/MoveList';
+import MoveList from './classes/PositionList';
 
 function App() {
-
-  const moveList=useChessStore(state=>state.moveList)  
-  const addMove=useChessStore(state=>state.addMoveToMoveList)
-  const navigateBack=useChessStore(state=>state.navigateMoveListBackward)
+  const positionList=useChessStore(state=>state.positionList)  
+  const addPosition=useChessStore(state=>state.addPositionToPositionList)
+  const navigateBackward=useChessStore(state=>state.navigatePositionListBackward)
+  const navigateForward=useChessStore(state=>state.navigatePositionListForward)
   const boardParentRef=useRef(null)
+
+  useEffect(()=>{
+    hookupArrowKeyEvents()
+  }, [])
+
+  /**
+   * hooks the arrow key press events. must be called once inside useEffect
+   */
+  function hookupArrowKeyEvents(){
+    document.addEventListener('keydown', function(event){
+      if (event.key=='ArrowLeft'){
+        onLeftArrowKeyPressed()
+      }
+      else if (event.key=='ArrowRight'){
+        onRightArrowKeyPressed()
+      }
+    })
+  }
+
+  /**
+   * called when the left arrow key is pressed
+   */
+  function onLeftArrowKeyPressed(){
+    navigateBackward()
+  }
+
+   /**
+   * called when the right arrow key is pressed
+   */
+  function onRightArrowKeyPressed(){
+    navigateForward()
+  }
+
+  
 
   return (
     <div className={styles.container}>

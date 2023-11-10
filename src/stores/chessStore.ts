@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import Winrate from '../classes/Winrate';
 import { Database } from '../api/DBApi';
-import MoveList from '../classes/MoveList';
+import PositionList from '../classes/PositionList';
 
 
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -17,7 +17,7 @@ export interface ChessStoreState{
   colorPlayerCanControl: 'black'|'white'|null
   selectedColor: 'white'|'any'|'black'
   selectedDatabase: Database
-  moveList: MoveList
+  positionList: PositionList
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
@@ -30,10 +30,10 @@ export interface ChessStoreState{
   setSelectedColor: (newVal:'white'|'any'|'black')=>void
   setSelectedDatabase: (newVal:Database)=>void
 
-  addMoveToMoveList: (moveUCI:string)=>void
-  clearMoveList: ()=>void
-  navigateMoveListForward: ()=>void
-  navigateMoveListBackward: ()=>void
+  addPositionToPositionList: (moveUCI:string)=>void
+  clearPositionList: ()=>void
+  navigatePositionListForward: ()=>void
+  navigatePositionListBackward: ()=>void
 
   reset:()=>void
 }
@@ -92,7 +92,7 @@ function initialize(set:any):ChessStoreState{
     orientation: randomColor,
     selectedColor: 'any',
     selectedDatabase: 'masters',
-    moveList: new MoveList(),
+    positionList: new PositionList(),
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {startingFen: newFen}
@@ -127,26 +127,26 @@ function initialize(set:any):ChessStoreState{
     set((state: ChessStoreState)=>{
       return {selectedDatabase: newVal}
     }),
-    addMoveToMoveList: (moveUCI:string)=>
+    addPositionToPositionList: (position:string)=>
     set((state:ChessStoreState)=>{
-      let clone=state.moveList.clone()
-      clone.addMove(moveUCI)
-      return {moveList: clone}
+      let clone=state.positionList.clone()
+      clone.addPosition(position)
+      return {positionList: clone}
     }),
-    clearMoveList: ()=>set((state:ChessStoreState)=>{
-      let clone=state.moveList.clone()
+    clearPositionList: ()=>set((state:ChessStoreState)=>{
+      let clone=state.positionList.clone()
       clone.clear()
-      return {moveList: clone}
+      return {positionList: clone}
     }),
-    navigateMoveListForward: ()=>set((state:ChessStoreState)=>{
-      let clone=state.moveList.clone()
+    navigatePositionListForward: ()=>set((state:ChessStoreState)=>{
+      let clone=state.positionList.clone()
       clone.navigateForward()
-      return {moveList: clone}
+      return {positionList: clone}
     }),
-    navigateMoveListBackward: ()=>set((state:ChessStoreState)=>{
-      let clone=state.moveList.clone()
+    navigatePositionListBackward: ()=>set((state:ChessStoreState)=>{
+      let clone=state.positionList.clone()
       clone.navigateBackward()
-      return {moveList: clone}
+      return {positionList: clone}
     }),
     reset: ()=>set((state:ChessStoreState)=>{
    

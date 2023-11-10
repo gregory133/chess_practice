@@ -36,7 +36,9 @@ export default function Board(props:Props) {
 	const [boardOpacity, setBoardOpacity]=useState<number>(1)
 	const [promotionFile, setPromotionFile]=useState<number>(0)
 
-	
+	const addPositionToPositionList=useChessStore(state=>state.
+		addPositionToPositionList)
+	const positionList=useChessStore(state=>state.positionList)
 	const database:Database=useChessStore(state=>state.selectedDatabase)
 	const chess=new Chess(fen)
 
@@ -55,6 +57,7 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
+		updatePositionList(fen)
 		fetchDB(fen, database)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
@@ -63,6 +66,13 @@ export default function Board(props:Props) {
 		})	
 	}, [fen])
 
+	function updatePositionList(fen:string){
+		addPositionToPositionList(fen)
+	}
+
+	useEffect(()=>{
+    console.log(positionList.toString());
+  }, [positionList])
 
 	/**
 	 * updates the state variables associated with the sidebar
