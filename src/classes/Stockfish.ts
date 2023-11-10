@@ -35,7 +35,7 @@ export default class Stockfish{
   
   /**
    * given a FEN string, returns an object representing a stockfish evaluation
-   * @param thinkingTime time take by the engine to think
+   * @param thinkingTime time taken by the engine to think in milliseconds
    * @param fen 
    */
   public getEval(fen:string, thinkingTime:number=500):Promise<Eval>{
@@ -45,28 +45,45 @@ export default class Stockfish{
       this.stockfish.postMessage(`position fen ${fen}`)
   		this.stockfish.postMessage("go depth 14");
 
+      let mostAccurateEval={value: 0, type: ''} as Eval
+      const startTime=Date.now()
+
       function onLocalMessage(event:MessageEvent<any>){
-        parseMessage(event, res)
+        const receivedEval:Eval|undefined=parseMessage(event, mostAccurateEval, res)
+        if (receivedEval){
+          mostAccurateEval=receivedEval
+          if (timeExceeded(startTime, thinkingTime)){
+            res(mostAccurateEval)
+          }
+        }
       }
+      
     }) 
     
+    function timeExceeded(startTime:number, thinkingTime:number):boolean{
+      return Date.now()>(startTime+thinkingTime)
+    }
+
     /**
-     * parses a stockfish message to get the evaluation and resolves the promise if needed 
-     * @param event 
+     * parses a stockfish message to get the evaluation and resolves the promise 
+     * if needed 
+     * @param event
+     * @param previousEval 
      * @param res 
+     * @returns an updated evaluation or undefined if no updates
      */
-    function parseMessage(event:MessageEvent<any>, 
-      res:(value: Eval | PromiseLike<Eval>) => void){
+    function parseMessage(event:MessageEvent<any>, previousEval:Eval,
+      res:(value: Eval | PromiseLike<Eval>) => void):Eval|undefined{
     
         const data:string[]=event.data.split(' ')
         if (data[0]=='bestmove'){
-   
+          res(previousEval)
         }
         else if (data[0]=='info'){
           const type=data[8]
           const value=parseInt(data[9])
           const evaluation={type:type, value:value} as Eval
-          console.log(evaluation); 
+          return evaluation
         }
     }
   }

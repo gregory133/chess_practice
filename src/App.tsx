@@ -20,7 +20,7 @@ function App() {
 
   function start(){
     const sf=Stockfish.getInstance()
-    sf.getEval("8/8/8/8/2k1q3/8/8/3K4 w - - 0 1")
+    sf.getEval("8/8/8/8/2k1q3/8/8/3K4 w - - 0 1", 5000)
     .then((e:Eval)=>{
       console.log(e);
     })
