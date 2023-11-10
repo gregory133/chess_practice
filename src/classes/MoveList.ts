@@ -52,5 +52,13 @@ export default class MoveList{
     return movesRawArray.join(',')
   }
 
+  public clone():MoveList{
+    let clone=new MoveList()
+    this.moveList.forEach((move:any)=>{
+      clone.addMove(move.data)
+    })
+    return clone
+  }
+
 
 }

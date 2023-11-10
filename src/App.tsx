@@ -19,18 +19,11 @@ import MoveList from './classes/MoveList';
 
 function App() {
 
-  useEffect(()=>{
-    let ml=new MoveList()
-    ml.addMove('e4')
-    ml.addMove('e5')
-    ml.addMove('Nf3')
-
-    console.log(ml.toString());
-
-  }, [])
-
+  const moveList=useChessStore(state=>state.moveList)  
+  const addMove=useChessStore(state=>state.addMoveToMoveList)
+  const navigateBack=useChessStore(state=>state.navigateMoveListBackward)
   const boardParentRef=useRef(null)
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.boardParent} ref={boardParentRef}>
