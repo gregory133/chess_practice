@@ -2,6 +2,7 @@ import {create} from 'zustand';
 import Winrate from '../classes/Winrate';
 import { Database } from '../api/DBApi';
 
+
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 export interface ChessStoreState{
@@ -26,7 +27,6 @@ export interface ChessStoreState{
   setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>void
   setSelectedColor: (newVal:'white'|'any'|'black')=>void
   setSelectedDatabase: (newVal:Database)=>void
-
   reset:()=>void
 }
 

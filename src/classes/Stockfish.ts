@@ -17,9 +17,6 @@ export default class Stockfish{
   private constructor(){
     this.stockfish.postMessage('uci')
     this.stockfish.postMessage('stop')
-		// this.stockfish.postMessage(`position fen ${fen}`)
-		// this.stockfish.postMessage("go depth 14");
-
   }
 
   /**
