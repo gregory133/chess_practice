@@ -46,7 +46,8 @@ export default class Stockfish{
       const startTime=Date.now()
 
       function onLocalMessage(event:MessageEvent<any>){
-        const receivedEval:Eval|undefined=parseMessage(event, mostAccurateEval, res)
+        const receivedEval:Eval|undefined=parseMessage(event, mostAccurateEval,
+          fen.split(' ')[1] as 'w'|'b', res)
         if (receivedEval){
           mostAccurateEval=receivedEval
           if (timeExceeded(startTime, thinkingTime)){
@@ -70,18 +71,20 @@ export default class Stockfish{
      * @returns an updated evaluation or undefined if no updates
      */
     function parseMessage(event:MessageEvent<any>, previousEval:Eval,
-      res:(value: Eval | PromiseLike<Eval>) => void):Eval|undefined{
+    turnToMove: 'w'|'b', res:(value: Eval | PromiseLike<Eval>) => void):
+    Eval|undefined{
     
-        const data:string[]=event.data.split(' ')
-        if (data[0]=='bestmove'){
-          res(previousEval)
-        }
-        else if (data[0]=='info'){
-          const type=data[8]
-          const value=parseInt(data[9])
-          const evaluation={type:type, value:value} as Eval
-          return evaluation
-        }
+      const data:string[]=event.data.split(' ')
+      if (data[0]=='bestmove'){
+        res(previousEval)
+      }
+      else if (data[0]=='info'){
+        const type=data[8]
+        let value=parseInt(data[9]);
+        (turnToMove=='b') ? value*=-1 : value*=1
+        const evaluation={type:type, value:value} as Eval
+        return evaluation
+      }
     }
   }
 

@@ -21,6 +21,18 @@ export default class PositionList{
   }
 
   /**
+   * return the current position
+   */
+  public getCurrentPosition():string|null{
+    const node=this.positionList.findAt(this.currentIndex)
+    if (node){
+      return node.data as string
+    }
+    
+    return null
+  }
+
+  /**
    * navigates the current index forward, if there is a next element
    */
   public navigateForward(){

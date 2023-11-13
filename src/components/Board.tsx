@@ -51,13 +51,14 @@ export default function Board(props:Props) {
 	'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	useEffect(()=>{
+		addPositionToPositionList(fen)
 		window.addEventListener('resize', ()=>{
 			adjustBoardLength()
 		})
 	}, [])
 
 	useEffect(()=>{
-		updatePositionList(fen)
+		
 		fetchDB(fen, database)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
@@ -66,12 +67,11 @@ export default function Board(props:Props) {
 		})	
 	}, [fen])
 
-	function updatePositionList(fen:string){
-		addPositionToPositionList(fen)
-	}
-
 	useEffect(()=>{
-    console.log(positionList.toString());
+		const currentPosition=positionList.getCurrentPosition()
+		if (currentPosition){
+			setFen(currentPosition)
+		}
   }, [positionList])
 
 	/**
@@ -124,6 +124,7 @@ export default function Board(props:Props) {
 			const move:string=engineRef.current.getRandomResponseFromDB(json)
 			if (move){
 				updateChessObject(move)
+				addPositionToPositionList(chess.fen())
 			}
 	
 		}		
@@ -209,15 +210,14 @@ export default function Board(props:Props) {
 	/**
 	 * default function that runs after a move is made by the player
 	 */
-	function afterHumanPlayerMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
+	function afterHumanPlayerMove(orig: cg.Key, dest: cg.Key, metadata: 
+		cg.MoveMetadata){
 		if (isMovePromotion(fen, orig, dest)){
 			setPromotionFile(getFile(orig))
 			setIsPromotionVisible(true)
 		}
 		else{
-			updateChessObject(orig+dest)
-			const newFen=chess.fen()
-			setFen(newFen)
+			applyHumanMove(orig+dest)
 		}
 	}
 
@@ -234,9 +234,20 @@ export default function Board(props:Props) {
 		setIsPromotionVisible(false)
 		const move:string|null=getPromotionMove(chess, promotionFile, symbol)
 		if (move){
-			updateChessObject(move)
+			applyHumanMove(move)
 		}
 		
+	}
+
+	/**
+	 * called after every human move
+	 * @param move 
+	 */
+	function applyHumanMove(move:string){
+		updateChessObject(move)
+		const newFen=chess.fen()
+		addPositionToPositionList(newFen)
+		setFen(newFen)
 	}
 
 	/**
