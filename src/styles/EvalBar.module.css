@@ -1,0 +1,24 @@
+.bar{
+ 
+  width: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar{
+  background-color: #A0A0A0;
+}
+
+.bottomBar{
+  background-color: #666666;
+}
+
+.middleBar{
+  position: absolute;
+  background-color: #B37E5F;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+
+}

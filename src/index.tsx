@@ -8,6 +8,8 @@ import Sidebar from './components/Sidebar';
 import SetFen from './components/SetFen';
 import RefreshButton from './components/RefreshButton';
 import ColorSelect from './components/ColorSelect';
+import EvalBar from './components/EvalBar';
+import { Eval } from './classes/Stockfish';
 
 
 const root = ReactDOM.createRoot(
@@ -15,6 +17,6 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  // <ColorSelect/>
-  <App/>  
+  <EvalBar evaluation={{type: 'mate', value: 0} as Eval} isWhiteAtBottom={false}/>
+  // <App/>  
 );
