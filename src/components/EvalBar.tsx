@@ -54,7 +54,7 @@ export default function EvalBar() {
   }
 
   useEffect(()=>{
-    console.log(currentFen);
+    // console.log(currentFen);
     Stockfish.getInstance().getEval(currentFen)
     .then(newEvaluation=>{
       setEvaluation(newEvaluation)
@@ -76,14 +76,14 @@ export default function EvalBar() {
       
       </div>
       {
-        keyEvalBarMarks.map((markValue:number)=>{
+        keyEvalBarMarks.map((markValue:number, index:number)=>{
           const top:string=getTopFromEvalBarMarkValue(markValue)
           return markValue==0 
           ? (
-            <div className={styles.middleBar} style={{height: 3, top: top}}/>
+            <div key={index} className={styles.middleBar} style={{height: 3, top: top}}/>
           )
           : (
-            <div className={styles.middleBar} style={{top: top}}/>
+            <div key={index} className={styles.middleBar} style={{top: top}}/>
           )
         })
       }

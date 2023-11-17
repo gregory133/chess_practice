@@ -10,6 +10,7 @@ export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0
 export interface ChessStoreState{
   startingFen:string
   currentFen: string
+  lastFen: string
   numGamesInDB: number|null
   numMovesInDB: number|null
   winrate: Winrate|null
@@ -23,6 +24,7 @@ export interface ChessStoreState{
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
+  setLastFen: (newFen:string)=>void
   setNumGamesInDB: (num:number|null)=>void
   setNumMovesInDB: (num:number|null)=>void
   setWinrate: (newVal: Winrate|null)=>void
@@ -87,6 +89,7 @@ function initialize(set:any):ChessStoreState{
   return {
     startingFen: INITIAL_FEN,
     currentFen: INITIAL_FEN,
+    lastFen: INITIAL_FEN,
     numGamesInDB: null,
     numMovesInDB: null,
     winrate: null,
@@ -103,6 +106,9 @@ function initialize(set:any):ChessStoreState{
     }),
     setCurrentFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {currentFen :newFen}
+    }),
+    setLastFen: (newFen:string)=>set((state:ChessStoreState)=>{
+      return {lastFen: newFen}
     }),
     setNumGamesInDB: (num:number|null)=>set((state:ChessStoreState)=>{
       return {numGamesInDB:num}
@@ -176,7 +182,9 @@ function initialize(set:any):ChessStoreState{
       }
 
       return {
+        positionList: new PositionList(),
         currentFen: newFen,
+        lastFen: newFen,
         numGamesInDB: null,
         numMovesInDB: null,
         winrate: null,

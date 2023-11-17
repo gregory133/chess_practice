@@ -20,7 +20,9 @@ interface Props{
 export default function Board(props:Props) {
 
 	const fen=useChessStore(state=>state.currentFen)
+	const lastFen=useChessStore(state=>state.lastFen)
 	const setFen=useChessStore(state=>state.setCurrentFen)
+	const setLastFen=useChessStore(state=>state.setLastFen)
 	const orientation=useChessStore(state=>state.orientation)
 	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
 	const setWinrate=useChessStore(state=>state.setWinrate)
@@ -58,14 +60,13 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
-		
 		fetchDB(fen, database)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
 			makeEnginMoveIfNeeded(json)
 			updateSidebar()
 		})	
-	}, [fen])
+	}, [lastFen])
 
 	useEffect(()=>{
 		const currentPosition=positionList.getCurrentPosition()
@@ -247,6 +248,7 @@ export default function Board(props:Props) {
 		updateChessObject(move)
 		const newFen=chess.fen()
 		addPositionToPositionList(newFen)
+		setLastFen(newFen)
 		setFen(newFen)
 	}
 
