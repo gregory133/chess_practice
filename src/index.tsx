@@ -17,6 +17,6 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <EvalBar evaluation={{type: 'mate', value: 0} as Eval} isWhiteAtBottom={false}/>
-  // <App/>  
+  // <EvalBar evaluation={{type: 'cp', value: 0} as Eval} isWhiteAtBottom={false}/>
+  <App/>  
 );

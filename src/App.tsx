@@ -16,6 +16,7 @@ import Stockfish, { Eval } from './classes/Stockfish';
 
 import LinkedList from 'dbly-linked-list'
 import MoveList from './classes/PositionList';
+import EvalBar from './components/EvalBar';
 
 function App() {
   const positionList=useChessStore(state=>state.positionList)  
@@ -70,6 +71,7 @@ function App() {
       <div className={styles.boardParent} ref={boardParentRef}>
         <Board parentRef={boardParentRef}/>
       </div> 
+      <EvalBar/>
       <RefreshButton/>
       <Sidebar/>
     </div>

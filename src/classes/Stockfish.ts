@@ -79,6 +79,7 @@ export default class Stockfish{
         res(previousEval)
       }
       else if (data[0]=='info'){
+        // console.log(data);
         const type=data[8]
         let value=parseInt(data[9]);
         (turnToMove=='b') ? value*=-1 : value*=1

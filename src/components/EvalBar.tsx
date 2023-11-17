@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Eval } from '../classes/Stockfish'
+import Stockfish, { Eval } from '../classes/Stockfish'
 import styles from "../styles/EvalBar.module.css"
+import { useChessStore } from '../stores/chessStore'
 
-interface Props{
-  evaluation: Eval,
-  isWhiteAtBottom: boolean
-}
+export default function EvalBar() {
 
-export default function EvalBar(props:Props) {
+  const currentFen=useChessStore(state=>state.currentFen)
+  const evaluation=useChessStore(state=>state.evaluation)
+  const setEvaluation=useChessStore(state=>state.setEvaluation)
+  const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
 
-  const rotationTransform=props.isWhiteAtBottom ? 'rotate(180deg)' : 'rotate(0deg)'
+  const isWhiteAtBottom=colorPlayerCanControl=='white'
+  const rotationTransform=isWhiteAtBottom ? 'rotate(180deg)' : 'rotate(0deg)'
   const WHITE='#A0A0A0'
   const BLACK='#666666'
   const [bottomFlex, setBottomFlex]=useState<number>(999)
+
+  const keyEvalBarMarks:number[]=[-900, -500, -300, -100, 0, 100, 300, 500, 900]
 
   /**
    * given an evaluation value, returns the flex proportion number the 
@@ -23,10 +27,13 @@ export default function EvalBar(props:Props) {
    */
   function getFlexProportionFromEvalValue(evalValue:number){
     const curveBalanceFactor=0.2
-    return Math.exp(-1*curveBalanceFactor*evalValue)
+    return Math.exp(-1*curveBalanceFactor*evalValue*0.01)
   }
 
-  
+  /**
+   * adjusts the bar to reflect the given evaluation
+   * @param evaluation 
+   */
   function adjustBarProportion(evaluation:Eval){
     const bigNumber=999
     if (evaluation.type=='mate'){
@@ -39,13 +46,24 @@ export default function EvalBar(props:Props) {
     }
   }
 
-  useEffect(()=>{
-    console.log(bottomFlex);
-  }, [bottomFlex])
+  function getTopFromEvalBarMarkValue(markValue:number):string{
+    const flexProportion=getFlexProportionFromEvalValue(markValue)
+    const percentage=(flexProportion/(flexProportion+1))*100
+    // console.log(markValue);
+    return `${percentage}%`
+  }
 
   useEffect(()=>{
-    adjustBarProportion(props.evaluation)
-  }, [props.evaluation])
+    console.log(currentFen);
+    Stockfish.getInstance().getEval(currentFen)
+    .then(newEvaluation=>{
+      setEvaluation(newEvaluation)
+    })
+  }, [currentFen])
+
+  useEffect(()=>{
+    adjustBarProportion(evaluation)
+  }, [evaluation])
 
   return (
     <div className={styles.bar} style={{
@@ -57,7 +75,18 @@ export default function EvalBar(props:Props) {
       <div className={styles.bottomBar} style={{flex: bottomFlex}}>
       
       </div>
-      <div className={styles.middleBar}/>
+      {
+        keyEvalBarMarks.map((markValue:number)=>{
+          const top:string=getTopFromEvalBarMarkValue(markValue)
+          return markValue==0 
+          ? (
+            <div className={styles.middleBar} style={{height: 3, top: top}}/>
+          )
+          : (
+            <div className={styles.middleBar} style={{top: top}}/>
+          )
+        })
+      }
     </div>
   )
 }
