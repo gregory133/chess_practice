@@ -25,10 +25,7 @@ export default function Board(props:Props) {
 	const setLastFen=useChessStore(state=>state.setLastFen)
 	const orientation=useChessStore(state=>state.orientation)
 	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
-	const setWinrate=useChessStore(state=>state.setWinrate)
-	const setOpeningName=useChessStore(state=>state.setOpeningName)
-	const setNumGamesInDB=useChessStore(state=>state.setNumGamesInDB)
-	const setNumMovesInDB=useChessStore(state=>state.setNumMovesInDB)
+	
 
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
@@ -64,7 +61,7 @@ export default function Board(props:Props) {
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
 			makeEnginMoveIfNeeded(json)
-			updateSidebar()
+			
 		})	
 	}, [lastFen])
 
@@ -74,20 +71,6 @@ export default function Board(props:Props) {
 			setFen(currentPosition)
 		}
   }, [positionList])
-
-	/**
-	 * updates the state variables associated with the sidebar
-	 */
-	function updateSidebar(){
-		setWinrate(jsonParserRef.current.extractWinrate())
-		setNumGamesInDB(jsonParserRef.current.extractNumGamesInDB())
-		setNumMovesInDB(jsonParserRef.current.extractNumMovesInDB())
-		const openingName=jsonParserRef.current.extractOpeningName()
-		if (openingName){
-			setOpeningName(openingName)
-		}
-				
-	}
 
 	/**
 	 * 
