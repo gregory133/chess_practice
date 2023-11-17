@@ -60,5 +60,6 @@ function getDBUrl(hostPath: string, fen:string):string{
   let url=new URL(baseHost+hostPath);
 
   url.searchParams.append('fen', fen)
+  url.searchParams.append('moves', '40')
   return url.toString()
 }
