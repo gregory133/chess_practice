@@ -60,7 +60,7 @@ function App() {
     <div className={styles.container}>
       <div className={styles.boardParent} ref={boardParentRef}>
         <Board parentRef={boardParentRef}/>
-      </div> 
+      </div>
       <EvalBar/>
       <RefreshButton/>
       <Sidebar/>

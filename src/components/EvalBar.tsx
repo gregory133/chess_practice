@@ -53,6 +53,18 @@ export default function EvalBar() {
     return `${percentage}%`
   }
 
+  /**
+   * pretty prints the eval value for display
+   * @param evalValue 
+   */
+  function formatEvaluationValue(evalValue:number):string{
+    let formattedString=(evalValue/100).toString();
+    if (evalValue>0){
+      formattedString='+'+formattedString
+    }
+    return formattedString
+  }
+
   useEffect(()=>{
     // console.log(currentFen);
     Stockfish.getInstance().getEval(currentFen)
@@ -66,27 +78,33 @@ export default function EvalBar() {
   }, [evaluation])
 
   return (
-    <div className={styles.bar} style={{
-      transform: rotationTransform
-    }}>
-      <div className={styles.topBar} style={{flex: 1}}>
-       
+    <div className={styles.container}>
+      <p>
+        {formatEvaluationValue(evaluation.value)}
+      </p>
+      <div className={styles.bar} style={{
+        transform: rotationTransform
+      }}>
+        <div className={styles.topBar} style={{flex: 1}}>
+
+        </div>
+        <div className={styles.bottomBar} style={{flex: bottomFlex}}>
+
+        </div>
+        {
+          keyEvalBarMarks.map((markValue:number, index:number)=>{
+            const top:string=getTopFromEvalBarMarkValue(markValue)
+            return markValue==0 
+            ? (
+              <div key={index} className={styles.middleBar} style={{height: 3, top: top}}/>
+            )
+            : (
+              <div key={index} className={styles.middleBar} style={{top: top}}/>
+            )
+          })
+        }
       </div>
-      <div className={styles.bottomBar} style={{flex: bottomFlex}}>
-      
-      </div>
-      {
-        keyEvalBarMarks.map((markValue:number, index:number)=>{
-          const top:string=getTopFromEvalBarMarkValue(markValue)
-          return markValue==0 
-          ? (
-            <div key={index} className={styles.middleBar} style={{height: 3, top: top}}/>
-          )
-          : (
-            <div key={index} className={styles.middleBar} style={{top: top}}/>
-          )
-        })
-      }
     </div>
+    
   )
 }

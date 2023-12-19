@@ -3,6 +3,7 @@
 
 body{
   margin: 0;
+  overflow: hidden;
 }
 
 .container{
@@ -12,12 +13,16 @@ body{
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-around;
   padding: 20px;
   background: linear-gradient($bg-color-light, $bg-color-dark);
 }
 
 .boardParent{
-  flex:1;
+  display: flex;
+  justify-content: center;
+  height: 0px;
+  flex:1 1 0px;
   height: 100%;
 
 }
