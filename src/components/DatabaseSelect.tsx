@@ -11,12 +11,12 @@ export default function DatabaseSelect() {
   const [selectedId, setSelectedId]=useState<string>(selectedDatabase)
   
   const buttons: Button[]=[
-    {id: 'masters', bgImage: `url(${process.env.PUBLIC_URL}/images/masters.png)`,
+    {id: 'masters', bgImage: `${process.env.PUBLIC_URL}/images/masters.png`,
     onClick:()=>{
       onClickButton('masters')
     },
     hoverText: 'Use Masters Database'},
-    {id: 'lichess', bgImage: `url(${process.env.PUBLIC_URL}/images/lichess.png)`, 
+    {id: 'lichess', bgImage: `${process.env.PUBLIC_URL}/images/lichess.png`, 
     onClick:()=>{
       onClickButton('lichess')
     },
@@ -34,7 +34,7 @@ export default function DatabaseSelect() {
 
   return (
     <div className={styles.parent}>
-      <p className={styles.title}>Select Database: </p>
+      <p>Select Database: </p>
       <div className={styles.container}>
         {
           buttons.map((button:Button, key:number)=>{

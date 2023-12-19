@@ -1,29 +1,25 @@
 @import './Variables.scss';
 
 .parent{
-  font-size: 1.5cqw;
+  font-size: 30px;
   width: 100%;
   height: $sidebar-section-height;
   display: flex;
   justify-content: center;
   padding: 10px;
-  /* align-items: cen; */
   box-sizing: border-box;
-}
-
-.title{
-  display: flex;
   align-items: center;
-  margin-right: 5px;
+
+  p{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+  }
 }
 
 .container{
   display: flex;
-  width: fit-content;
   align-items: center;
-}
 
-.container > div{
-  flex: 1;
 }
-

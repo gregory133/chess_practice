@@ -15,16 +15,16 @@ export interface Button{
 
 export default function OptionButton(props:Props) {
 
-  const border=props.isHighlighted
-  ? ('2px solid green') 
-  : ('2px solid transparent')
+  const shadow=props.isHighlighted
+  ? ('0px 0px 10px green') 
+  : ('0px 0px 10px transparent')
 
   return (
     <div title={props.button.hoverText} className={styles.button} 
-    style={{border: border}} onClick={props.button.onClick}>
-      <div className={styles.buttonImage} style={{
-        backgroundImage: props.button.bgImage
-      }}/>
+    style={{
+      boxShadow: shadow
+    }} onClick={props.button.onClick}>
+      <img src={props.button.bgImage}/>
     </div>
   )
 }

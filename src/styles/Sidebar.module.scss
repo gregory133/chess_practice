@@ -15,24 +15,37 @@
   flex-direction: column;
   box-shadow: 0px 0px 1px white; 
   align-items: center;
-}
 
-.sidebar > :nth-child(odd){
-  background-color: #302E2C;
-  box-shadow: 0px 0px 1px white;
+  > :nth-child(odd){
+    background-color: #302E2C;
+    box-shadow: 0px 0px 1px white;
+  }
+
+  > *{
+    flex: 1;
+  }
+  
 }
 
 .openingName{
+  flex: 1 1 10px;
   box-sizing: border-box;
   border-radius: 5px 5px 0px 0px;
-  
   margin: 0px 20px;
   padding: 20px 5px;
   text-align: center;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-medium;
 }
 
 .winrateBarContainer{
+  $flex-factor: 0.2;
+  flex: $flex-factor $flex-factor auto;
   padding: 10px 0px;
   width: 100%;
+  display: flex;
+  align-items: center;
 }

@@ -13,15 +13,15 @@ export default function ColorSelect() {
   const setSelectedColor=useChessStore(state=>state.setSelectedColor)
 
   const buttons: Button[]=[
-    {id: 'white', bgImage: `url(${process.env.PUBLIC_URL}/images/white.png)`, 
+    {id: 'white', bgImage: `${process.env.PUBLIC_URL}/images/white.png`, 
     onClick:()=>{onClickChooseColorButton('white')},
     hoverText: 'Play as White'},
 
-    {id: 'any', bgImage: `url(${process.env.PUBLIC_URL}/images/blackwhite.png)`, 
+    {id: 'any', bgImage: `${process.env.PUBLIC_URL}/images/blackwhite.png`, 
     onClick:()=>{onClickChooseColorButton('any')},
-    hoverText: 'Play as Any Color'},
+    hoverText: 'Play as any Color'},
 
-    {id: 'black', bgImage: `url(${process.env.PUBLIC_URL}/images/black.png)`, 
+    {id: 'black', bgImage: `${process.env.PUBLIC_URL}/images/black.png`, 
     onClick:()=>{onClickChooseColorButton('black')},
     hoverText: 'Play as Black'},
   ]
@@ -33,7 +33,7 @@ export default function ColorSelect() {
 
   return (
     <div className={styles.parent}>
-      <p className={styles.title}>Play as:</p>
+      <p>Play as:</p>
       <div className={styles.container}>
 
         {
