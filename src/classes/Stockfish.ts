@@ -9,7 +9,7 @@ export interface Eval{
 export default class Stockfish{
 
   private static instance?:Stockfish
-  private stockfish=new Worker('/stockfish.js')
+  private stockfish=new Worker('/chess_opening_practice/stockfish.js')
 
   /**
    * private constructor for singleton
