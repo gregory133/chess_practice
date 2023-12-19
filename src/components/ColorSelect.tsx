@@ -19,7 +19,7 @@ export default function ColorSelect() {
 
     {id: 'any', bgImage: `${process.env.PUBLIC_URL}/images/blackwhite.png`, 
     onClick:()=>{onClickChooseColorButton('any')},
-    hoverText: 'Play as any Color'},
+    hoverText: 'Play as random Color'},
 
     {id: 'black', bgImage: `${process.env.PUBLIC_URL}/images/black.png`, 
     onClick:()=>{onClickChooseColorButton('black')},

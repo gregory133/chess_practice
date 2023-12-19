@@ -1,19 +1,22 @@
+@import './Variables.scss';
+
 .container{
-  font-size: 1.5cqw;
+  font-size: $font-size-small;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   box-sizing: border-box;
+
+  input{
+    flex: 1;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    font-size: $font-size-tiny;
+    color: white;
+    outline: none;
+    margin: 5px;
+  }
 }
 
-input{
-  flex: 1;
-  background: rgba(0, 0, 0, 0);
-  border: none;
-  font-size: 1cqw;
-  color: white;
-  outline: none;
-  margin: 5px;
-}

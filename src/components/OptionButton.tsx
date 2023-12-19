@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/OptionButton.module.scss'
 
 interface Props{
@@ -15,14 +15,14 @@ export interface Button{
 
 export default function OptionButton(props:Props) {
 
-  const shadow=props.isHighlighted
-  ? ('0px 0px 10px green') 
-  : ('0px 0px 10px transparent')
+  const [isHovered, setIsHovered]=useState(false)
 
   return (
-    <div title={props.button.hoverText} className={styles.button} 
+    <div onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)} 
+    title={props.button.hoverText} className={styles.button} 
     style={{
-      boxShadow: shadow
+      boxShadow: props.isHighlighted ? '0px 0px 10px white' : '0px 0px 10px transparent',
+      backgroundColor: isHovered ? '#706F6D' : 'transparent'
     }} onClick={props.button.onClick}>
       <img src={props.button.bgImage}/>
     </div>

@@ -4,16 +4,14 @@ $button-length: 70px;
 $border-radius: 3px;
 
 .button{
-  
-
   display: flex;
   justify-content: center;
   align-items: center;
   height: $button-length;
   width: $button-length;
   margin: 5px;
-  padding: 3px;
-  border-radius: $border-radius;
+  padding: 10px;
+  border-radius: 100%;
 
   img{
     border-radius: $border-radius;
