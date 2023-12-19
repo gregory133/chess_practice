@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../styles/MoveStats.module.css'
+import styles from '../styles/MoveStats.module.scss'
 
 interface Props{
   numMovesInDB:number

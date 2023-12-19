@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import OptionButton, { Button } from './OptionButton'
-import styles from '../styles/DatabaseSelect.module.css'
+import styles from '../styles/DatabaseSelect.module.scss'
 import { useChessStore } from '../stores/chessStore'
 import { Database } from '../api/DBApi'
 

@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import Board from './components/Board';
 import Sidebar from './components/Sidebar';
 
-import styles from './styles/App.module.css'
-import './styles/Colors.css'
-import './styles/Fonts.css'
+import styles from './styles/App.module.scss'
+import './styles/Colors.scss'
+import './styles/Fonts.scss'
 
 import RefreshButton from './components/RefreshButton';
 import { useChessStore } from './stores/chessStore';

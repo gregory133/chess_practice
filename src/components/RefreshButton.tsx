@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import RefreshIcon from '@mui/icons-material/Refresh';
-import styles from '../styles/RefreshButton.module.css'
+import styles from '../styles/RefreshButton.module.scss'
 import { useChessStore } from '../stores/chessStore';
 
 export default function RefreshButton() {

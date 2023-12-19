@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styles from '../styles/Sidebar.module.css'
+import styles from '../styles/Sidebar.module.scss'
 import WinrateBar from './WinrateBar'
 import Winrate from '../classes/Winrate'
 import MoveStats from './MoveStats'

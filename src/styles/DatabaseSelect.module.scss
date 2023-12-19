@@ -1,20 +1,14 @@
-@import './Variables.css';
+@import './Variables.scss';
 
 .parent{
   font-size: 1.5cqw;
   width: 100%;
-  height: var(--sidebar-section-height);
+  height: $sidebar-section-height;
   display: flex;
   justify-content: center;
   padding: 10px;
   /* align-items: cen; */
   box-sizing: border-box;
-}
-
-.title{
-  display: flex;
-  align-items: center;
-  margin-right: 5px;
 }
 
 .container{
@@ -23,7 +17,8 @@
   align-items: center;
 }
 
-.container > div{
-  flex: 1;
+.title{
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 }
-

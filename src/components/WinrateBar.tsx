@@ -1,6 +1,6 @@
 import React from 'react'
 import Winrate from '../classes/Winrate'
-import styles from '../styles/WinrateBar.module.css'
+import styles from '../styles/WinrateBar.module.scss'
 
 interface Props{
   winrate:Winrate

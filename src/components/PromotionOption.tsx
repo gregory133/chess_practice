@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import styles from '../styles/PromotionOption.module.css'
+import styles from '../styles/PromotionOption.module.scss'
 
 interface Props{
 	promotionChoiceFunction:(symbol:'q'|'r'|'b'|'n')=>void

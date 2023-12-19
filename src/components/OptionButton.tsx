@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../styles/OptionButton.module.css'
+import styles from '../styles/OptionButton.module.scss'
 
 interface Props{
   button: Button,

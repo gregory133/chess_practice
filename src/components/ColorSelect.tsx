@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from '../styles/ColorSelect.module.css'
+import styles from '../styles/ColorSelect.module.scss'
 import { useChessStore } from '../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
 import OptionButton, { Button } from './OptionButton'

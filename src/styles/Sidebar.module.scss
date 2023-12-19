@@ -1,11 +1,14 @@
+@import './Variables.scss';
+@import './Colors.scss';
+@import './Fonts.scss';
+
 .sidebar{
   height: 100%;
-  /* width: 10px; */
   flex:1;
-  background-color: var(--sidebar-bg);
-  max-width: 300px;
+  background-color: $sidebar-bg;
+  max-width: 500px;
   color: white;
-  font-family: var(--default-font);
+  font-family: $default-font;
   border: white;
   border-radius: 5px;
   display: flex;
