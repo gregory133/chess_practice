@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RefreshIcon from '@mui/icons-material/Refresh';
 import styles from '../styles/RefreshButton.module.scss'
 import { useChessStore } from '../stores/chessStore';
@@ -9,6 +9,12 @@ export default function RefreshButton() {
   const NOT_HOVERED_COLOR= '#302E2C'
   const HOVERED_COLOR = '#484643'
   const [bgColor, setBgColor]=useState<string>(NOT_HOVERED_COLOR)
+
+  const positionList=useChessStore(state=>state.positionList)
+
+  useEffect(()=>{
+    console.log(positionList.toString());
+  }, [positionList])
 
   function resetState(){
     reset()

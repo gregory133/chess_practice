@@ -1,3 +1,4 @@
+import { Chess } from 'chess.js'
 import LinkedList, {Node} from 'dbly-linked-list'
 
 export default class PositionList{
@@ -49,7 +50,7 @@ export default class PositionList{
       this.currentIndex--;
     }
     else{
-      console.log('not updating');
+      // console.log('not updating');
     }
   }
 
@@ -62,8 +63,13 @@ export default class PositionList{
   }
 
   public toString():string{
-    let positionsRawArray=this.positionList.toArray()
-    positionsRawArray[this.currentIndex]=`[${positionsRawArray[this.currentIndex]}]`
+    const chess=new Chess();
+    let positionsRawArray=this.positionList.toArray().map(posNode=>{
+      const fen=posNode.toString()
+      chess.load(fen)
+      return chess.ascii();
+    })
+   
     return positionsRawArray.join('\n\n')
   }
 
@@ -74,6 +80,10 @@ export default class PositionList{
     })
     clone.currentIndex=this.currentIndex
     return clone
+  }
+
+  public size():number{
+    return this.positionList.size
   }
 
 

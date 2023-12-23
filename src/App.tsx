@@ -15,14 +15,6 @@ function App() {
   const navigateBackward=useChessStore(state=>state.navigatePositionListBackward)
   const navigateForward=useChessStore(state=>state.navigatePositionListForward)
   const boardParentRef=useRef(null)
-  
-  useEffect(()=>{
-    Stockfish.getInstance().getEval(
-      'rnb1kb1r/ppp1pppp/5n2/3q3Q/8/2N5/PPPP1PPP/R1B1KBNR b KQkq - 1 4')
-    .then((evaluation:Eval)=>{
-    })
-  }, [])
-
 
   useEffect(()=>{
     hookupArrowKeyEvents()
