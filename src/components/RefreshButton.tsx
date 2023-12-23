@@ -12,9 +12,9 @@ export default function RefreshButton() {
 
   const positionList=useChessStore(state=>state.positionList)
 
-  useEffect(()=>{
-    console.log(positionList.toString());
-  }, [positionList])
+  // useEffect(()=>{
+  //   console.log(positionList.toString());
+  // }, [positionList])
 
   function resetState(){
     reset()

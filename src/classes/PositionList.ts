@@ -67,10 +67,10 @@ export default class PositionList{
     let positionsRawArray=this.positionList.toArray().map(posNode=>{
       const fen=posNode.toString()
       chess.load(fen)
-      return chess.ascii();
+      return chess.ascii()
     })
    
-    return positionsRawArray.join('\n\n')
+    return positionsRawArray.join('\n\n')+'\n index:'+this.currentIndex;
   }
 
   public clone():PositionList{
@@ -86,5 +86,18 @@ export default class PositionList{
     return this.positionList.size
   }
 
+  public isPointingToLastPosition():boolean{
+    return this.currentIndex==this.positionList.getSize()-1;
+  }
+
+  /**
+   * deletes the positions from this.currentIndex (exclusive) to the end of the positionList
+   */
+  public spliceTree(){
+    const size=this.positionList.size
+    for (let i=0; i<(size-1-this.currentIndex); i++){
+      this.positionList.remove()
+    }
+  }
 
 }

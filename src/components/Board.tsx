@@ -60,8 +60,7 @@ export default function Board(props:Props) {
 		fetchDB(fen, database)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
-			makeEnginMoveIfNeeded(json)
-			
+			makeEnginMoveIfNeeded(json)	
 		})	
 	}, [lastFen])
 
@@ -113,7 +112,6 @@ export default function Board(props:Props) {
 	
 		}		
 	}
-
 
 	/**
 	 * @param chess chess object encoding the current position
@@ -196,6 +194,7 @@ export default function Board(props:Props) {
 	 */
 	function afterHumanPlayerMove(orig: cg.Key, dest: cg.Key, metadata: 
 		cg.MoveMetadata){
+		
 		if (isMovePromotion(fen, orig, dest)){
 			setPromotionFile(getFile(orig))
 			setIsPromotionVisible(true)
@@ -228,6 +227,9 @@ export default function Board(props:Props) {
 	 * @param move 
 	 */
 	function applyHumanMove(move:string){
+		if (!positionList.isPointingToLastPosition()){
+			positionList.spliceTree()
+		}
 		updateChessObject(move)
 		const newFen=chess.fen()
 		addPositionToPositionList(newFen)
