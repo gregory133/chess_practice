@@ -1,6 +1,15 @@
-@import './Variables.scss';
+@import './Variables.module.scss';
+
+.settingsButton{
+  background-image: url("../../public/images/setting.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex: 1 1 50px;
+}
 
 .parent{
+
   font-size: $font-size-medium;
   width: 100%;
   height: $sidebar-section-height;
@@ -10,6 +19,7 @@
   box-sizing: border-box;
 
   p{
+    text-align: center;
     display: flex;
     align-items: center;
     margin-right: 5px;

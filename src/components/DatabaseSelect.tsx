@@ -3,29 +3,47 @@ import OptionButton, { Button } from './OptionButton'
 import styles from '../styles/DatabaseSelect.module.scss'
 import { useChessStore } from '../stores/chessStore'
 import { Database } from '../api/DBApi'
+import Modal from 'react-modal';
+import DatabaseSettingsModal from './DatabaseSettingsModal'
 
 export default function DatabaseSelect() {
 
   const selectedDatabase=useChessStore(state=>state.selectedDatabase)
   const setSelectedDatabase=useChessStore(state=>state.setSelectedDatabase)
+
   const [selectedId, setSelectedId]=useState<string>(selectedDatabase)
+  const [isDatabaseModalOpen, setIsDatabaseModalOpen]=useState(false)
+
+  
   
   const buttons: Button[]=[
     {id: 'masters', bgImage: `${process.env.PUBLIC_URL}/images/masters.png`,
     onClick:()=>{
-      onClickButton('masters')
+      onClickDatabaseButton('masters')
     },
+
     hoverText: 'Use Masters Database'},
     {id: 'lichess', bgImage: `${process.env.PUBLIC_URL}/images/lichess.png`, 
     onClick:()=>{
-      onClickButton('lichess')
+      onClickDatabaseButton('lichess')
     },
-    hoverText: 'Use Lichess Database'}
+
+    hoverText: 'Use Lichess Database'},
+
+    {id: 'player', bgImage: `${process.env.PUBLIC_URL}/images/user.png`, 
+    onClick:()=>{
+      onClickDatabaseButton('player')
+    },
+    hoverText: 'Use Player Database'}
   ]
 
-  function onClickButton(id:Database){
+  function onClickDatabaseButton(id:Database){
     setSelectedId(id)
     setSelectedDatabase(id)
+  }
+
+  function onClickSettingsButton(){
+    setIsDatabaseModalOpen(true)
   }
 
   useEffect(()=>{
@@ -34,6 +52,7 @@ export default function DatabaseSelect() {
 
   return (
     <div className={styles.parent}>
+      <div onClick={onClickSettingsButton} className={styles.settingsButton}/>
       <p>Select Database: </p>
       <div className={styles.container}>
         {
@@ -43,6 +62,8 @@ export default function DatabaseSelect() {
           })
         }
       </div>
+
+      <DatabaseSettingsModal isOpen={isDatabaseModalOpen} setIsOpen={setIsDatabaseModalOpen}/>
     </div>
   )
 }
