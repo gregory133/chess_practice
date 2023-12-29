@@ -4,6 +4,13 @@
 $image-length: 30px;
 $border-radius: 7px;
 
+@mixin text-mixin(){
+	color: white;
+	font-family: $default-font;
+	font-size: 20px;
+	font-weight: 500;
+}
+
 .content{
 	height: 100%;
   	background-color: $sidebar-bg;
@@ -13,8 +20,7 @@ $border-radius: 7px;
 }
 
 .dbSelection{
-	color: white;
-	font-family: $default-font;
+	@include text-mixin();
 	align-items: center;
 	display: flex;
 	flex-direction: row;
@@ -24,8 +30,7 @@ $border-radius: 7px;
 	div{
 		border-radius: $border-radius $border-radius 0px 0px;
 		padding: 5px 10px;
-		font-size: 20px;
-		font-weight: 500;
+		
 		display: flex;
 		align-items: center;
 
@@ -42,4 +47,35 @@ $border-radius: 7px;
 	flex: 1 1 0px;
 	width: 100%;
 	background-color: $sidebar-bg-light;
+}
+
+.mastersView{
+	@include text-mixin();
+
+	div{
+		align-items: center;
+		display: flex;
+		margin: 10px;
+		::placeholder{
+			color: white;
+		}
+	}
+
+	input{
+	
+		@include text-mixin();
+		outline: none;
+		font-size: 15px;
+		background-color: transparent;
+		margin: 0px 10px;
+		height: 20px;
+	}
+}
+
+.lichessView{
+
+}
+
+.playerView{
+
 }

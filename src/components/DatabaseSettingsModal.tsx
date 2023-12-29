@@ -6,6 +6,7 @@ import variables from '../styles/Variables.module.scss'
 import style from '../styles/DatabaseSettingsModal.module.scss'
 import { Database } from '../api/DBApi';
 import { Dictionary } from 'typescript-collections';
+import MastersView from './DatabaseModalViews/MastersView';
 
 interface Props{
   isOpen:boolean
@@ -30,10 +31,31 @@ export default function DatabaseSettingsModal(props:Props) {
     dbIcons.setValue('player', '/images/user.png')
   }
 
+  function loadMastersView(){
+
+    const lowerBoundYear=1952
+    const upperBoundYear=new Date().getFullYear()
+
+    function onChangeYearValueInput(context: 'since'|'until'){
+      
+    }
+
+    databaseSettingsView.setValue('masters', <MastersView/>)
+  }
+
   function loadDatabaseSettingsViewDictionary(){
-    databaseSettingsView.setValue('masters', <div>masters</div>)
-    databaseSettingsView.setValue('lichess', <div>lichess</div>)
-    databaseSettingsView.setValue('player', <div>player</div>)
+
+    loadMastersView()
+
+    databaseSettingsView.setValue('lichess', 
+    <div className={style.lichessView}>    
+
+    </div>)
+
+    databaseSettingsView.setValue('player', 
+    <div className={style.playerView}>
+
+    </div>)
   } 
 
 	/**
