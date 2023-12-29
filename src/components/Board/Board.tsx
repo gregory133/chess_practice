@@ -3,15 +3,15 @@ import React, {useEffect, useState, useMemo, useRef} from 'react'
 import { Chess, Color, Move, Square } from 'chess.js'
 import { Config } from 'chessground/config';
 import * as cg from 'chessground/types.js';
-import PromotionDialog from './PromotionDialog';
-import "../styles/chessground.base.scss";
-import "../styles/chessground.brown.scss";
-import "../styles/chessground.cburnett.scss";
-import ResponsiveSquare from './ResponsiveSquare';
-import { useChessStore } from '../stores/chessStore';
-import Engine from '../classes/Engine';
-import { Database, fetchDB } from '../api/DBApi';
-import LichessDatabaseJSONParser from '../api/LichessDatabaseJSONParser';
+import PromotionDialog from '../PromotionDialog/PromotionDialog';
+import "../../styles/chessground.base.scss";
+import "../../styles/chessground.brown.scss";
+import "../../styles/chessground.cburnett.scss";
+import ResponsiveSquare from '../ResponsiveSquare/ResponsiveSquare';
+import { useChessStore } from '../../stores/chessStore';
+import Engine from '../../classes/Engine';
+import { Database, fetchDB } from '../../api/DBApi';
+import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>

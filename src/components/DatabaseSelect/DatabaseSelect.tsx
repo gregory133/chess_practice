@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import OptionButton, { Button } from './OptionButton'
-import styles from '../styles/DatabaseSelect.module.scss'
-import { useChessStore } from '../stores/chessStore'
-import { Database } from '../api/DBApi'
+import OptionButton, { Button } from '../OptionsButton/OptionButton'
+import styles from './DatabaseSelect.module.scss'
+import { useChessStore } from '../../stores/chessStore'
+import { Database } from '../../api/DBApi'
 import Modal from 'react-modal';
-import DatabaseSettingsModal from './DatabaseSettingsModal'
+import DatabaseSettingsModal from '../DatabaseSettingsModal/DatabaseSettingsModal'
 
 export default function DatabaseSelect() {
 

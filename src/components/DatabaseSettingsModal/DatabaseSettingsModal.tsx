@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal';
 
-import '../styles/Colors.scss'
-import variables from '../styles/Variables.module.scss'
-import style from '../styles/DatabaseSettingsModal.module.scss'
-import { Database } from '../api/DBApi';
+import '../../styles/Colors.scss'
+import variables from '../../styles/Variables.module.scss'
+import style from './DatabaseSettingsModal.module.scss'
+import { Database } from '../../api/DBApi';
 import { Dictionary } from 'typescript-collections';
-import MastersView from './DatabaseModalViews/MastersView';
+import MastersView from '../DatabaseModalViews/MastersView';
 
 interface Props{
   isOpen:boolean

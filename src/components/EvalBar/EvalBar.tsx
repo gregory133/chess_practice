@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Stockfish, { Eval } from '../classes/Stockfish'
-import styles from "../styles/EvalBar.module.scss"
-import { useChessStore } from '../stores/chessStore'
+import Stockfish, { Eval } from '../../classes/Stockfish'
+import styles from "./EvalBar.module.scss"
+import { useChessStore } from '../../stores/chessStore'
 
 export default function EvalBar() {
 

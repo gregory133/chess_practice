@@ -1,8 +1,8 @@
 import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import TextField from '@mui/material/TextField';
-import styles from '../styles/SetFen.module.scss'
+import styles from './SetFen.module.scss'
 import { Chess } from 'chess.js';
-import { useChessStore } from '../stores/chessStore';
+import { useChessStore } from '../../stores/chessStore';
 
 export default function SetFen() {
 

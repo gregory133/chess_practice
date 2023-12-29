@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Board from './components/Board';
-import Sidebar from './components/Sidebar';
+import Board from './components/Board/Board';
+import Sidebar from './components/Sidebar/Sidebar';
 
 import styles from './styles/App.module.scss'
 import './styles/Colors.scss'
 import './styles/Fonts.scss'
 
-import RefreshButton from './components/RefreshButton';
+import RefreshButton from './components/RefreshButton/RefreshButton';
 import { useChessStore } from './stores/chessStore';
 import Stockfish, { Eval } from './classes/Stockfish';
-import EvalBar from './components/EvalBar';
+import EvalBar from './components/EvalBar/EvalBar';
 
 function App() {
   const navigateBackward=useChessStore(state=>state.navigatePositionListBackward)

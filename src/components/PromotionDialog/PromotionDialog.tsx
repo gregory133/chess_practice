@@ -1,6 +1,6 @@
 import React from 'react'
-import PromotionOption from './PromotionOption'
-import styles from '../styles/PromotionDialog.module.scss'
+import PromotionOption from '../PromotionOption/PromotionOption'
+import styles from './PromotionDialog.module.scss'
 interface Props{
 	promotionChoiceFunction:(symbol:'q'|'r'|'b'|'n')=>void
 	isVisible:boolean,

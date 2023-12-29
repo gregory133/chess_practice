@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import styles from '../styles/ColorSelect.module.scss'
-import { useChessStore } from '../stores/chessStore'
+import styles from './ColorSelect.module.scss'
+import { useChessStore } from '../../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
-import OptionButton, { Button } from './OptionButton'
+import OptionButton, { Button } from '../OptionsButton/OptionButton'
 
 type Color='white'|'any'|'black'
 

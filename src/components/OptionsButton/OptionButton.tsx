@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../styles/OptionButton.module.scss'
+import styles from './OptionButton.module.scss'
 
 interface Props{
   button: Button,
