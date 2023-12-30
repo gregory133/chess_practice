@@ -6,7 +6,8 @@ import variables from '../../styles/Variables.module.scss'
 import style from './DatabaseSettingsModal.module.scss'
 import { Database } from '../../api/DBApi';
 import { Dictionary } from 'typescript-collections';
-import MastersView from '../DatabaseModalViews/MastersView';
+import MastersView from '../DatabaseModalViews/MastersView/MastersView';
+import LichessView from '../DatabaseModalViews/LichessView/LichessView';
 
 interface Props{
   isOpen:boolean
@@ -31,26 +32,11 @@ export default function DatabaseSettingsModal(props:Props) {
     dbIcons.setValue('player', '/images/user.png')
   }
 
-  function loadMastersView(){
-
-    const lowerBoundYear=1952
-    const upperBoundYear=new Date().getFullYear()
-
-    function onChangeYearValueInput(context: 'since'|'until'){
-      
-    }
-
-    databaseSettingsView.setValue('masters', <MastersView/>)
-  }
-
   function loadDatabaseSettingsViewDictionary(){
 
-    loadMastersView()
+    databaseSettingsView.setValue('masters', <MastersView/>)
 
-    databaseSettingsView.setValue('lichess', 
-    <div className={style.lichessView}>    
-
-    </div>)
+    databaseSettingsView.setValue('lichess', <LichessView/>)
 
     databaseSettingsView.setValue('player', 
     <div className={style.playerView}>
@@ -94,7 +80,6 @@ export default function DatabaseSettingsModal(props:Props) {
         <div className={style.dbSelection}>
           {databases.map((database:Database, key:number)=>{
             const bgColor=database==selectedDatabase ? `${variables.sidebarBgLight}` : `${variables.sidebarBg}`
-            console.log(bgColor)
             return(
               <div onClick={()=>onClickDatabaseSelectOption(database)} style={{backgroundColor: bgColor}} key={key}>{database}
                 <img src={process.env.PUBLIC_URL+dbIcons.getValue(database)}/>

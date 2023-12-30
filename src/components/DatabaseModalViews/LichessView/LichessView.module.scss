@@ -1,0 +1,19 @@
+@import '../../../styles/Mixins.module.scss';
+
+.container{
+    @include text-mixin;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    >div{
+        >div{
+            display: flex;
+        }
+    }
+}
+
+.toggleableButton{
+    margin: 10px;
+}

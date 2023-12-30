@@ -1,15 +1,11 @@
 @import '../../styles/Colors.scss';
 @import '../../styles/Fonts.scss';
+@import '../../styles/Mixins.module.scss';
 
 $image-length: 30px;
 $border-radius: 7px;
 
-@mixin text-mixin(){
-	color: white;
-	font-family: $default-font;
-	font-size: 20px;
-	font-weight: 500;
-}
+
 
 .content{
 	height: 100%;
@@ -47,35 +43,4 @@ $border-radius: 7px;
 	flex: 1 1 0px;
 	width: 100%;
 	background-color: $sidebar-bg-light;
-}
-
-.mastersView{
-	@include text-mixin();
-
-	div{
-		align-items: center;
-		display: flex;
-		margin: 10px;
-		::placeholder{
-			color: white;
-		}
-	}
-
-	input{
-	
-		@include text-mixin();
-		outline: none;
-		font-size: 15px;
-		background-color: transparent;
-		margin: 0px 10px;
-		height: 20px;
-	}
-}
-
-.lichessView{
-
-}
-
-.playerView{
-
 }
