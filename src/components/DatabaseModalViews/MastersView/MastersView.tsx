@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import styles from './MastersView.module.scss'
 import { Dictionary } from 'typescript-collections'
+import { YEAR_LOWER_BOUND, YEAR_UPPER_BOUND } from '../../../constants/MastersDatabase'
 
 type Context='since'|'until'
 
@@ -15,8 +16,8 @@ export default function () {
   }
 
   const yearBoundDict:Dictionary<Context, number>=new Dictionary();{
-    yearBoundDict.setValue('since', 1952)
-    yearBoundDict.setValue('until', new Date().getFullYear())
+    yearBoundDict.setValue('since', YEAR_LOWER_BOUND)
+    yearBoundDict.setValue('until', YEAR_UPPER_BOUND)
   }
 
   /**

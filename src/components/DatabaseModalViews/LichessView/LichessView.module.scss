@@ -1,5 +1,13 @@
 @import '../../../styles/Mixins.module.scss';
 
+.timeControl{
+    margin: 10px;
+}
+
+.rating{
+    margin: 10px;
+}
+
 .container{
     @include text-mixin;
     display: flex;
@@ -15,5 +23,18 @@
 }
 
 .toggleableButton{
-    margin: 10px;
+    user-select: none;
+    border-radius: 2px;
+    box-shadow: 0px 0px 2px white;
+    margin: 10px 3px;
+    padding: 10px;
+
+    img{
+        $icon-length: 40px;
+        -webkit-user-drag: none;
+        
+        width: $icon-length;
+        height: $icon-length;
+        object-fit: contain;
+    }
 }
