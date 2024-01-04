@@ -1,11 +1,18 @@
 @import '../../../styles/Mixins.module.scss';
 
-.timeControl{
+@mixin titled-container{
     margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.timeControl{
+    @include titled-container();
 }
 
 .rating{
-    margin: 10px;
+    @include titled-container();
 }
 
 .container{
