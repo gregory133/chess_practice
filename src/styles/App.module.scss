@@ -18,6 +18,16 @@ body{
   background: linear-gradient($bg-color-light, $bg-color-dark);
 }
 
+.bar{
+
+  margin: 10px;
+  width: 15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .boardParent{
   display: flex;
   justify-content: center;

@@ -77,16 +77,24 @@ export default function () {
     return null 
   }
 
+  function setInputRefValueToDefault(context:Context){
+    const inputRef=referencesDict.getValue(context)!
+    if (inputRef){
+      inputRef.current?.setAttribute('input', 'hello')
+    }
+  }
+
   /**
    * called when the given inputRef storing years is changed
    * @param context 
    */
   function onChangeYearValueInput(context:Context){
     const value:number|null=extractValueFromInputRef(context!)
-    if (value && areYearsLogicallyValid()){
+    const isValidChange=(value && areYearsLogicallyValid())
 
+    if (!isValidChange){
+      setInputRefValueToDefault(context)
     }
-
   }
 
   return (

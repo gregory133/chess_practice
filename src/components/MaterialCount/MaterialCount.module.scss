@@ -1,0 +1,19 @@
+@import '../../styles/Mixins.module.scss';
+
+.container{
+
+  display: flex;
+  align-items: center;
+  width: 30px;
+
+  p{
+    flex: 1;
+    display: flex;
+    @include text-mixin();
+  }
+
+  img{
+    height: 20px;
+    width: 20px;
+  }
+}

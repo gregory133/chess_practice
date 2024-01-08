@@ -10,6 +10,7 @@ import RefreshButton from './components/RefreshButton/RefreshButton';
 import { useChessStore } from './stores/chessStore';
 import Stockfish, { Eval } from './classes/Stockfish';
 import EvalBar from './components/EvalBar/EvalBar';
+import MaterialCount from './components/MaterialCount/MaterialCount';
 
 function App() {
   const navigateBackward=useChessStore(state=>state.navigatePositionListBackward)
@@ -53,7 +54,11 @@ function App() {
       <div className={styles.boardParent} ref={boardParentRef}>
         <Board parentRef={boardParentRef}/>
       </div>
-      <EvalBar/>
+      <div className={styles.bar}>
+        <EvalBar/>
+        <MaterialCount/>
+      </div>
+      
       <RefreshButton/>
       <Sidebar/>
     </div>
