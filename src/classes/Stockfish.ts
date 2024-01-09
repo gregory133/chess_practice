@@ -37,7 +37,6 @@ export default class Stockfish{
    * @param fen 
    */
   public getEval(fen:string, thinkingTime:number=500):Promise<{eval:Eval, bestMove:string}>{
-
     return new Promise((res, rej)=>{
       this.stockfish.onmessage=onLocalMessage
       this.stockfish.postMessage(`position fen ${fen}`)
@@ -47,22 +46,31 @@ export default class Stockfish{
       let bestMove:string
       const startTime=Date.now()
 
+      
+      
+
       function onLocalMessage(event:MessageEvent<any>){
-        
         const result=parseMessageForEval(event, mostAccurateEval,
         fen.split(' ')[1] as 'w'|'b', res)
+        
         if (result){
+          isDepthOne(event.data)
           mostAccurateEval=result.eval!
           bestMove=result.bestMove
           if (timeExceeded(startTime, thinkingTime)){
-            console.log(fen)
             res({eval:mostAccurateEval, bestMove: bestMove})
           }
         }
       }
       
-    }) 
+    })
     
+    function isDepthOne(message:string):boolean{
+      console.log(message.includes('depth'))
+      return true;
+    }
+
+   
     function timeExceeded(startTime:number, thinkingTime:number):boolean{
       return Date.now()>(startTime+thinkingTime)
     }
