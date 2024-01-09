@@ -77,7 +77,6 @@ export default function Sidebar() {
     })
   }
 
-
   useEffect(()=>{
 
     fetchDB(currentFen, database)

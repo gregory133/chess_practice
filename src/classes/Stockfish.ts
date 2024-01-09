@@ -55,6 +55,7 @@ export default class Stockfish{
           mostAccurateEval=result.eval!
           bestMove=result.bestMove
           if (timeExceeded(startTime, thinkingTime)){
+            console.log(fen)
             res({eval:mostAccurateEval, bestMove: bestMove})
           }
         }
