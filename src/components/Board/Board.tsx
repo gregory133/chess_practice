@@ -12,6 +12,7 @@ import { useChessStore } from '../../stores/chessStore';
 import Engine from '../../classes/Engine';
 import { Database, fetchDB } from '../../api/DBApi';
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
+import {DrawShape} from 'chessground/draw'
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>
@@ -25,7 +26,7 @@ export default function Board(props:Props) {
 	const setLastFen=useChessStore(state=>state.setLastFen)
 	const orientation=useChessStore(state=>state.orientation)
 	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
-	
+	const stockfishSuggestion=useChessStore(state=>state.stockfishSuggestion)
 
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
@@ -302,6 +303,14 @@ export default function Board(props:Props) {
 
 		const turnColor:cg.Color = fen.split(' ')[1]=='w'
 		? 'white' : 'black'
+
+		const autoShapes:DrawShape[] = stockfishSuggestion==null ? [] : [
+			{
+				orig: stockfishSuggestion.from,
+				dest: stockfishSuggestion.to,
+				brush: 'blue',
+			}
+		]
 		
 		return {
 			fen: fen,
@@ -315,7 +324,10 @@ export default function Board(props:Props) {
 				events: {
 					after: afterHumanPlayerMove
 				}
-			}
+			},
+			drawable: {
+				autoShapes: autoShapes
+			},
 		}
 	}
 

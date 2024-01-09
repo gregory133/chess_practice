@@ -29,13 +29,14 @@ export default class Stockfish{
     }
     return this.instance
   }
+
   
   /**
    * given a FEN string, returns an object representing a stockfish evaluation
    * @param thinkingTime time taken by the engine to think in milliseconds
    * @param fen 
    */
-  public getEval(fen:string, thinkingTime:number=500):Promise<Eval>{
+  public getEval(fen:string, thinkingTime:number=500):Promise<{eval:Eval, bestMove:string}>{
 
     return new Promise((res, rej)=>{
       this.stockfish.onmessage=onLocalMessage
@@ -43,15 +44,18 @@ export default class Stockfish{
   		this.stockfish.postMessage("go depth 14");
 
       let mostAccurateEval={value: 0, type: ''} as Eval
+      let bestMove:string
       const startTime=Date.now()
 
       function onLocalMessage(event:MessageEvent<any>){
-        const receivedEval:Eval|undefined=parseMessage(event, mostAccurateEval,
-          fen.split(' ')[1] as 'w'|'b', res)
-        if (receivedEval){
-          mostAccurateEval=receivedEval
+        
+        const result=parseMessageForEval(event, mostAccurateEval,
+        fen.split(' ')[1] as 'w'|'b', res)
+        if (result){
+          mostAccurateEval=result.eval!
+          bestMove=result.bestMove
           if (timeExceeded(startTime, thinkingTime)){
-            res(mostAccurateEval)
+            res({eval:mostAccurateEval, bestMove: bestMove})
           }
         }
       }
@@ -70,23 +74,28 @@ export default class Stockfish{
      * @param res 
      * @returns an updated evaluation or undefined if no updates
      */
-    function parseMessage(event:MessageEvent<any>, previousEval:Eval,
-    turnToMove: 'w'|'b', res:(value: Eval | PromiseLike<Eval>) => void):
-    Eval|undefined{
-    
-      const data:string[]=event.data.split(' ')
+    function parseMessageForEval(event:MessageEvent<any>, previousEval:Eval, turnToMove: 'w'|'b', 
+    res:(value: {eval:Eval, bestMove:string} | PromiseLike<{eval:Eval, bestMove:string}>) => void):
+    {eval:Eval|undefined, bestMove:string}|undefined{
+
+      const message=event.data
+      const data:string[]=message.split(' ')
+      
       if (data[0]=='bestmove'){
-        res(previousEval)
+        const bestMove=message.split('bestmove ')[1].split(' ')[0]
+        res({eval:previousEval, bestMove: bestMove})
       }
       else if (data[0]=='info'){
-        // console.log(data);
+        const bestMove=message.split(' pv ')[1].split(' ')[0]
+        
         const type=data[8]
         let value=parseInt(data[9]);
         (turnToMove=='b') ? value*=-1 : value*=1
         const evaluation={type:type, value:value} as Eval
-        return evaluation
+        return {eval:evaluation, bestMove: bestMove}
       }
     }
+
   }
 
   

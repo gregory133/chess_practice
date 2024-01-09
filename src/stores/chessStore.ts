@@ -3,7 +3,7 @@ import Winrate from '../classes/Winrate';
 import { Database } from '../api/DBApi';
 import PositionList from '../classes/PositionList';
 import { Eval } from '../classes/Stockfish';
-
+import * as cg from 'chessground/types.js';
 
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -21,6 +21,7 @@ export interface ChessStoreState{
   selectedDatabase: Database
   positionList: PositionList
   evaluation:Eval
+  stockfishSuggestion: {from:cg.Key, to:cg.Key}|null
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
@@ -39,6 +40,7 @@ export interface ChessStoreState{
   clearPositionList: ()=>void
   navigatePositionListForward: ()=>void
   navigatePositionListBackward: ()=>void
+  setStockfishSuggestion: (newSuggestion:{from:cg.Key, to:cg.Key}|null)=>void
 
   reset:()=>void
 }
@@ -100,6 +102,7 @@ function initialize(set:any):ChessStoreState{
     selectedDatabase: 'masters',
     positionList: new PositionList(),
     evaluation: {value: 0, type: 'cp'} as Eval,
+    stockfishSuggestion:null,
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {startingFen: newFen}
@@ -161,6 +164,11 @@ function initialize(set:any):ChessStoreState{
       clone.navigateBackward()
       return {positionList: clone}
     }),
+    setStockfishSuggestion: (newSuggestion:{from:cg.Key, to:cg.Key}|null)=>set((state:ChessStoreState)=>{
+      return {stockfishSuggestion: newSuggestion}
+    }),
+
+
     reset: ()=>set((state:ChessStoreState)=>{
    
       const oldFen=state.currentFen
@@ -190,7 +198,8 @@ function initialize(set:any):ChessStoreState{
         winrate: null,
         openingName: '',
         colorPlayerCanControl: playerColor,
-        orientation: playerColor
+        orientation: playerColor,
+        stockfishSuggestion: null
       }
     })
   }

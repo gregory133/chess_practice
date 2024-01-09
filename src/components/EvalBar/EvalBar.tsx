@@ -68,8 +68,9 @@ export default function EvalBar() {
   useEffect(()=>{
     // console.log(currentFen);
     Stockfish.getInstance().getEval(currentFen)
-    .then(newEvaluation=>{
-      setEvaluation(newEvaluation)
+    .then(evaluation=>{
+      const evalValue=evaluation.eval
+      setEvaluation(evalValue)
     })
   }, [currentFen])
 
