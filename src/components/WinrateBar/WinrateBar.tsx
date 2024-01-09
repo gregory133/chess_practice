@@ -3,19 +3,19 @@ import Winrate from '../../classes/Winrate'
 import styles from './WinrateBar.module.scss'
 
 interface Props{
-  winrate:Winrate
+  winrate:Winrate|null
 }
 
 export default function WinrateBar(props:Props) {
 
-  const blackStyle:React.CSSProperties={
-    flex: props.winrate.black
-  }
-  const drawStyle:React.CSSProperties={
-    flex: props.winrate.draw
-  }
-  const whiteStyle:React.CSSProperties={
-    flex: props.winrate.white
+  let blackStyle:React.CSSProperties={flex: 1}
+  let drawStyle:React.CSSProperties={flex: 1}
+  let whiteStyle:React.CSSProperties={flex: 1}
+
+  if (props.winrate){
+    blackStyle={flex: props.winrate.black}
+    whiteStyle={flex: props.winrate.white}
+    drawStyle={flex: props.winrate.draw}
   }
 
   /**
@@ -30,13 +30,25 @@ export default function WinrateBar(props:Props) {
   return (
     <div className={styles.bar}>
       <div style={blackStyle} className={styles.blackBar}>
-        {computeTextPercentage(props.winrate.black)}
+        {
+          props.winrate 
+          ? computeTextPercentage(props.winrate.black)
+          : '-'
+        }
       </div>
       <div style={drawStyle} className={styles.drawBar}>
-        {computeTextPercentage(props.winrate.draw)}
+      {
+          props.winrate 
+          ? computeTextPercentage(props.winrate.draw)
+          : '-'
+        }
       </div>
       <div style={whiteStyle} className={styles.whiteBar}>
-        {computeTextPercentage(props.winrate.white)}
+      {
+          props.winrate 
+          ? computeTextPercentage(props.winrate.white)
+          : '-'
+        }
       </div>
     </div>
   )

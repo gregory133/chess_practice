@@ -2,11 +2,11 @@ import TreeMap from "ts-treemap"
 import { Database, fetchDB, getSanListFromDB } from "../api/DBApi"
 import Stockfish from "./Stockfish"
 import { useChessStore } from "../stores/chessStore"
-import * as cg from 'chessground/types.js';
+
 
 export default class Engine{
 
-  private setStockfishSuggestion=useChessStore(state=>state.setStockfishSuggestion)
+  
   private fen:string
 
   public constructor(fen:string){
@@ -29,9 +29,6 @@ export default class Engine{
   public getRandomResponseFromDB(json:any):string{
    
     const possibleMovesList=getSanListFromDB(json)
-    if (possibleMovesList.length==0){
-      this.displayStockfishSuggestion()
-    }
     const chosenResponse=this.pickRandomResponse(possibleMovesList)
     return chosenResponse
     
@@ -57,23 +54,7 @@ export default class Engine{
     return chosenResponse;
   }
 
-  private uciMoveToSquares(bestMove:string):{to:cg.Key, from:cg.Key}{
-    const from=bestMove.slice(0, 2) as cg.Key
-    const to=bestMove.slice(2, 4) as cg.Key
-    return {from:from, to:to}
-  }
+  
 
-  /**
-   * when called, the engine will ask stockfish for the best move and change the value of "stockfishSuggestion"
-   * in the state to display Stockfish's best move to the user
-   */
-  private displayStockfishSuggestion(){
-    Stockfish.getInstance().getEval(this.fen)
-    .then((evaluation)=>{
-      const bestMove=evaluation.bestMove
-      const {from, to}=this.uciMoveToSquares(bestMove);
-      this.setStockfishSuggestion({from: from ,to: to})
-    })
-  }
-
+  
 }
