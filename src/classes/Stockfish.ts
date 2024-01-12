@@ -8,6 +8,7 @@ export interface Eval{
  */
 export default class Stockfish{
 
+  private isStockfishRunning=false
   private static instance?:Stockfish
   private stockfish=new Worker('/chess_opening_practice/stockfish.js')
 
@@ -29,7 +30,6 @@ export default class Stockfish{
     }
     return this.instance
   }
-
   
   /**
    * given a FEN string, returns an object representing a stockfish evaluation
@@ -37,37 +37,50 @@ export default class Stockfish{
    * @param fen 
    */
   public getEval(fen:string, thinkingTime:number=500):Promise<{eval:Eval, bestMove:string}>{
+
+    const depth=14
+      
     return new Promise((res, rej)=>{
-      this.stockfish.onmessage=onLocalMessage
+      this.stockfish.onmessage=(event:MessageEvent<any>)=>{onLocalMessage(event, this)}
       this.stockfish.postMessage(`position fen ${fen}`)
-  		this.stockfish.postMessage("go depth 14");
+  		this.stockfish.postMessage(`go depth ${depth}`);
+      this.isStockfishRunning=true
 
       let mostAccurateEval={value: 0, type: ''} as Eval
       let bestMove:string
       const startTime=Date.now()
 
-      
-      
-
-      function onLocalMessage(event:MessageEvent<any>){
+      function onLocalMessage(event:MessageEvent<any>, ref:Stockfish){
         const result=parseMessageForEval(event, mostAccurateEval,
         fen.split(' ')[1] as 'w'|'b', res)
-        
+
         if (result){
-          isDepthOne(event.data)
-          mostAccurateEval=result.eval!
-          bestMove=result.bestMove
-          if (timeExceeded(startTime, thinkingTime)){
+          if (isDepth(depth, event.data)){
+            // console.log({eval:mostAccurateEval, bestMove: bestMove})
             res({eval:mostAccurateEval, bestMove: bestMove})
+            
           }
+          else{
+            mostAccurateEval=result.eval!
+            bestMove=result.bestMove
+            if (timeExceeded(startTime, thinkingTime)){
+              ref.isStockfishRunning=false
+              res({eval:mostAccurateEval, bestMove: bestMove})
+            }
+          }
+
+          
         }
       }
       
     })
     
-    function isDepthOne(message:string):boolean{
-      console.log(message.includes('depth'))
-      return true;
+    function isDepth(depth:number, message:string):boolean{
+      if (message.includes('depth')){
+        const d=message.split(' depth ')[1].split(' ')[0]
+        return d===`${depth}`
+      }
+      return false;
     }
 
    
