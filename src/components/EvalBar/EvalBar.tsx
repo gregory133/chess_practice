@@ -66,8 +66,8 @@ export default function EvalBar() {
   }
 
   useEffect(()=>{
-    Stockfish.getInstance().getEval(currentFen)
-    .then(evaluation=>{
+    Stockfish.getEval(currentFen)
+    .then((evaluation:{eval:Eval, bestMove:string})=>{
       const evalValue=evaluation.eval
       setEvaluation(evalValue)
     })

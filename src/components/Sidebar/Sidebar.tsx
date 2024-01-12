@@ -69,7 +69,7 @@ export default function Sidebar() {
    * in the state to display Stockfish's best move to the user
    */
   function displayStockfishSuggestion(){
-    Stockfish.getInstance().getEval(currentFen)
+    Stockfish.getEval(currentFen)
     .then((evaluation)=>{
       const bestMove=evaluation.bestMove
       const {from, to}=uciMoveToSquares(bestMove);
