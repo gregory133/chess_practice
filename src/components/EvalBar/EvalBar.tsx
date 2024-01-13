@@ -14,7 +14,8 @@ export default function EvalBar() {
   const rotationTransform=isWhiteAtBottom ? 'rotate(180deg)' : 'rotate(0deg)'
   const WHITE='#A0A0A0'
   const BLACK='#666666'
-  const [bottomFlex, setBottomFlex]=useState<number>(999)
+  const MAX_BOTTOM_FLEX=999
+  const [bottomFlex, setBottomFlex]=useState<number>(MAX_BOTTOM_FLEX)
 
   const keyEvalBarMarks:number[]=[-900, -500, -300, -100, 0, 100, 300, 500, 900]
 
@@ -57,12 +58,52 @@ export default function EvalBar() {
    * pretty prints the eval value for display
    * @param evalValue 
    */
-  function formatEvaluationValue(evalValue:number):string{
-    let formattedString=(evalValue/100).toString();
-    if (evalValue>0){
-      formattedString='+'+formattedString
+  function formatEvaluationValue(evaluation: Eval):string{
+
+    // console.log(evaluation)
+    const evalValue=evaluation.value
+    const evalType=evaluation.type
+    let formattedString:string=''
+
+    if (evalType=='cp'){
+      formattedString=(evalValue/100).toString()
+      if (evalValue>0){
+        formattedString='+'+formattedString
+      } 
     }
+    else if (evalType=='mate'){
+      formattedString='#'+evalValue
+    }
+
     return formattedString
+    
+  }
+
+  /**
+   * 
+   * @returns the styles for the topBar div
+   */
+  function getTopBarStyles():React.CSSProperties{
+    
+    const bottomRadius=bottomFlex==0 ? styles.borderRadius : "0px"
+    return {
+      flex: 1,
+      borderBottomLeftRadius: bottomRadius,
+      borderBottomRightRadius: bottomRadius
+    }
+  }
+
+  /**
+   * 
+   * @returns the styles for the bottomBar div
+   */
+  function getBottomBarStyles():React.CSSProperties{
+    const bottomRadius=bottomFlex==MAX_BOTTOM_FLEX ? styles.borderRadius : "0px"
+    return {
+      flex: bottomFlex,
+      borderTopLeftRadius: bottomRadius,
+      borderTopRightRadius: bottomRadius
+    }
   }
 
   useEffect(()=>{
@@ -80,17 +121,13 @@ export default function EvalBar() {
   return (
     <div className={styles.container}>
       <p>
-        {formatEvaluationValue(evaluation.value)}
+        {formatEvaluationValue(evaluation)}
       </p>
       <div className={styles.bar} style={{
         transform: rotationTransform
       }}>
-        <div className={styles.topBar} style={{flex: 1}}>
-
-        </div>
-        <div className={styles.bottomBar} style={{flex: bottomFlex}}>
-
-        </div>
+        <div className={styles.topBar} style={getTopBarStyles()}/>
+        <div className={styles.bottomBar} style={getBottomBarStyles()}/>
         {
           keyEvalBarMarks.map((markValue:number, index:number)=>{
             const top:string=getTopFromEvalBarMarkValue(markValue)

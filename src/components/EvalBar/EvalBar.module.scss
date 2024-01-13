@@ -3,6 +3,10 @@
 
 $border-radius: 10px;
 
+:export{
+  borderRadius: $border-radius
+}
+
 .container{
   margin: 10px;
   width: 15px;
@@ -36,15 +40,6 @@ $border-radius: 10px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
   background-color: #A0A0A0;
-  // display: flex;
-  // flex-direction: column;
-
-  // p{
-  //   display: flex;
-  //   flex-direction: column;
-  //   flex: 1;
-  //   justify-content: flex-end;
-  // }
 
 }
 
