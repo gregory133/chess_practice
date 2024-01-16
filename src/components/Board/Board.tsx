@@ -13,6 +13,8 @@ import Engine from '../../classes/Engine';
 import { Database, fetchDB } from '../../api/DBApi';
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 import {DrawShape} from 'chessground/draw'
+import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore';
+import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory';
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>
@@ -40,6 +42,12 @@ export default function Board(props:Props) {
 		addPositionToPositionList)
 	const positionList=useChessStore(state=>state.positionList)
 	const database:Database=useChessStore(state=>state.selectedDatabase)
+
+	const since=useDatabaseSettingsStore(state=>state.since)
+	const until=useDatabaseSettingsStore(state=>state.until)
+	const ratings=useDatabaseSettingsStore(state=>state.ratings)
+	const timeControls=useDatabaseSettingsStore(state=>state.timeControls)
+
 	const chess=new Chess(fen)
 
 	const DISABLED_BOARD_OPACITY=0.5
@@ -58,10 +66,12 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
-		fetchDB(fen, database)
+		// console.log(lastFen)
+		fetchDB(fen, new DatabaseSettingsFactory(since, until, timeControls, ratings)
+		.constructDatabaseSettingsObject(database)!)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
-			makeEnginMoveIfNeeded(json)	
+			makeEngineMoveIfNeeded(json)	
 		})	
 	}, [lastFen])
 
@@ -101,7 +111,7 @@ export default function Board(props:Props) {
 	 * and updates related variables
 	 * @param json 
 	 */
-	function makeEnginMoveIfNeeded(json:any){
+	function makeEngineMoveIfNeeded(json:any){
 		const turnColor=fen.split(' ')[1]=='w' ? 'white' : 'black'
 		if (turnColor!=colorPlayerCanControl){
 			

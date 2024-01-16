@@ -12,6 +12,8 @@ import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser'
 import { Database, fetchDB } from '../../api/DBApi'
 import Stockfish from '../../classes/Stockfish'
 import * as cg from 'chessground/types.js';
+import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory'
+import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore'
 
 export default function Sidebar() {
 
@@ -29,6 +31,11 @@ export default function Sidebar() {
 	const setNumGamesInDB=useChessStore(state=>state.setNumGamesInDB)
 	const setNumMovesInDB=useChessStore(state=>state.setNumMovesInDB)
   const setStockfishSuggestion=useChessStore(state=>state.setStockfishSuggestion)
+
+  const since=useDatabaseSettingsStore(state=>state.since)
+	const until=useDatabaseSettingsStore(state=>state.until)
+	const ratings=useDatabaseSettingsStore(state=>state.ratings)
+	const timeControls=useDatabaseSettingsStore(state=>state.timeControls)
 
   /**
 	 * updates the state variables associated with the sidebar
@@ -79,7 +86,7 @@ export default function Sidebar() {
 
   useEffect(()=>{
 
-    fetchDB(currentFen, database)
+    fetchDB(currentFen, new DatabaseSettingsFactory(since, until, timeControls, ratings).constructDatabaseSettingsObject(database)!)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
       updateSidebar()

@@ -1,6 +1,13 @@
+import DatabaseSettings from "../interfaces/DatabaseSettings"
+import { Rating } from "../types/Rating"
+import { TimeControl } from "../types/TimeControl"
+
 const baseHost='https://explorer.lichess.ovh'
 
 export type Database='masters'|'lichess'|'player'
+// export type DatabaseSettings=MastersDatabaseSettings|LichessDatabaseSettings
+// export type MastersDatabaseSettings={since:number, until:number}
+// export type LichessDatabaseSettings={speeds: TimeControl[], ratings: Rating[] }
 
 /**
  * fetches the url and returns a promise that resolves with the json
@@ -28,10 +35,10 @@ export function fetchDBByUrl(url:string){
  * fetch query to the lichesss masters database with the given uci list
  * @param uciList 
  */
-export function fetchDB(fen:string, dbType:Database):Promise<any>{
+export function fetchDB(fen:string, databaseSettings:DatabaseSettings):Promise<any>{
 
   return new Promise((res, rej)=>{
-    fetchDBByUrl(getDBUrl('/'+dbType,fen))
+    fetchDBByUrl(constructDBUrl(fen, databaseSettings))
     .then(json=>res(json))
   })
 }
@@ -56,10 +63,12 @@ export function getSanListFromDB(json:any):{san:string, frequency:number}[]{
  * @param uciList 
  * @returns 
  */
-function getDBUrl(hostPath: string, fen:string):string{
-  let url=new URL(baseHost+hostPath);
-
+function constructDBUrl(fen:string, databaseSettings:DatabaseSettings):string{
+  let url=new URL(`${baseHost}/${databaseSettings.getDatabaseName()}`);
+  
+  databaseSettings.getURLParameters().forEach((key, value)=>{
+    url.searchParams.append(key, value)
+  })
   url.searchParams.append('fen', fen)
-  url.searchParams.append('moves', '40')
   return url.toString()
 }
