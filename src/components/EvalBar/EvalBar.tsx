@@ -8,6 +8,8 @@ export default function EvalBar() {
   const currentFen=useChessStore(state=>state.currentFen)
   const evaluation=useChessStore(state=>state.evaluation)
   const setEvaluation=useChessStore(state=>state.setEvaluation)
+  const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
+  const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
   const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
 
   const isWhiteAtBottom=colorPlayerCanControl=='white'
@@ -106,6 +108,21 @@ export default function EvalBar() {
     }
   }
 
+  function onClickToggleArrowButton(){
+    setIsStockfishArrowActive(!isStockfishArrowActive)
+  }
+
+  function getToggleArrowImageStyles():React.CSSProperties{
+
+    const bgImage=isStockfishArrowActive 
+      ? `url('${process.env.PUBLIC_URL}/images/diagonal-arrow-active.png')`
+      : `url('${process.env.PUBLIC_URL}/images/diagonal-arrow-inactive.png')`
+
+    return {
+      backgroundImage: bgImage
+    }
+  }
+
   useEffect(()=>{
     Stockfish.getEval(currentFen)
     .then((evaluation:{eval:Eval, bestMove:string})=>{
@@ -120,6 +137,10 @@ export default function EvalBar() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.arrowToggleButton} title='Toggle bestmove engine arrow' 
+      onClick={onClickToggleArrowButton}>
+        <div style={getToggleArrowImageStyles()}/>
+      </div>
       <p>
         {formatEvaluationValue(evaluation)}
       </p>

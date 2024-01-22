@@ -47,16 +47,6 @@ $border-radius: 10px;
   background-color: #666666;
   border-bottom-left-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
-
-  // display: flex;
-  // flex-direction: column;
-
-  // p{
-  //   display: flex;
-  //   flex-direction: column;
-  //   flex: 1;
-  //   justify-content: flex-start;
-  // }
 }
 
 .middleBar{
@@ -64,4 +54,20 @@ $border-radius: 10px;
   background-color: #B37E5F;
   width: 100%;
   height: 1px;
+}
+
+.arrowToggleButton{
+
+  $length: 30px;
+  width: $length;
+  height: $length;
+  padding: 5px;
+
+  div{
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
 }
