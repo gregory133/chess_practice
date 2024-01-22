@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './Sidebar.module.scss'
 import WinrateBar from '../WinrateBar/WinrateBar'
 import Winrate from '../../classes/Winrate'
@@ -17,6 +17,8 @@ import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore'
 
 export default function Sidebar() {
 
+  const [stockfishArrowSuggestion, setStockfishArrowSuggestion]=useState<{from:cg.Key, to:cg.Key}|null>(null)
+
   const currentFen=useChessStore(state=>state.currentFen)
   const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
   const database:Database=useChessStore(state=>state.selectedDatabase)
@@ -30,7 +32,10 @@ export default function Sidebar() {
 	const setOpeningName=useChessStore(state=>state.setOpeningName)
 	const setNumGamesInDB=useChessStore(state=>state.setNumGamesInDB)
 	const setNumMovesInDB=useChessStore(state=>state.setNumMovesInDB)
-  const setStockfishSuggestion=useChessStore(state=>state.setStockfishSuggestion)
+
+
+  const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
+  const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
 
   const since=useDatabaseSettingsStore(state=>state.since)
 	const until=useDatabaseSettingsStore(state=>state.until)
@@ -45,7 +50,7 @@ export default function Sidebar() {
     const winrate=jsonParserRef.current.extractWinrate()
     const noMoreGamesInDB=Number.isNaN(winrate.black)
     if (noMoreGamesInDB){
-      displayStockfishSuggestion()
+      setIsStockfishArrowActive(true)
       setWinrate(null)
     }
     else{
@@ -71,18 +76,20 @@ export default function Sidebar() {
     return {from:from, to:to}
   }
 
-  /**
-   * when called, this method will ask stockfish for the best move and change the value of "stockfishSuggestion"
-   * in the state to display Stockfish's best move to the user
-   */
-  function displayStockfishSuggestion(){
-    Stockfish.getEval(currentFen)
-    .then((evaluation)=>{
-      const bestMove=evaluation.bestMove
-      const {from, to}=uciMoveToSquares(bestMove);
-      setStockfishSuggestion({from: from ,to: to})
-    })
-  }
+  useEffect(()=>{
+    if (!isStockfishArrowActive){
+      setStockfishArrowSuggestion(null)
+    }
+    else{
+      Stockfish.getEval(currentFen)
+			.then(evaluation=>{
+				const from=evaluation.bestMove.substring(0, 2) as cg.Key
+				const to=evaluation.bestMove.substring(2, evaluation.bestMove.length) as cg.Key
+
+				setStockfishArrowSuggestion({from:from, to:to})
+			})
+    }
+  }, [isStockfishArrowActive])
 
   useEffect(()=>{
 

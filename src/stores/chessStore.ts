@@ -21,7 +21,7 @@ export interface ChessStoreState{
   selectedDatabase: Database
   positionList: PositionList
   evaluation:Eval
-  stockfishSuggestion: {from:cg.Key, to:cg.Key}|null
+  isStockfishArrowActive: boolean
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
@@ -40,7 +40,7 @@ export interface ChessStoreState{
   clearPositionList: ()=>void
   navigatePositionListForward: ()=>void
   navigatePositionListBackward: ()=>void
-  setStockfishSuggestion: (newSuggestion:{from:cg.Key, to:cg.Key}|null)=>void
+  setIsStockfishArrowActive: (value:boolean)=>void
 
   reset:()=>void
 }
@@ -102,7 +102,7 @@ function initialize(set:any):ChessStoreState{
     selectedDatabase: 'masters',
     positionList: new PositionList(),
     evaluation: {value: 0, type: 'cp'} as Eval,
-    stockfishSuggestion:null,
+    isStockfishArrowActive: false,
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {startingFen: newFen}
@@ -164,8 +164,8 @@ function initialize(set:any):ChessStoreState{
       clone.navigateBackward()
       return {positionList: clone}
     }),
-    setStockfishSuggestion: (newSuggestion:{from:cg.Key, to:cg.Key}|null)=>set((state:ChessStoreState)=>{
-      return {stockfishSuggestion: newSuggestion}
+    setIsStockfishArrowActive: (value:boolean)=>set((state:ChessStoreState)=>{
+      return {isStockfishArrowActive: value}
     }),
 
 
@@ -199,7 +199,7 @@ function initialize(set:any):ChessStoreState{
         openingName: '',
         colorPlayerCanControl: playerColor,
         orientation: playerColor,
-        stockfishSuggestion: null
+        isStockfishArrowActive: false
       }
     })
   }

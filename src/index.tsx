@@ -9,7 +9,12 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+// Stockfish.getEval('rn1qkbnr/ppp1pppp/3p4/8/3PP3/7b/PPP2PPP/RNBQKBNR w KQkq - 1 3')
+// .then(e=>{
+//   console.log(e)
+// })
+
 root.render(
-  // <EvalBar />
+  // null
   <App/>  
 );

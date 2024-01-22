@@ -15,6 +15,7 @@ import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 import {DrawShape} from 'chessground/draw'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore';
 import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory';
+import Stockfish from '../../classes/Stockfish';
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>
@@ -28,7 +29,7 @@ export default function Board(props:Props) {
 	const setLastFen=useChessStore(state=>state.setLastFen)
 	const orientation=useChessStore(state=>state.orientation)
 	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
-	const stockfishSuggestion=useChessStore(state=>state.stockfishSuggestion)
+	const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
 
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
@@ -37,6 +38,7 @@ export default function Board(props:Props) {
 	const [length, setLength]=useState(0)
 	const [boardOpacity, setBoardOpacity]=useState<number>(1)
 	const [promotionFile, setPromotionFile]=useState<number>(0)
+	const [stockfishArrowSuggestion, setStockfishArrowSuggestion]=useState<{from:cg.Key, to:cg.Key}|null>(null)
 
 	const addPositionToPositionList=useChessStore(state=>state.
 		addPositionToPositionList)
@@ -81,6 +83,21 @@ export default function Board(props:Props) {
 			setFen(currentPosition)
 		}
   }, [positionList])
+
+	useEffect(()=>{
+		if (!isStockfishArrowActive){
+			setStockfishArrowSuggestion(null)
+		}
+		else{
+			Stockfish.getEval(fen)
+			.then(evaluation=>{
+				const from=evaluation.bestMove.substring(0, 2) as cg.Key
+				const to=evaluation.bestMove.substring(2, evaluation.bestMove.length) as cg.Key
+				// console.log(evaluation)
+				setStockfishArrowSuggestion({from:from, to:to})
+			})
+		}
+	}, [isStockfishArrowActive])
 
 	/**
 	 * 
@@ -314,10 +331,11 @@ export default function Board(props:Props) {
 		const turnColor:cg.Color = fen.split(' ')[1]=='w'
 		? 'white' : 'black'
 
-		const autoShapes:DrawShape[] = stockfishSuggestion==null ? [] : [
+		// console.log(stockfishArrowSuggestion)
+		const autoShapes:DrawShape[] = !(isStockfishArrowActive && stockfishArrowSuggestion) ? [] : [
 			{
-				orig: stockfishSuggestion.from,
-				dest: stockfishSuggestion.to,
+				orig: stockfishArrowSuggestion!.from,
+				dest: stockfishArrowSuggestion!.to,
 				brush: 'blue',
 			}
 		]

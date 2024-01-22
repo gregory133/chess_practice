@@ -15,7 +15,7 @@ import MaterialCount from './components/MaterialCount/MaterialCount';
 function App() {
   const navigateBackward=useChessStore(state=>state.navigatePositionListBackward)
   const navigateForward=useChessStore(state=>state.navigatePositionListForward)
-  const setStockfishSuggestion=useChessStore(state=>state.setStockfishSuggestion)
+  const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
   const boardParentRef=useRef(null)
 
   useEffect(()=>{
@@ -42,7 +42,7 @@ function App() {
    */
   function onLeftArrowKeyPressed(){
     navigateBackward()
-    setStockfishSuggestion(null)
+    setIsStockfishArrowActive(false)
   }
 
    /**

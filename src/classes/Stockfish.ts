@@ -16,8 +16,7 @@ export default class Stockfish{
   private static onStockfishMessage(event:any, res: any, endTime:number, fen:string, 
     bestEvaluationSoFar:Evaluation){
       if (Date.now()>=endTime){
-        res(bestEvaluationSoFar)
-        
+        res(bestEvaluationSoFar, 'timeout') 
         return
       }
 
@@ -26,7 +25,7 @@ export default class Stockfish{
 
       if (messageMode=='bestmove'){
         if (bestEvaluationSoFar){
-          res(bestEvaluationSoFar)
+          res(bestEvaluationSoFar, 'bestmove')
         }
       }
       else if (messageMode=='info'){
@@ -52,6 +51,12 @@ export default class Stockfish{
       
   }
 
+  /**
+   * utility method that returns the correctly formatted eval object
+   * @param value 
+   * @param fen 
+   * @returns 
+   */
   private static rectifyEvalValue(value:number, fen:string):number {
     const isBlackToMove=fen.split(' ')[1]=='b'
 
@@ -67,17 +72,20 @@ export default class Stockfish{
    * @param thinkingTime time taken by the engine to think in milliseconds
    * @param fen 
    */
-  public static getEval(fen:string, thinkingTime:number=1200):Promise<{eval:Eval, bestMove:string}>{
-
+  public static getEval(fen:string, thinkingTime:number=1500):Promise<{eval:Eval, bestMove:string}>{
+    let stockfish=new Worker('/chess_opening_practice/stockfish.js')
     const startTime=Date.now()
     const endTime=startTime+thinkingTime
-
+    
     const bestEvaluationSoFar:Evaluation={eval: {value: 0, type: 'cp'}, bestMove: ''}
 
     return new Promise((res, rej)=>{
-      let stockfish=new Worker('/chess_opening_practice/stockfish.js')
+      const resolveEvaluation=(e:Evaluation, message:string)=>{
+        res(e)
+      }
+      
       const depth=14
-      stockfish.onmessage=(event:any)=>{Stockfish.onStockfishMessage(event, res, endTime, fen, 
+      stockfish.onmessage=(event:any)=>{Stockfish.onStockfishMessage(event, resolveEvaluation, endTime, fen, 
         bestEvaluationSoFar)}
       stockfish.postMessage(`position fen ${fen}`)
       stockfish.postMessage(`go depth ${depth}`)
