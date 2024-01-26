@@ -73,7 +73,7 @@ export default class Stockfish{
    * @param fen 
    */
   public static getEval(fen:string, thinkingTime:number=1500):Promise<{eval:Eval, bestMove:string}>{
-    let stockfish=new Worker('/chess_opening_practice/stockfish.js')
+    let stockfish=new Worker('/stockfish.js')
     const startTime=Date.now()
     const endTime=startTime+thinkingTime
     
