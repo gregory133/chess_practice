@@ -14,24 +14,26 @@ export interface Evaluation{
 
 export default function () {
 
+  const MOVE_TIME=0
   const [isReady, setIsReady]=useState(false)
 
   const currentFen=useChessStore(state=>state.currentFen)
   const setEvaluation=useChessStore(state=>state.setEvaluation)
 
-  const currentFenRef=useRef(currentFen)
-  const stockfishRef=useRef<Worker>(new Worker('/stockfish.js'))
+  const stockfishRef=useRef<Worker|null>(null)
 
   useEffect(()=>{
+    stockfishRef.current=new Worker('/stockfish.js')
     initializeStockfish()
     createNewStockfishGame()
   }, [])
 
   useEffect(()=>{
-    console.log(currentFen)
-    currentFenRef.current=currentFen
-    stockfishRef.current.postMessage('stop')
-   
+    if (stockfishRef.current){
+      stockfishRef.current.postMessage('stop')
+      stockfishRef.current.postMessage(`position fen ${currentFen}`)
+      stockfishRef.current.postMessage(`go infinite`)
+    }
   }, [currentFen])
 
   useEffect(()=>{
@@ -44,18 +46,22 @@ export default function () {
    * called once to initialize Stockfish
    */
   function initializeStockfish(){
-    stockfishRef.current.onmessage=onStockfishMessage
-    stockfishRef.current.postMessage('uci')
-    
+    if (stockfishRef.current){
+      stockfishRef.current.onmessage=onStockfishMessage
+      stockfishRef.current.postMessage('uci')
+    }
   }
 
   /**
    * called to reset stockfish with the starting position in a new game
    */
   function createNewStockfishGame(){
-    stockfishRef.current.postMessage('ucinewgame')
-    stockfishRef.current.postMessage(`position startpos`)
-    stockfishRef.current.postMessage('isready')
+    if (stockfishRef.current){
+      stockfishRef.current.postMessage('ucinewgame')
+      stockfishRef.current.postMessage(`position startpos`)
+      stockfishRef.current.postMessage('isready')
+    }
+    
   }
 
   function extractEvaluation(msg:string):Evaluation{
@@ -67,7 +73,9 @@ export default function () {
   }
 
   function ponderCurrentPostion(){
-    stockfishRef.current.postMessage('go infinite')
+    if (stockfishRef.current){
+      stockfishRef.current.postMessage(`go infinite`)
+    }
   }
 
   function onStockfishMessage(event:any){
@@ -81,8 +89,7 @@ export default function () {
       setEvaluation(evaluation)
     }
     if (msg.includes('ponder')){
-      stockfishRef.current.postMessage(`position fen ${currentFenRef.current}`)
-      stockfishRef.current.postMessage('go infinite')
+     
     }
 
   }
