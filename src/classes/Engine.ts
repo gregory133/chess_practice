@@ -1,6 +1,5 @@
 import TreeMap from "ts-treemap"
 import { Database, fetchDB, getSanListFromDB } from "../api/DBApi"
-import Stockfish from "./Stockfish"
 import { useChessStore } from "../stores/chessStore"
 
 

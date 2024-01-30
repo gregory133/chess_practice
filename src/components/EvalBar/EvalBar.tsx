@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Stockfish, { Eval } from '../../classes/Stockfish'
 import styles from "./EvalBar.module.scss"
 import { useChessStore } from '../../stores/chessStore'
+import { Evaluation } from '../Stockfish/StockfishComponent'
 
 export default function EvalBar() {
 
   const currentFen=useChessStore(state=>state.currentFen)
   const evaluation=useChessStore(state=>state.evaluation)
-  const setEvaluation=useChessStore(state=>state.setEvaluation)
   const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
   const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
   const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
@@ -37,16 +36,23 @@ export default function EvalBar() {
    * adjusts the bar to reflect the given evaluation
    * @param evaluation 
    */
-  function adjustBarProportion(evaluation:Eval){
-    const bigNumber=999
-    if (evaluation.type=='mate'){
-      evaluation.value < 0 ? setBottomFlex(bigNumber) : setBottomFlex(0)
+  function adjustBarProportion(evaluation:Evaluation|null){
+
+    if (evaluation){
+      const bigNumber=999
+      if (evaluation.eval.type=='mate'){
+        evaluation.eval.value < 0 ? setBottomFlex(bigNumber) : setBottomFlex(0)
+      }
+      else if (evaluation.eval.type=='cp'){
+        const evalValue=evaluation.eval.value
+        const flexProportion=getFlexProportionFromEvalValue(evalValue)
+        setBottomFlex(flexProportion)
+      }
     }
-    else if (evaluation.type=='cp'){
-      const evalValue=evaluation.value
-      const flexProportion=getFlexProportionFromEvalValue(evalValue)
-      setBottomFlex(flexProportion)
+    else{
+      
     }
+    
   }
 
   function getTopFromEvalBarMarkValue(markValue:number):string{
@@ -60,24 +66,30 @@ export default function EvalBar() {
    * pretty prints the eval value for display
    * @param evalValue 
    */
-  function formatEvaluationValue(evaluation: Eval):string{
+  function formatEvaluationValue(evaluation: Evaluation|null):string{
 
-    // console.log(evaluation)
-    const evalValue=evaluation.value
-    const evalType=evaluation.type
-    let formattedString:string=''
-
-    if (evalType=='cp'){
-      formattedString=(evalValue/100).toString()
-      if (evalValue>0){
-        formattedString='+'+formattedString
-      } 
+    if (evaluation){
+      const evalValue=evaluation.eval.value
+      const evalType=evaluation.eval.type
+      let formattedString:string=''
+  
+      if (evalType=='cp'){
+        formattedString=(evalValue/100).toString()
+        if (evalValue>0){
+          formattedString='+'+formattedString
+        } 
+      }
+      else if (evalType=='mate'){
+        formattedString='#'+evalValue
+      }
+      return formattedString
     }
-    else if (evalType=='mate'){
-      formattedString='#'+evalValue
+    else{
+      return ''
     }
+    
 
-    return formattedString
+   
     
   }
 
@@ -122,14 +134,6 @@ export default function EvalBar() {
       backgroundImage: bgImage
     }
   }
-
-  useEffect(()=>{
-    Stockfish.getEval(currentFen)
-    .then((evaluation:{eval:Eval, bestMove:string})=>{
-      const evalValue=evaluation.eval
-      setEvaluation(evalValue)
-    })
-  }, [currentFen])
 
   useEffect(()=>{
     adjustBarProportion(evaluation)

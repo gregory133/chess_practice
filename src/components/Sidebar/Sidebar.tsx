@@ -10,7 +10,6 @@ import ColorSelect from '../ColorSelect/ColorSelect'
 import DatabaseSelect from '../DatabaseSelect/DatabaseSelect'
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser'
 import { Database, fetchDB } from '../../api/DBApi'
-import Stockfish from '../../classes/Stockfish'
 import * as cg from 'chessground/types.js';
 import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore'
@@ -27,6 +26,7 @@ export default function Sidebar() {
   const winrate=useChessStore(state=>state.winrate)
   const numGamesInDB=useChessStore(state=>state.numGamesInDB)
   const numMovesInDB=useChessStore(state=>state.numMovesInDB)
+  const evaluation=useChessStore(state=>state.evaluation)
 
   const setWinrate=useChessStore(state=>state.setWinrate)
 	const setOpeningName=useChessStore(state=>state.setOpeningName)
@@ -81,13 +81,15 @@ export default function Sidebar() {
       setStockfishArrowSuggestion(null)
     }
     else{
-      Stockfish.getEval(currentFen)
-			.then(evaluation=>{
-				const from=evaluation.bestMove.substring(0, 2) as cg.Key
+      if (evaluation){
+        const from=evaluation.bestMove.substring(0, 2) as cg.Key
 				const to=evaluation.bestMove.substring(2, evaluation.bestMove.length) as cg.Key
-
 				setStockfishArrowSuggestion({from:from, to:to})
-			})
+      }
+			else{
+        setStockfishArrowSuggestion(null)
+      }
+			
     }
   }, [isStockfishArrowActive])
 

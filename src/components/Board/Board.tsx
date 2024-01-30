@@ -15,7 +15,6 @@ import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 import {DrawShape} from 'chessground/draw'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore';
 import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory';
-import Stockfish from '../../classes/Stockfish';
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>
@@ -30,6 +29,7 @@ export default function Board(props:Props) {
 	const orientation=useChessStore(state=>state.orientation)
 	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
 	const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
+	const evaluation=useChessStore(state=>state.evaluation)
 
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
@@ -89,13 +89,14 @@ export default function Board(props:Props) {
 			setStockfishArrowSuggestion(null)
 		}
 		else{
-			Stockfish.getEval(fen)
-			.then(evaluation=>{
+			if (evaluation){
 				const from=evaluation.bestMove.substring(0, 2) as cg.Key
 				const to=evaluation.bestMove.substring(2, evaluation.bestMove.length) as cg.Key
-				// console.log(evaluation)
 				setStockfishArrowSuggestion({from:from, to:to})
-			})
+			}
+			else{
+				setStockfishArrowSuggestion(null)
+			}
 		}
 	}, [isStockfishArrowActive])
 

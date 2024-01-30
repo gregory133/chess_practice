@@ -8,11 +8,12 @@ import './styles/Fonts.scss'
 
 import RefreshButton from './components/RefreshButton/RefreshButton';
 import { useChessStore } from './stores/chessStore';
-import Stockfish, { Eval } from './classes/Stockfish';
 import EvalBar from './components/EvalBar/EvalBar';
 import MaterialCount from './components/MaterialCount/MaterialCount';
+import StockfishComponent from './components/Stockfish/StockfishComponent';
 
 function App() {
+  const evaluation=useChessStore(state=>state.evaluation)
   const navigateBackward=useChessStore(state=>state.navigatePositionListBackward)
   const navigateForward=useChessStore(state=>state.navigatePositionListForward)
   const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
@@ -64,6 +65,7 @@ function App() {
       
       <RefreshButton/>
       <Sidebar/>
+      <StockfishComponent/>
     </div>
    
   );

@@ -2,8 +2,8 @@ import {create} from 'zustand';
 import Winrate from '../classes/Winrate';
 import { Database } from '../api/DBApi';
 import PositionList from '../classes/PositionList';
-import { Eval } from '../classes/Stockfish';
 import * as cg from 'chessground/types.js';
+import { Eval, Evaluation } from '../components/Stockfish/StockfishComponent';
 
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -20,7 +20,7 @@ export interface ChessStoreState{
   selectedColor: 'white'|'any'|'black'
   selectedDatabase: Database
   positionList: PositionList
-  evaluation:Eval
+  evaluation:Evaluation|null
   isStockfishArrowActive: boolean
 
   setStartingFen:(newFen:string)=>void
@@ -34,7 +34,7 @@ export interface ChessStoreState{
   setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>void
   setSelectedColor: (newVal:'white'|'any'|'black')=>void
   setSelectedDatabase: (newVal:Database)=>void
-  setEvaluation: (newVal:Eval)=>void
+  setEvaluation: (evaluation:Evaluation|null)=>void
 
   addPositionToPositionList: (moveUCI:string)=>void
   clearPositionList: ()=>void
@@ -101,7 +101,7 @@ function initialize(set:any):ChessStoreState{
     selectedColor: 'any',
     selectedDatabase: 'masters',
     positionList: new PositionList(),
-    evaluation: {value: 0, type: 'cp'} as Eval,
+    evaluation: null,
     isStockfishArrowActive: false,
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
@@ -136,8 +136,8 @@ function initialize(set:any):ChessStoreState{
     set((state:ChessStoreState)=>{
       return {selectedColor: newVal}
     }),
-    setEvaluation: (newVal:Eval)=>set((state:ChessStoreState)=>{
-      return {evaluation: newVal}
+    setEvaluation: (newEval:Evaluation|null)=>set((state:ChessStoreState)=>{
+      return {evaluation: newEval}
     }),
     setSelectedDatabase: (newVal: Database)=>
     set((state: ChessStoreState)=>{
