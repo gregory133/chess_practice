@@ -22,6 +22,7 @@ export interface ChessStoreState{
   positionList: PositionList
   evaluation:Evaluation|null
   isStockfishArrowActive: boolean
+  blueArrow: {from:cg.Key, to:cg.Key}|null
 
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
@@ -40,7 +41,9 @@ export interface ChessStoreState{
   clearPositionList: ()=>void
   navigatePositionListForward: ()=>void
   navigatePositionListBackward: ()=>void
+
   setIsStockfishArrowActive: (value:boolean)=>void
+  setBlueArrow: (value:{from:cg.Key, to:cg.Key}|null)=>void
 
   reset:()=>void
 }
@@ -102,6 +105,7 @@ function initialize(set:any):ChessStoreState{
     selectedDatabase: 'masters',
     positionList: new PositionList(),
     evaluation: null,
+    blueArrow:null,
     isStockfishArrowActive: false,
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
@@ -167,7 +171,9 @@ function initialize(set:any):ChessStoreState{
     setIsStockfishArrowActive: (value:boolean)=>set((state:ChessStoreState)=>{
       return {isStockfishArrowActive: value}
     }),
-
+    setBlueArrow: (value: {from:cg.Key, to:cg.Key}|null)=>set((state:ChessStoreState)=>{
+      return {blueArrow: value}
+    }),
 
     reset: ()=>set((state:ChessStoreState)=>{
    
@@ -193,13 +199,15 @@ function initialize(set:any):ChessStoreState{
         positionList: new PositionList(),
         currentFen: newFen,
         lastFen: newFen,
-        numGamesInDB: null,
+        numGamesInDB: null, 
         numMovesInDB: null,
         winrate: null,
         openingName: '',
         colorPlayerCanControl: playerColor,
         orientation: playerColor,
-        isStockfishArrowActive: false
+        isStockfishArrowActive: false,
+        evaluation: null,
+        blueArrow: null
       }
     })
   }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useChessStore } from '../../stores/chessStore'
+import * as cg from 'chessground/types.js';
 
 export interface Eval{
   value:number
@@ -17,22 +18,28 @@ export default function () {
   const MOVE_TIME=0
   const [isReady, setIsReady]=useState(false)
 
+  const evaluation=useChessStore(state=>state.evaluation)
+  const blueArrow=useChessStore(state=>state.blueArrow)
   const currentFen=useChessStore(state=>state.currentFen)
   const setEvaluation=useChessStore(state=>state.setEvaluation)
+  const setBlueArrow=useChessStore(state=>state.setBlueArrow)
 
   const stockfishRef=useRef<Worker|null>(null)
+  const currentFenRef=useRef(currentFen)
 
   useEffect(()=>{
     stockfishRef.current=new Worker('/stockfish.js')
     initializeStockfish()
     createNewStockfishGame()
   }, [])
-
+  
   useEffect(()=>{
+    currentFenRef.current=currentFen
+
     if (stockfishRef.current){
       stockfishRef.current.postMessage('stop')
-      stockfishRef.current.postMessage(`position fen ${currentFen}`)
-      stockfishRef.current.postMessage(`go infinite`)
+      // stockfishRef.current.postMessage(`position fen ${currentFen}`)
+      // stockfishRef.current.postMessage(`go infinite`)
     }
   }, [currentFen])
 
@@ -41,6 +48,11 @@ export default function () {
       ponderCurrentPostion()
     }
   }, [isReady])
+
+  useEffect(()=>{
+    // console.log(evaluation?.bestMove)
+  }, [evaluation])
+
 
   /**
    * called once to initialize Stockfish
@@ -78,18 +90,28 @@ export default function () {
     }
   }
 
+  function extractArrowFromTo(evaluation:Evaluation):{from:cg.Key, to: cg.Key}{
+    const bestMove=evaluation.bestMove
+    return {from: bestMove.substring(0, 2) as cg.Key,to: bestMove.substring(2, 4) as cg.Key}
+  }
+
   function onStockfishMessage(event:any){
     
     const msg:string=event.data
+    
     if (msg=='readyok'){
       setIsReady(true)
     }
     if (msg.includes('info depth')){
       const evaluation=extractEvaluation(msg)
       setEvaluation(evaluation)
+      setBlueArrow(extractArrowFromTo(evaluation))
     }
-    if (msg.includes('ponder')){
-     
+    if (msg.includes('bestmove')){
+      if (stockfishRef.current){
+        stockfishRef.current.postMessage(`position fen ${currentFenRef.current}`)
+        stockfishRef.current.postMessage(`go infinite`)
+      }
     }
 
   }

@@ -44,6 +44,7 @@ export default function Board(props:Props) {
 		addPositionToPositionList)
 	const positionList=useChessStore(state=>state.positionList)
 	const database:Database=useChessStore(state=>state.selectedDatabase)
+	const blueArrow=useChessStore(state=>state.blueArrow)
 
 	const since=useDatabaseSettingsStore(state=>state.since)
 	const until=useDatabaseSettingsStore(state=>state.until)
@@ -329,14 +330,14 @@ export default function Board(props:Props) {
 	 */
 	function getConfig():Config{
 
+		// console.log(blueArrow)
 		const turnColor:cg.Color = fen.split(' ')[1]=='w'
 		? 'white' : 'black'
 
-		// console.log(stockfishArrowSuggestion)
-		const autoShapes:DrawShape[] = !(isStockfishArrowActive && stockfishArrowSuggestion) ? [] : [
+		const autoShapes:DrawShape[] = !(isStockfishArrowActive && blueArrow) ? [] : [
 			{
-				orig: stockfishArrowSuggestion!.from,
-				dest: stockfishArrowSuggestion!.to,
+				orig: blueArrow.from,
+				dest: blueArrow.to,
 				brush: 'blue',
 			}
 		]
@@ -372,6 +373,10 @@ export default function Board(props:Props) {
 	useEffect(()=>{
 		adjustBoardLength()
 	}, [props.parentRef])
+
+	useEffect(()=>{
+		// console.log(evaluation)
+	},[evaluation])
 
 	return (
 
