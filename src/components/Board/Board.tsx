@@ -82,10 +82,12 @@ export default function Board(props:Props) {
 		})	
 	}, [lastFen])
 
+	console.log('render');
+
 	useEffect(()=>{
-		if (positionList.size()==0){
-			setLastFromToSquares([])
-		}
+		// if (positionList.size()==0){
+		// 	setLastFromToSquares([])
+		// }
 
 		const currentPosition=positionList.getCurrentPosition()
 		updateLastMoveHighlightedSquares(currentPosition)
