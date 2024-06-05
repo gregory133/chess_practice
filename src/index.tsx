@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/Index.scss'
 import EvalBar from './components/EvalBar/EvalBar';
-import Test from './components/Test';
 import PositionList from './classes/PositionList';
 import Position from './classes/Position';
 
@@ -14,6 +13,4 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <App/> 
-  // <>hello</>
-  // <Test/>
 );

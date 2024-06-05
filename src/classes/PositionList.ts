@@ -1,9 +1,11 @@
 import { Chess } from 'chess.js'
 import LinkedList, {Node, NodeData} from 'dbly-linked-list'
 import Position from './Position'
+import { INITIAL_FEN } from './ChessUtil'
 
 export default class PositionList{
 
+  
   private positionList:LinkedList
   private currentIndex:number
 
@@ -24,11 +26,15 @@ export default class PositionList{
 
   public addPositionByUCI(moveUCI:string){
     let lastPosition=this.positionList.getTailNode()?.data as Position
+    if (!lastPosition){
+      this.addPosition(new Position(INITIAL_FEN, ''))
+    }
+    lastPosition=this.positionList.getTailNode()?.data as Position
     let chess=new Chess(lastPosition.fen)
-    chess.move(moveUCI)
-    let newPosition=new Position(
-      chess.fen(), chess.history({verbose:true})[chess.history().length-1].lan)
-    this.addPosition(newPosition)
+      chess.move(moveUCI)
+      let newPosition=new Position(
+        chess.fen(), chess.history({verbose:true})[chess.history().length-1].lan)
+      this.addPosition(newPosition)
   }
 
 

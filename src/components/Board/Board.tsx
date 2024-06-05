@@ -74,7 +74,6 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
-		// console.log('fen change', lastFen)
 		fetchDB(fen, new DatabaseSettingsFactory(since, until, timeControls, ratings)
 		.constructDatabaseSettingsObject(database)!)
 		.then(json=>{
@@ -84,7 +83,10 @@ export default function Board(props:Props) {
 	}, [lastFen])
 
 	useEffect(()=>{
-		
+		if (positionList.size()==0){
+			setLastFromToSquares([])
+		}
+
 		const currentPosition=positionList.getCurrentPosition()
 		updateLastMoveHighlightedSquares(currentPosition)
 		if (currentPosition){
