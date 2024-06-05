@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.13.8",
     "sass": "^1.69.5",
     "ts-treemap": "^1.1.0",
     "typescript": "^4.9.5",
@@ -40,8 +41,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "sync" : "aws s3 sync ./build \"s3://chessopeningpractice\"",
-    "buildsync" : "npm run build & npm run sync"
+    "sync": "aws s3 sync ./build \"s3://chessopeningpractice\"",
+    "buildsync": "npm run build & npm run sync"
   },
   "eslintConfig": {
     "extends": [

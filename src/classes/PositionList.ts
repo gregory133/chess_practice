@@ -1,5 +1,6 @@
 import { Chess } from 'chess.js'
-import LinkedList, {Node} from 'dbly-linked-list'
+import LinkedList, {Node, NodeData} from 'dbly-linked-list'
+import Position from './Position'
 
 export default class PositionList{
 
@@ -16,18 +17,28 @@ export default class PositionList{
    * the last element
    * @param position 
    */
-  public addPosition(position:string){
+  public addPosition(position:Position){
     this.positionList.insert(position)
     this.currentIndex=this.positionList.getSize()-1
   }
 
+  public addPositionByUCI(moveUCI:string){
+    let lastPosition=this.positionList.getTailNode()?.data as Position
+    let chess=new Chess(lastPosition.fen)
+    chess.move(moveUCI)
+    let newPosition=new Position(
+      chess.fen(), chess.history({verbose:true})[chess.history().length-1].lan)
+    this.addPosition(newPosition)
+  }
+
+
   /**
    * return the current position
    */
-  public getCurrentPosition():string|null{
+  public getCurrentPosition():Position|null{
     const node=this.positionList.findAt(this.currentIndex)
     if (node){
-      return node.data as string
+      return node.data as Position
     }
     
     return null
@@ -49,9 +60,6 @@ export default class PositionList{
     if (this.currentIndex>0){
       this.currentIndex--;
     }
-    else{
-      // console.log('not updating');
-    }
   }
 
   /**
@@ -63,14 +71,16 @@ export default class PositionList{
   }
 
   public toString():string{
-    const chess=new Chess();
-    let positionsRawArray=this.positionList.toArray().map(posNode=>{
-      const fen=posNode.toString()
-      chess.load(fen)
-      return chess.ascii()
+
+    let returnString=''
+    let index=0
+    this.positionList.forEach((node:any)=>{
+      let position=node.data
+      returnString += 'index ' + index + ' : ' + position.fen + " -> " + position.lastLAN 
+      + "\n" + '-----------------' + '\n' 
+      index++
     })
-   
-    return positionsRawArray.join('\n\n')+'\n index:'+this.currentIndex;
+    return returnString
   }
 
   public clone():PositionList{

@@ -14,7 +14,6 @@ export interface Evaluation{
 
 
 export default function () {
-
   const MOVE_TIME=0
   const [isReady, setIsReady]=useState(false)
 

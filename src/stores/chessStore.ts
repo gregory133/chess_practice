@@ -4,6 +4,7 @@ import { Database } from '../api/DBApi';
 import PositionList from '../classes/PositionList';
 import * as cg from 'chessground/types.js';
 import { Eval, Evaluation } from '../components/Stockfish/StockfishComponent';
+import Position from '../classes/Position';
 
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -37,7 +38,8 @@ export interface ChessStoreState{
   setSelectedDatabase: (newVal:Database)=>void
   setEvaluation: (evaluation:Evaluation|null)=>void
 
-  addPositionToPositionList: (moveUCI:string)=>void
+  addPositionToPositionListByFEN: (fen:string, lastLAN:string)=>void
+  addPositionToPositionListByUCI: (moveUCI:string)=>void
   clearPositionList: ()=>void
   navigatePositionListForward: ()=>void
   navigatePositionListBackward: ()=>void
@@ -147,10 +149,16 @@ function initialize(set:any):ChessStoreState{
     set((state: ChessStoreState)=>{
       return {selectedDatabase: newVal}
     }),
-    addPositionToPositionList: (position:string)=>
+    addPositionToPositionListByFEN: (fen, lastLAN)=>
     set((state:ChessStoreState)=>{
       let clone=state.positionList.clone()
-      clone.addPosition(position)
+      clone.addPosition(new Position(fen, lastLAN))
+      return {positionList:clone}
+    }),
+    addPositionToPositionListByUCI: (moveUCI:string)=>
+    set((state:ChessStoreState)=>{
+      let clone=state.positionList.clone()
+      clone.addPositionByUCI(moveUCI)
       return {positionList: clone}
     }),
     clearPositionList: ()=>set((state:ChessStoreState)=>{

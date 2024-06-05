@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from "./EvalBar.module.scss"
 import { useChessStore } from '../../stores/chessStore'
 import { Evaluation } from '../Stockfish/StockfishComponent'
+import { BarLoader, CircleLoader, ClipLoader, ClockLoader, RotateLoader } from 'react-spinners'
 
 export default function EvalBar() {
 
@@ -16,6 +17,8 @@ export default function EvalBar() {
   const WHITE='#A0A0A0'
   const BLACK='#666666'
   const MAX_BOTTOM_FLEX=999
+
+  const [loadingEval, setLoadingEval]=useState<boolean>(false)
   const [bottomFlex, setBottomFlex]=useState<number>(MAX_BOTTOM_FLEX)
 
   const keyEvalBarMarks:number[]=[-900, -500, -300, -100, 0, 100, 300, 500, 900]
@@ -136,8 +139,13 @@ export default function EvalBar() {
   }
 
   useEffect(()=>{
+    setLoadingEval(false)
     adjustBarProportion(evaluation)
   }, [evaluation])
+
+  useEffect(()=>{
+    setLoadingEval(true)
+  }, [currentFen])
 
   return (
     <div className={styles.container}>
@@ -146,7 +154,12 @@ export default function EvalBar() {
         <div style={getToggleArrowImageStyles()}/>
       </div>
       <p>
-        {formatEvaluationValue(evaluation)}
+        {
+          loadingEval 
+            ? <ClipLoader color='white'/>
+            : <>{formatEvaluationValue(evaluation)}</>
+        }    
+        
       </p>
       <div className={styles.bar} style={{
         transform: rotationTransform

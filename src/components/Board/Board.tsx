@@ -15,6 +15,7 @@ import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 import {DrawShape} from 'chessground/draw'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore';
 import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory';
+import Position from '../../classes/Position';
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>
@@ -34,14 +35,18 @@ export default function Board(props:Props) {
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
 	
+	const [lastFromToSquares, setLastFromToSquares]=useState<cg.Key[]>([])
 	const [isPromotionVisible, setIsPromotionVisible]=useState(false)
 	const [length, setLength]=useState(0)
 	const [boardOpacity, setBoardOpacity]=useState<number>(1)
 	const [promotionFile, setPromotionFile]=useState<number>(0)
 	const [stockfishArrowSuggestion, setStockfishArrowSuggestion]=useState<{from:cg.Key, to:cg.Key}|null>(null)
 
-	const addPositionToPositionList=useChessStore(state=>state.
-		addPositionToPositionList)
+	const addPositionToPositionListByFEN=useChessStore(state=>state.
+		addPositionToPositionListByFEN)
+	const addPositionToPositionListByUCI=useChessStore(state=>state.
+		addPositionToPositionListByUCI)
+	
 	const positionList=useChessStore(state=>state.positionList)
 	const database:Database=useChessStore(state=>state.selectedDatabase)
 	const blueArrow=useChessStore(state=>state.blueArrow)
@@ -62,14 +67,14 @@ export default function Board(props:Props) {
 	'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	useEffect(()=>{
-		addPositionToPositionList(fen)
+		addPositionToPositionListByFEN(fen, '')
 		window.addEventListener('resize', ()=>{
 			adjustBoardLength()
 		})
 	}, [])
 
 	useEffect(()=>{
-		// console.log(lastFen)
+		// console.log('fen change', lastFen)
 		fetchDB(fen, new DatabaseSettingsFactory(since, until, timeControls, ratings)
 		.constructDatabaseSettingsObject(database)!)
 		.then(json=>{
@@ -79,9 +84,11 @@ export default function Board(props:Props) {
 	}, [lastFen])
 
 	useEffect(()=>{
+		
 		const currentPosition=positionList.getCurrentPosition()
+		updateLastMoveHighlightedSquares(currentPosition)
 		if (currentPosition){
-			setFen(currentPosition)
+			setFen(currentPosition.fen)
 		}
   }, [positionList])
 
@@ -100,6 +107,18 @@ export default function Board(props:Props) {
 			}
 		}
 	}, [isStockfishArrowActive])
+
+	/**called to update the last move highlighted squares on the board */
+	function updateLastMoveHighlightedSquares(currentPosition:Position|null){
+		if (currentPosition){
+			const lastLAN=currentPosition.lastLAN
+			if (lastLAN!=''){
+				const fromSquare=lastLAN.substring(0, 2) as cg.Key
+				const toSquare=lastLAN.substring(2, 4) as cg.Key
+				setLastFromToSquares([fromSquare,toSquare])
+			}
+		}
+	}
 
 	/**
 	 * 
@@ -136,8 +155,7 @@ export default function Board(props:Props) {
 			
 			const move:string=engineRef.current.getRandomResponseFromDB(json)
 			if (move){
-				updateChessObject(move)
-				addPositionToPositionList(chess.fen())
+				applyMove(move)
 			}
 	
 		}		
@@ -214,7 +232,10 @@ export default function Board(props:Props) {
 	 */
 	function updateChessObject(move:string){
 		chess.move(move)
+		const lastLAN = chess.history({verbose:true})[chess.history().length-1].lan
+		// console.log(lastLAN);
 		const newFen=chess.fen()
+		addPositionToPositionListByUCI(lastLAN)
 		engineRef.current.setFen(newFen)
 		setFen(newFen)
 	}
@@ -260,11 +281,16 @@ export default function Board(props:Props) {
 		if (!positionList.isPointingToLastPosition()){
 			positionList.spliceTree()
 		}
-		updateChessObject(move)
+		applyMove(move)
 		const newFen=chess.fen()
-		addPositionToPositionList(newFen)
 		setLastFen(newFen)
 		setFen(newFen)
+	}
+
+
+	/**called when any move needs to be made, human or engine */
+	function applyMove(move:string){
+		updateChessObject(move)
 	}
 
 	/**
@@ -330,7 +356,6 @@ export default function Board(props:Props) {
 	 */
 	function getConfig():Config{
 
-		// console.log(blueArrow)
 		const turnColor:cg.Color = fen.split(' ')[1]=='w'
 		? 'white' : 'black'
 
@@ -347,7 +372,10 @@ export default function Board(props:Props) {
 			orientation: orientation,
 			coordinates:false,
 			turnColor: turnColor,
-			lastMove: [],
+			lastMove: lastFromToSquares,
+			animation: {
+				enabled: false
+			},
 			movable: {
 				free: false,
 				dests: getDests(chess, colorPlayerCanControl),
@@ -373,10 +401,6 @@ export default function Board(props:Props) {
 	useEffect(()=>{
 		adjustBoardLength()
 	}, [props.parentRef])
-
-	useEffect(()=>{
-		// console.log(evaluation)
-	},[evaluation])
 
 	return (
 
