@@ -58,14 +58,14 @@ function App() {
       <div className={styles.boardParent} ref={boardParentRef}>
         <Board parentRef={boardParentRef}/>
       </div>
-      {/* <div className={styles.bar}>
+      <div className={styles.bar}>
         <EvalBar/>
         <MaterialCount/>
-      </div> */}
+      </div>
       
       <RefreshButton/>
       <Sidebar/>
-      {/* <StockfishComponent/> */}
+      <StockfishComponent/>
     </div>
    
   );

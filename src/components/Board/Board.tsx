@@ -82,13 +82,10 @@ export default function Board(props:Props) {
 		})	
 	}, [lastFen])
 
-	console.log('render');
-
 	useEffect(()=>{
-		// if (positionList.size()==0){
-		// 	setLastFromToSquares([])
-		// }
-
+		if (positionList.size()==0){
+			setLastFromToSquares([])
+		}
 		const currentPosition=positionList.getCurrentPosition()
 		updateLastMoveHighlightedSquares(currentPosition)
 		if (currentPosition){
@@ -291,7 +288,6 @@ export default function Board(props:Props) {
 		setFen(newFen)
 	}
 
-
 	/**called when any move needs to be made, human or engine */
 	function applyMove(move:string){
 		updateChessObject(move)
@@ -371,26 +367,37 @@ export default function Board(props:Props) {
 			}
 		]
 		
-		return {
+		let config:Config={
 			fen: fen,
-			orientation: orientation,
-			coordinates:false,
-			turnColor: turnColor,
-			lastMove: lastFromToSquares,
-			animation: {
-				enabled: false
-			},
-			movable: {
-				free: false,
-				dests: getDests(chess, colorPlayerCanControl),
-				events: {
-					after: afterHumanPlayerMove
+				orientation: orientation,
+				coordinates:false,
+				turnColor: turnColor,
+				animation: {
+					enabled: false
+				},
+				highlight:{
+					lastMove: true,
+					check:true,
+				},
+				movable: {
+					free: false,
+					dests: getDests(chess, colorPlayerCanControl),
+					events: {
+						after: afterHumanPlayerMove
+					}
+				},
+				drawable: {
+					autoShapes: autoShapes
 				}
-			},
-			drawable: {
-				autoShapes: autoShapes
-			},
 		}
+
+		if (turnColor==orientation){
+			config.lastMove=lastFromToSquares
+			console.log(config);
+		}
+		return config
+		
+		
 	}
 
 	useEffect(()=>{
