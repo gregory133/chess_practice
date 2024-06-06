@@ -22,6 +22,8 @@ export default class PositionList{
   public addPosition(position:Position){
     this.positionList.insert(position)
     this.currentIndex=this.positionList.getSize()-1
+
+    
   }
 
   public addPositionByUCI(moveUCI:string){
@@ -37,7 +39,6 @@ export default class PositionList{
       this.addPosition(newPosition)
   }
 
-
   /**
    * return the current position
    */
@@ -48,6 +49,23 @@ export default class PositionList{
     }
     
     return null
+  }
+
+  public getLastPosition():Position|null{
+    const numElements=this.size()
+    if (numElements>0){
+      const node=this.positionList.findAt(numElements-1)
+      if (node){
+        return node.data as Position
+      }
+      else{
+        return null
+      }
+    }
+    else{
+      return null
+    }
+    
   }
 
   /**
@@ -80,11 +98,16 @@ export default class PositionList{
 
     let returnString=''
     let index=0
+    let currentText=''
     this.positionList.forEach((node:any)=>{
       let position=node.data
-      returnString += 'index ' + index + ' : ' + position.fen + " -> " + position.lastLAN 
+      if (index==this.currentIndex){
+        currentText='(current) '
+      }
+      returnString += currentText+ 'index ' + index + ' : ' + position.fen + " -> " + position.lastLAN 
       + "\n" + '-----------------' + '\n' 
       index++
+      currentText=''
     })
     return returnString
   }
@@ -115,5 +138,7 @@ export default class PositionList{
       this.positionList.remove()
     }
   }
+
+
 
 }

@@ -34,7 +34,9 @@ export default function Board(props:Props) {
 
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
+
 	
+	const [forceDisplayHighlight, setForceDisplayHighlight]=useState(false)
 	const [lastFromToSquares, setLastFromToSquares]=useState<cg.Key[]>([])
 	const [isPromotionVisible, setIsPromotionVisible]=useState(false)
 	const [length, setLength]=useState(0)
@@ -74,6 +76,8 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
+		
+
 		fetchDB(fen, new DatabaseSettingsFactory(since, until, timeControls, ratings)
 		.constructDatabaseSettingsObject(database)!)
 		.then(json=>{
@@ -83,11 +87,42 @@ export default function Board(props:Props) {
 	}, [lastFen])
 
 	useEffect(()=>{
+		const currentPosition=positionList.getCurrentPosition()
+		const lastPosition=positionList.getLastPosition()
+		updateLastMoveHighlightedSquares(currentPosition)
+
+		const currentFen=currentPosition?.fen
+		const lastFen=lastPosition?.fen
+
+		if (currentFen!=lastFen){
+			const lastLAN=currentPosition?.lastLAN
+			const lastFromTo:cg.Key[]=[]
+			if (lastLAN!=''){
+				const from=lastLAN?.substring(0, 2) as cg.Key
+				const to=lastLAN?.substring(2, 4) as cg.Key
+				const lastFromTo=[from, to]
+				
+			}
+	
+			setLastFromToSquares(lastFromTo)
+			setForceDisplayHighlight(true)
+			
+		}
+		else{
+			setForceDisplayHighlight(false)
+		}
+
+	}, [fen])
+
+	useEffect(()=>{
+		console.log(lastFromToSquares);
+	}, [lastFromToSquares])
+
+	useEffect(()=>{
 		if (positionList.size()==0){
 			setLastFromToSquares([])
 		}
 		const currentPosition=positionList.getCurrentPosition()
-		updateLastMoveHighlightedSquares(currentPosition)
 		if (currentPosition){
 			setFen(currentPosition.fen)
 		}
@@ -108,6 +143,19 @@ export default function Board(props:Props) {
 			}
 		}
 	}, [isStockfishArrowActive])
+
+	useEffect(()=>{
+		if (isPromotionVisible){
+			setBoardOpacity(DISABLED_BOARD_OPACITY)
+		}
+		else{
+			setBoardOpacity(1)
+		}
+	}, [isPromotionVisible])
+
+	useEffect(()=>{
+		adjustBoardLength()
+	}, [props.parentRef])
 
 	/**called to update the last move highlighted squares on the board */
 	function updateLastMoveHighlightedSquares(currentPosition:Position|null){
@@ -237,6 +285,7 @@ export default function Board(props:Props) {
 		// console.log(lastLAN);
 		const newFen=chess.fen()
 		addPositionToPositionListByUCI(lastLAN)
+
 		engineRef.current.setFen(newFen)
 		setFen(newFen)
 	}
@@ -391,28 +440,15 @@ export default function Board(props:Props) {
 				}
 		}
 
-		if (turnColor==orientation){
+		if (turnColor==orientation || forceDisplayHighlight){
 			config.lastMove=lastFromToSquares
-			console.log(config);
 		}
 		return config
 		
 		
 	}
 
-	useEffect(()=>{
-		if (isPromotionVisible){
-			setBoardOpacity(DISABLED_BOARD_OPACITY)
-		}
-		else{
-			setBoardOpacity(1)
-		}
-	}, [isPromotionVisible])
-
-	useEffect(()=>{
-		adjustBoardLength()
-	}, [props.parentRef])
-
+	
 	return (
 
 		<ResponsiveSquare child={
