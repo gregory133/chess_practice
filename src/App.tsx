@@ -11,6 +11,7 @@ import { useChessStore } from './stores/chessStore';
 import EvalBar from './components/EvalBar/EvalBar';
 import MaterialCount from './components/MaterialCount/MaterialCount';
 import StockfishComponent from './components/Stockfish/StockfishComponent';
+import ButtonsBar from './components/ButtonsBar/ButtonsBar';
 
 function App() {
   const evaluation=useChessStore(state=>state.evaluation)
@@ -54,7 +55,9 @@ function App() {
   }
 
   return (
+
     <div className={styles.container}>
+      <ButtonsBar/>
       <div className={styles.boardParent} ref={boardParentRef}>
         <Board parentRef={boardParentRef}/>
       </div>
@@ -67,6 +70,7 @@ function App() {
       <Sidebar/>
       <StockfishComponent/>
     </div>
+  
    
   );
 }
