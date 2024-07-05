@@ -3,6 +3,7 @@ import React from 'react'
 import styles from './ButtonsBar.module.scss'
 import Button from './ButtonsBarButtonComponent/ButtonsBarButtonComponent'
 import ButtonsBarButtonComponent from './ButtonsBarButtonComponent/ButtonsBarButtonComponent'
+import { useChessStore } from '../../stores/chessStore'
 
 export interface ButtonsBarButton{
   iconImgPath:string
@@ -12,31 +13,21 @@ export interface ButtonsBarButton{
 
 export default function ButtonsBar() {
 
+  const reset=useChessStore(state=>state.reset)
+
   let buttons:ButtonsBarButton[]=[
     {
       iconImgPath: '/images/reset.png',
       hoverHintText: 'Reset Position',
-      onClick: onClickReset
+      onClick: reset
     },
 
     {
-      iconImgPath: '/images/reset.png',
-      hoverHintText: 'Reset Position',
-      onClick: onClickReset
-    },
-
-    {
-      iconImgPath: '/images/reset.png',
-      hoverHintText: 'Reset Position',
-      onClick: onClickReset
+      iconImgPath: '/images/small_board.png',
+      hoverHintText: 'Load Opening',
+      onClick: ()=>{}
     }
   ]
-
-  function onClickReset(){
-
-  }
-
-  
 
   return (
     <div className={styles.main}>

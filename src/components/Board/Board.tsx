@@ -114,9 +114,9 @@ export default function Board(props:Props) {
 
 	}, [fen])
 
-	useEffect(()=>{
-		console.log(lastFromToSquares);
-	}, [lastFromToSquares])
+	// useEffect(()=>{
+	// 	console.log(lastFromToSquares);
+	// }, [lastFromToSquares])
 
 	useEffect(()=>{
 		if (positionList.size()==0){

@@ -14,11 +14,14 @@ export default function ButtonsBarButtonComponent(props:Props) {
   const notHoveredBg='#302E2C'
 
   return (
-    <div onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
+    <img src={`${process.env.PUBLIC_URL}${props.button.iconImgPath}`} 
+    onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
+    onClick={props.button.onClick}
     className={styles.button} key={props.key} title={props.button.hoverHintText}
     style={{
-      backgroundImage: `url('${process.env.PUBLIC_URL}${props.button.iconImgPath}')`,
+      // backgroundImage: `url('${process.env.PUBLIC_URL}${props.button.iconImgPath}')`,
+  
       backgroundColor: hovered ? hoveredBg : notHoveredBg
-    }}></div>
+    }}></img>
   )
 }

@@ -6,7 +6,6 @@ import styles from './styles/App.module.scss'
 import './styles/Colors.scss'
 import './styles/Fonts.scss'
 
-import RefreshButton from './components/RefreshButton/RefreshButton';
 import { useChessStore } from './stores/chessStore';
 import EvalBar from './components/EvalBar/EvalBar';
 import MaterialCount from './components/MaterialCount/MaterialCount';
@@ -66,7 +65,6 @@ function App() {
         <MaterialCount/>
       </div>
       
-      <RefreshButton/>
       <Sidebar/>
       <StockfishComponent/>
     </div>

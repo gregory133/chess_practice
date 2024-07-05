@@ -2,7 +2,9 @@
 @import '../../styles/Colors.scss';
 @import '../../styles/Fonts.scss';
 @import '../../styles/Mixins.module.scss';
+
 .sidebar{
+  margin-left: 30px;
   height: 100%;
   flex:1;
   background-color: $sidebar-bg;
