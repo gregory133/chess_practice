@@ -14,7 +14,7 @@
     text-align: center;
     display: flex;
     align-items: center;
-    margin-right: 5px;
+    // margin-right: 5px;
   }
 }
 
@@ -22,4 +22,17 @@
   display: flex;
   align-items: center;
 
+}
+
+.button{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttonText{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
 }

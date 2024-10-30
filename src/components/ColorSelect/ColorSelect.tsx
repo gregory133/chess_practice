@@ -4,7 +4,7 @@ import { useChessStore } from '../../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
 import OptionButton, { Button } from '../OptionsButton/OptionButton'
 
-type Color='white'|'any'|'black'
+type Color='white'|'random'|'black'
 
 export default function ColorSelect() {
 
@@ -12,13 +12,19 @@ export default function ColorSelect() {
   const [selectedId, setSelectedId]=useState<string>(selectedColor)
   const setSelectedColor=useChessStore(state=>state.setSelectedColor)
 
+  const buttonNameDict = new Dictionary<string, string>();{
+    buttonNameDict.setValue('white', 'White')
+    buttonNameDict.setValue('random', 'Random Color')
+    buttonNameDict.setValue('black', 'Black')
+  }
+
   const buttons: Button[]=[
     {id: 'white', bgImage: `${process.env.PUBLIC_URL}/images/white.png`, 
     onClick:()=>{onClickChooseColorButton('white')},
     hoverText: 'Play as White'},
 
-    {id: 'any', bgImage: `${process.env.PUBLIC_URL}/images/blackwhite.png`, 
-    onClick:()=>{onClickChooseColorButton('any')},
+    {id: 'random', bgImage: `${process.env.PUBLIC_URL}/images/blackwhite.png`, 
+    onClick:()=>{onClickChooseColorButton('random')},
     hoverText: 'Play as random Color'},
 
     {id: 'black', bgImage: `${process.env.PUBLIC_URL}/images/black.png`, 
@@ -39,8 +45,12 @@ export default function ColorSelect() {
         {
           buttons.map((button:Button, key:number)=>{
             return (
-              <OptionButton button={button} key={key} 
-              isHighlighted={button.id==selectedId}/>
+              <div className={styles.button}>
+                <OptionButton button={button} key={key} 
+                isHighlighted={button.id==selectedId}/>
+                <p className={styles.buttonText}>{buttonNameDict.getValue(button.id)}</p>
+              </div>
+              
             )
           })
         }

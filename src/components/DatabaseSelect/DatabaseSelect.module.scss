@@ -31,3 +31,13 @@
     align-items: center;
   }
 }
+
+.button{
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+
+  p{
+    margin: 0;
+  }
+}

@@ -5,6 +5,7 @@ import { useChessStore } from '../../stores/chessStore'
 import { Database } from '../../api/DBApi'
 import Modal from 'react-modal';
 import DatabaseSettingsModal from '../DatabaseSettingsModal/DatabaseSettingsModal'
+import { Dictionary } from 'typescript-collections'
 
 export default function DatabaseSelect() {
 
@@ -14,7 +15,11 @@ export default function DatabaseSelect() {
   const [selectedId, setSelectedId]=useState<string>(selectedDatabase)
   const [isDatabaseModalOpen, setIsDatabaseModalOpen]=useState(false)
 
-  
+  const buttonNameDict = new Dictionary<string, string>();{
+    buttonNameDict.setValue('masters', 'Master Database')
+    buttonNameDict.setValue('lichess', 'Lichess Database')
+    buttonNameDict.setValue('player', 'Lichess Player Database')
+  }
   
   const buttons: Button[]=[
     {id: 'masters', bgImage: `${process.env.PUBLIC_URL}/images/masters.png`,
@@ -57,8 +62,13 @@ export default function DatabaseSelect() {
       <div className={styles.container}>
         {
           buttons.map((button:Button, key:number)=>{
-            return <OptionButton button={button} key={key}
-             isHighlighted={button.id==selectedId}/>
+            return(
+              <div className={styles.button}>
+                <OptionButton button={button} key={key}
+                isHighlighted={button.id==selectedId}/>
+                <p>{buttonNameDict.getValue(button.id)}</p>
+              </div>
+            )
           })
         }
       </div>

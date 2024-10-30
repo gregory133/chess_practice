@@ -18,7 +18,7 @@ export interface ChessStoreState{
   openingName: string
   orientation: 'black'|'white'
   colorPlayerCanControl: 'black'|'white'|null
-  selectedColor: 'white'|'any'|'black'
+  selectedColor: 'white'|'random'|'black'
   selectedDatabase: Database
   positionList: PositionList
   evaluation:Evaluation|null
@@ -34,7 +34,7 @@ export interface ChessStoreState{
   setOpeningName: (newVal: string)=>void
   setOrientation: (newVal: 'black'|'white')=>void
   setColorPlayerCanControl: (newVal: 'black'|'white'|null)=>void
-  setSelectedColor: (newVal:'white'|'any'|'black')=>void
+  setSelectedColor: (newVal:'white'|'random'|'black')=>void
   setSelectedDatabase: (newVal:Database)=>void
   setEvaluation: (evaluation:Evaluation|null)=>void
 
@@ -103,7 +103,7 @@ function initialize(set:any):ChessStoreState{
     openingName: '',
     colorPlayerCanControl: randomColor,
     orientation: randomColor,
-    selectedColor: 'any',
+    selectedColor: 'random',
     selectedDatabase: 'masters',
     positionList: new PositionList(),
     evaluation: null,
@@ -138,7 +138,7 @@ function initialize(set:any):ChessStoreState{
     set((state:ChessStoreState)=>{
       return {colorPlayerCanControl: newVal}
     }),
-    setSelectedColor: (newVal:'white'|'any'|'black')=>
+    setSelectedColor: (newVal:'white'|'random'|'black')=>
     set((state:ChessStoreState)=>{
       return {selectedColor: newVal}
     }),
@@ -196,7 +196,7 @@ function initialize(set:any):ChessStoreState{
       }
 
       let playerColor
-      if (state.selectedColor=='any'){
+      if (state.selectedColor=='random'){
         playerColor=getRandomColor()
       }
       else{
