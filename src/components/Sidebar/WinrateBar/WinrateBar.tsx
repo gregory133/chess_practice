@@ -1,5 +1,5 @@
 import React from 'react'
-import Winrate from '../../classes/Winrate'
+import Winrate from '../../../classes/Winrate'
 import styles from './WinrateBar.module.scss'
 
 interface Props{

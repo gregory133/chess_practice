@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal';
 
-import '../../styles/Colors.scss'
-import variables from '../../styles/Variables.module.scss'
+import '../../../styles/Colors.scss'
+import variables from '../../../styles/Variables.module.scss'
 import style from './DatabaseSettingsModal.module.scss'
-import { Database } from '../../api/DBApi';
+import { Database } from '../../../api/DBApi';
 import { Dictionary } from 'typescript-collections';
 import MastersView from '../DatabaseModalViews/MastersView/MastersView';
 import LichessView from '../DatabaseModalViews/LichessView/LichessView';
@@ -81,7 +81,8 @@ export default function DatabaseSettingsModal(props:Props) {
           {databases.map((database:Database, key:number)=>{
             const bgColor=database==selectedDatabase ? `${variables.sidebarBgLight}` : `${variables.sidebarBg}`
             return(
-              <div onClick={()=>onClickDatabaseSelectOption(database)} style={{backgroundColor: bgColor}} key={key}>{database}
+              <div onClick={()=>onClickDatabaseSelectOption(database)} style={{backgroundColor: bgColor}} 
+                key={key}>{database}
                 <img src={process.env.PUBLIC_URL+dbIcons.getValue(database)}/>
               </div>
             )

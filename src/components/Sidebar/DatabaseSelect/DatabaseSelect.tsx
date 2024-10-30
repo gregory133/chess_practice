@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import OptionButton, { Button } from '../OptionsButton/OptionButton'
 import styles from './DatabaseSelect.module.scss'
-import { useChessStore } from '../../stores/chessStore'
-import { Database } from '../../api/DBApi'
+import { useChessStore } from '../../../stores/chessStore'
+import { Database } from '../../../api/DBApi'
 import Modal from 'react-modal';
 import DatabaseSettingsModal from '../DatabaseSettingsModal/DatabaseSettingsModal'
 import { Dictionary } from 'typescript-collections'
@@ -18,7 +18,7 @@ export default function DatabaseSelect() {
   const buttonNameDict = new Dictionary<string, string>();{
     buttonNameDict.setValue('masters', 'Master Database')
     buttonNameDict.setValue('lichess', 'Lichess Database')
-    buttonNameDict.setValue('player', 'Lichess Player Database')
+    buttonNameDict.setValue('player', 'Player Database')
   }
   
   const buttons: Button[]=[

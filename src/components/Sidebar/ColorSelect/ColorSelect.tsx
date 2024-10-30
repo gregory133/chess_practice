@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from './ColorSelect.module.scss'
-import { useChessStore } from '../../stores/chessStore'
+import { useChessStore } from '../../../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
 import OptionButton, { Button } from '../OptionsButton/OptionButton'
 

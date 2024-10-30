@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styles from './LichessView.module.scss'
-import { TimeControl } from '../../../types/TimeControl'
+import { TimeControl } from '../../../../types/TimeControl'
 import { Dictionary } from 'typescript-collections'
-import { Rating } from '../../../types/Rating'
-import { useDatabaseSettingsStore } from '../../../stores/databaseSettingsStore'
-import { printSet } from '../../../library/Printer'
+import { Rating } from '../../../../types/Rating'
+import { useDatabaseSettingsStore } from '../../../../stores/databaseSettingsStore'
+import { printSet } from '../../../../library/Printer'
 
 export default function LichessView() {
 

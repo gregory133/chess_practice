@@ -1,7 +1,7 @@
-@import '../../styles/Variables.module.scss';
+@import '../../../styles/Variables.module.scss';
 
 .settingsButton{
-  background-image: url("../../../public/images/setting.png");
+  background-image: url("../../../../public/images/setting.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

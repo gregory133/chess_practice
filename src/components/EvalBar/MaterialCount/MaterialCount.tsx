@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useChessStore } from '../../stores/chessStore'
+import { useChessStore } from '../../../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
 import styles from './MaterialCount.module.scss'
 

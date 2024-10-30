@@ -8,7 +8,7 @@ import './styles/Fonts.scss'
 
 import { useChessStore } from './stores/chessStore';
 import EvalBar from './components/EvalBar/EvalBar';
-import MaterialCount from './components/MaterialCount/MaterialCount';
+import MaterialCount from './components/EvalBar/MaterialCount/MaterialCount';
 import StockfishComponent from './components/Stockfish/StockfishComponent';
 import ButtonsBar from './components/ButtonsBar/ButtonsBar';
 

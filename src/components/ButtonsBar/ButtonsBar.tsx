@@ -26,6 +26,12 @@ export default function ButtonsBar() {
       iconImgPath: '/images/small_board.png',
       hoverHintText: 'Load Opening',
       onClick: ()=>{}
+    },
+
+    {
+      iconImgPath: '/images/user.png',
+      hoverHintText: 'Load Player',
+      onClick: ()=>{}
     }
   ]
 

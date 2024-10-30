@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styles from './MastersView.module.scss'
 import { Dictionary } from 'typescript-collections'
-import { YEAR_LOWER_BOUND, YEAR_UPPER_BOUND } from '../../../constants/MastersDatabase'
+import { YEAR_LOWER_BOUND, YEAR_UPPER_BOUND } from '../../../../constants/MastersDatabase'
 
 type Context='since'|'until'
 
