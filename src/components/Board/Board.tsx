@@ -60,6 +60,8 @@ export default function Board(props:Props) {
 
 	const chess=new Chess(fen)
 
+	const engineMoveDelay = 500 //in milliseconds
+		
 	const DISABLED_BOARD_OPACITY=0.5
 	const SQUARES:string[]=['a8' , 'b8' , 'c8' , 'd8' , 'e8' , 'f8' , 'g8' , 'h8' , 
 	'a7' , 'b7' , 'c7' , 'd7' , 'e7' , 'f7' , 'g7' , 'h7' , 'a6' , 'b6' , 'c6' , 'd6' , 
@@ -96,11 +98,11 @@ export default function Board(props:Props) {
 
 		if (currentFen!=lastFen){
 			const lastLAN=currentPosition?.lastLAN
-			const lastFromTo:cg.Key[]=[]
+			let lastFromTo:cg.Key[]=[]
 			if (lastLAN!=''){
 				const from=lastLAN?.substring(0, 2) as cg.Key
 				const to=lastLAN?.substring(2, 4) as cg.Key
-				const lastFromTo=[from, to]
+				lastFromTo=[from, to]
 				
 			}
 	
@@ -204,7 +206,10 @@ export default function Board(props:Props) {
 			
 			const move:string=engineRef.current.getRandomResponseFromDB(json)
 			if (move){
-				applyMove(move)
+				setTimeout(()=>{
+					applyMove(move)
+				}, engineMoveDelay)
+				
 			}
 	
 		}		
@@ -424,8 +429,9 @@ export default function Board(props:Props) {
 				animation: {
 					enabled: false
 				},
+				lastMove: lastFromToSquares,
 				highlight:{
-					lastMove: true,
+
 					check:true,
 				},
 				movable: {
@@ -438,10 +444,6 @@ export default function Board(props:Props) {
 				drawable: {
 					autoShapes: autoShapes
 				}
-		}
-
-		if (turnColor==orientation || forceDisplayHighlight){
-			config.lastMove=lastFromToSquares
 		}
 		return config
 		
