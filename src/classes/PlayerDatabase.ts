@@ -6,6 +6,7 @@
 import { Dictionary } from "typescript-collections"
 import { INITIAL_FEN } from "./ChessUtil"
 import { Chess } from "chess.js"
+import Winrate from "./Winrate"
 
 
 export default class PlayerDatabase{
@@ -46,13 +47,27 @@ export default class PlayerDatabase{
         
         const chess = new Chess()
         movesList.forEach(move=>{
-            addPositionOutcomeToTally(chess.fen())
+            
+            addPositionOutcomeToTally(chess.fen())  
             chess.move(move)
+       
+            
         })
         addPositionOutcomeToTally(chess.fen())
 
         // console.log(this.toString()) 
 
+    }
+
+    public getDatabase() : Dictionary<string, Winrate>{
+        const returnDict = new Dictionary<string, Winrate>()
+        this.outcomeDict.forEach(position=>{
+            const tally = this.outcomeDict.getValue(position)!
+            const total = tally.white + tally.black + tally.draw
+            const winrate = new Winrate(tally.black / total, (tally.white / total))
+            returnDict.setValue(position, winrate)
+        })
+        return returnDict
     }
 
     public toString() : string{
