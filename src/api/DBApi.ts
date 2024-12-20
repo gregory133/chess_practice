@@ -71,4 +71,4 @@ function constructDBUrl(fen:string, databaseSettings:DatabaseSettings):string{
   })
   url.searchParams.append('fen', fen)
   return url.toString()
-}
+} 

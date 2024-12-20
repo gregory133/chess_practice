@@ -14,10 +14,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const downloader = new PlayerGameDownloader().downloadGames('ericrosen', 
-  {color: 'black', maxNumber: 50})
-
 root.render(
-  // <App/> 
-  null
+  <App/> 
+  // null
 );

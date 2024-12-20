@@ -16,13 +16,14 @@ export default class MastersDatabaseSettings implements DatabaseSettings{
     return 'masters'
   }
   
-  public getURLParameters(){
+  public getURL() : URL{
 
-    const dict=new Dictionary<string, string>();{
-      dict.setValue('since', this.since.toString())
-      dict.setValue('until', this.until.toString())
-    }
-    return dict
+    const url = new URL('https://explorer.lichess.ovh/lichess')
+    url.searchParams.set('since', this.since.toString())
+    url.searchParams.set('until', this.until.toString())
+
+    return url
+
   }
 
   
