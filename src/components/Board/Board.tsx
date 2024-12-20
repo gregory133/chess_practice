@@ -14,8 +14,11 @@ import { Database, fetchDB } from '../../api/DBApi';
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 import {DrawShape} from 'chessground/draw'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore';
-import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory';
 import Position from '../../classes/Position';
+import DatabaseSettings from '../../interfaces/DatabaseSettings';
+import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings';
+import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings';
+import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings';
 
 interface Props{
 	parentRef: React.MutableRefObject<null|HTMLInputElement>
@@ -32,9 +35,12 @@ export default function Board(props:Props) {
 	const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
 	const evaluation=useChessStore(state=>state.evaluation)
 
+	const mastersOptions = useDatabaseSettingsStore(state=>state.mastersOptions)
+	const lichessOptions = useDatabaseSettingsStore(state=>state.lichessOptions)
+	const playerOptions = useDatabaseSettingsStore(state=>state.playerOptions)
+
 	const engineRef=useRef(new Engine(fen))
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
-
 	
 	const [forceDisplayHighlight, setForceDisplayHighlight]=useState(false)
 	const [lastFromToSquares, setLastFromToSquares]=useState<cg.Key[]>([])
@@ -42,7 +48,8 @@ export default function Board(props:Props) {
 	const [length, setLength]=useState(0)
 	const [boardOpacity, setBoardOpacity]=useState<number>(1)
 	const [promotionFile, setPromotionFile]=useState<number>(0)
-	const [stockfishArrowSuggestion, setStockfishArrowSuggestion]=useState<{from:cg.Key, to:cg.Key}|null>(null)
+	const [stockfishArrowSuggestion, setStockfishArrowSuggestion]
+	=useState<{from:cg.Key, to:cg.Key}|null>(null)
 
 	const addPositionToPositionListByFEN=useChessStore(state=>state.
 		addPositionToPositionListByFEN)
@@ -52,12 +59,7 @@ export default function Board(props:Props) {
 	const positionList=useChessStore(state=>state.positionList)
 	const database:Database=useChessStore(state=>state.selectedDatabase)
 	const blueArrow=useChessStore(state=>state.blueArrow)
-
-	const since=useDatabaseSettingsStore(state=>state.since)
-	const until=useDatabaseSettingsStore(state=>state.until)
-	const ratings=useDatabaseSettingsStore(state=>state.ratings)
-	const timeControls=useDatabaseSettingsStore(state=>state.timeControls)
-
+	
 	const chess=new Chess(fen)
 
 	const engineMoveDelay = 500 //in milliseconds
@@ -78,10 +80,21 @@ export default function Board(props:Props) {
 	}, [])
 
 	useEffect(()=>{
-		
 
-		fetchDB(fen, new DatabaseSettingsFactory(since, until, timeControls, ratings)
-		.constructDatabaseSettingsObject(database)!)
+		let databaseSettings : DatabaseSettings
+		if (database=='masters'){
+			databaseSettings = new MastersDatabaseSettings(mastersOptions.since, mastersOptions.until)
+		}
+		else if (database == 'lichess'){
+			databaseSettings = new LichessDatabaseSettings(lichessOptions.timeControls, 
+			lichessOptions.ratings)
+		}
+		else{
+			databaseSettings = new PlayerDatabaseSettings(playerOptions.username, playerOptions.color, 
+			playerOptions.maxGames, playerOptions.vsPlayer, playerOptions.timeControl)
+		}
+
+		fetchDB(databaseSettings)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
 			makeEngineMoveIfNeeded(json)	

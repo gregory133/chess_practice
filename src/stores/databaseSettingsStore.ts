@@ -11,61 +11,38 @@ import { printSet } from '../library/Printer';
  * @returns an object storing the required initial state of the store
  */
 function initializeState(set:any):DatabaseSettingsStore{
-    const timeControls: Set<TimeControl>=new Set();{
-        timeControls.add('rapid')
-        timeControls.add('classical')
-        timeControls.add('correspondence')
-    }
-    const ratings: Set<Rating>=new Set();{
-        ratings.add(1800)
-        ratings.add(2000)
-        ratings.add(2200)
-        ratings.add(2500)
-    }
-
+    
     return {
-        since: YEAR_LOWER_BOUND, 
-        until: YEAR_UPPER_BOUND, 
-        setSince: (since:number)=>set((state:DatabaseSettingsStore)=>{
-            return {since:since}
+        mastersOptions : {since: YEAR_LOWER_BOUND, until: YEAR_UPPER_BOUND},
+        lichessOptions : {timeControls: ['blitz', 'rapid', 'classical'], ratings: [1800, 2000, 2200, 2500]},
+        playerOptions : {username: '', color: 'black'}, 
+
+        setMastersOptions: (newOptions:{since:number, until: number})=>set((state:DatabaseSettingsStore)=>{
+            return {mastersOptions: newOptions}
         }),
-        setUntil: (until: number)=>set((state:DatabaseSettingsStore)=>{
-            return {until:until}
+        setLichessOptions: (newOptions:{timeControls: TimeControl[], ratings: Rating[]})=>
+        set((state:DatabaseSettingsStore)=>{
+            return {lichessOptions: newOptions}
         }),
-
-        timeControls: timeControls, 
-        ratings:ratings, 
-        toggleTimeControl:(timeControl:TimeControl)=>set((state:DatabaseSettingsStore)=>{
-            let newTimeControls=cloneSet(state.timeControls)
-            state.timeControls.contains(timeControl) 
-                ? newTimeControls.remove(timeControl) 
-                : newTimeControls.add(timeControl)
-
-            return {timeControls: newTimeControls}
+        setPlayerOptions: (newOptions:{username: string, maxGames? : number, vsPlayer? : string, 
+            color : 'white'|'black', timeControl? : TimeControl[]
+        })=>set((state:DatabaseSettingsStore)=>{
+            return {playerOptions: newOptions}
         }),
-        toggleRating:(rating: Rating)=>set((state:DatabaseSettingsStore)=>{
-            let newRatings=cloneSet(state.ratings)
-
-            state.ratings.contains(rating) 
-                ? newRatings.remove(rating) 
-                : newRatings.add(rating)
-
-            return {ratings: newRatings}
-        })
     }
+
 }
 
-
 export interface DatabaseSettingsStore{
-    since: number,
-    until: number
-    setSince:(since:number)=>void
-    setUntil:(until:number)=>void
-
-    timeControls: Set<TimeControl>,
-    ratings: Set<Rating>
-    toggleTimeControl: (timeControl:TimeControl)=>void
-    toggleRating: (rating:Rating)=>void
+    mastersOptions : {since:number, until: number}
+    lichessOptions : {timeControls: TimeControl[], ratings: Rating[]},
+    playerOptions : {username: string, maxGames? : number, vsPlayer? : string, color : 'white'|'black', 
+        timeControl? : TimeControl[]
+    }
+    setMastersOptions : (newOptions : {since:number, until: number})=>void
+    setLichessOptions : (newOptions : {timeControls: TimeControl[], ratings: Rating[]})=>void
+    setPlayerOptions : (newOptions : {username: string, maxGames? : number, vsPlayer? : string, 
+        color : 'white'|'black', timeControl : TimeControl[]})=>void
 }
 
 export const useDatabaseSettingsStore=create<DatabaseSettingsStore>()(set=>(

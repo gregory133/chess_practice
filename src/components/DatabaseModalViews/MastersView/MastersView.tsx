@@ -2,10 +2,14 @@ import React, { useRef } from 'react'
 import styles from './MastersView.module.scss'
 import { Dictionary } from 'typescript-collections'
 import { YEAR_LOWER_BOUND, YEAR_UPPER_BOUND } from '../../../constants/MastersDatabase'
+import { useDatabaseSettingsStore } from '../../../stores/databaseSettingsStore'
 
 type Context='since'|'until'
 
 export default function () {
+
+  const mastersOptions = useDatabaseSettingsStore(state=>state.mastersOptions)
+  const setMastersOptions = useDatabaseSettingsStore(state=>state.setMastersOptions)
 
   const sinceInputRef=useRef<null|HTMLInputElement>(null)
   const untilInputRef=useRef<null|HTMLInputElement>(null)
@@ -16,8 +20,8 @@ export default function () {
   }
 
   const yearBoundDict:Dictionary<Context, number>=new Dictionary();{
-    yearBoundDict.setValue('since', YEAR_LOWER_BOUND)
-    yearBoundDict.setValue('until', YEAR_UPPER_BOUND)
+    yearBoundDict.setValue('since', mastersOptions.since)
+    yearBoundDict.setValue('until', mastersOptions.until)
   }
 
   /**
@@ -80,7 +84,13 @@ export default function () {
   function setInputRefValueToDefault(context:Context){
     const inputRef=referencesDict.getValue(context)!
     if (inputRef){
-      inputRef.current?.setAttribute('input', 'hello')
+      if (context=='since'){
+        inputRef.current!.value = YEAR_LOWER_BOUND.toString()
+      }
+      else if (context=='until'){
+        inputRef.current!.value = YEAR_UPPER_BOUND.toString()
+      }
+      
     }
   }
 
@@ -89,12 +99,29 @@ export default function () {
    * @param context 
    */
   function onChangeYearValueInput(context:Context){
-    const value:number|null=extractValueFromInputRef(context!)
+    
+    let value:number|null=extractValueFromInputRef(context!)
     const isValidChange=(value && areYearsLogicallyValid())
 
     if (!isValidChange){
       setInputRefValueToDefault(context)
     }
+
+    if (context == 'since'){
+      if (!value){
+        value = YEAR_LOWER_BOUND
+      }
+      setMastersOptions({since: value!, until: mastersOptions.until})
+    }
+    else if (context == 'until'){
+      if (!value){
+        value = YEAR_UPPER_BOUND
+      }
+      setMastersOptions({since: mastersOptions.since, until: value!})
+    }
+  
+    
+    
   }
 
   return (
