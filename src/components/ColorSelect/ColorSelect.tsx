@@ -45,8 +45,8 @@ export default function ColorSelect() {
         {
           buttons.map((button:Button, key:number)=>{
             return (
-              <div className={styles.button}>
-                <OptionButton button={button} key={key} 
+              <div key={key} className={styles.button}>
+                <OptionButton button={button}  
                 isHighlighted={button.id==selectedId}/>
                 <p className={styles.buttonText}>{buttonNameDict.getValue(button.id)}</p>
               </div>

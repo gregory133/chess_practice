@@ -98,14 +98,16 @@ export default function Sidebar() {
 
     let databaseSettings : DatabaseSettings
     if (database=='masters'){
-      databaseSettings = new MastersDatabaseSettings(mastersOptions.since, mastersOptions.until)
+      databaseSettings = new MastersDatabaseSettings(currentFen, mastersOptions.since, 
+      mastersOptions.until)
     }
     else if (database == 'lichess'){
-      databaseSettings = new LichessDatabaseSettings(lichessOptions.timeControls, lichessOptions.ratings)
+      databaseSettings = new LichessDatabaseSettings(currentFen, lichessOptions.timeControls, 
+      lichessOptions.ratings)
     }
     else{
       databaseSettings = new PlayerDatabaseSettings(playerOptions.username, playerOptions.color, 
-        playerOptions.maxGames, playerOptions.vsPlayer, playerOptions.timeControl)
+      playerOptions.maxGames, playerOptions.vsPlayer, playerOptions.timeControl)
     }
 
     fetchDB(databaseSettings)
@@ -115,10 +117,6 @@ export default function Sidebar() {
 		})	
 
   }, [currentFen])
-
-  useEffect(()=>{
-    console.log(mastersOptions)
-  }, [mastersOptions])
 
   return (
     <div className={styles.sidebar}>

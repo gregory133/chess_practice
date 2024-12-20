@@ -83,10 +83,11 @@ export default function Board(props:Props) {
 
 		let databaseSettings : DatabaseSettings
 		if (database=='masters'){
-			databaseSettings = new MastersDatabaseSettings(mastersOptions.since, mastersOptions.until)
+			databaseSettings = new MastersDatabaseSettings(lastFen, mastersOptions.since, 
+			mastersOptions.until)
 		}
 		else if (database == 'lichess'){
-			databaseSettings = new LichessDatabaseSettings(lichessOptions.timeControls, 
+			databaseSettings = new LichessDatabaseSettings(lastFen, lichessOptions.timeControls, 
 			lichessOptions.ratings)
 		}
 		else{
@@ -215,6 +216,7 @@ export default function Board(props:Props) {
 	 */
 	function makeEngineMoveIfNeeded(json:any){
 		const turnColor=fen.split(' ')[1]=='w' ? 'white' : 'black'
+
 		if (turnColor!=colorPlayerCanControl){
 			
 			const move:string=engineRef.current.getRandomResponseFromDB(json)

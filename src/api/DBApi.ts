@@ -30,6 +30,7 @@ export function fetchDBByUrl(url:URL){
 
 }
 
+
 /**
  * returns a promise resolving into json object corresponding to the response of a 
  * fetch query to the database with the given uci list

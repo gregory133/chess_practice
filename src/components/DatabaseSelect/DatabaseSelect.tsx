@@ -63,8 +63,8 @@ export default function DatabaseSelect() {
         {
           buttons.map((button:Button, key:number)=>{
             return(
-              <div className={styles.button}>
-                <OptionButton button={button} key={key}
+              <div key={key} className={styles.button}>
+                <OptionButton button={button} 
                 isHighlighted={button.id==selectedId}/>
                 <p>{buttonNameDict.getValue(button.id)}</p>
               </div>
