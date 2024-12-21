@@ -1,6 +1,7 @@
 @import '../../styles/Variables.module.scss';
 
 .container{
+  flex: 0 0 90px;
   display: flex;
   flex-direction: row;
   width: 100%;

@@ -1,6 +1,7 @@
 @import '../../styles/Variables.module.scss';
 
 .parent{
+  flex: 0 0 135px;
   font-size: 30px;
   width: 100%;
   height: $sidebar-section-height;

@@ -8,12 +8,27 @@
   flex: 1 1 50px;
 }
 
-.parent{
+.mastersDatepickers{
+  display: flex;
+  flex-direction: row;
+}
 
+.main{
   font-size: $font-size-medium;
   width: 100%;
   height: $sidebar-section-height;
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.parent{
+
+  width: 100%;
+  display: flex;
+  // flex-direction: ;
   justify-content: center;
   padding: 10px;
   box-sizing: border-box;
