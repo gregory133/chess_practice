@@ -13,6 +13,8 @@ import { styled } from '@mui/material'
 import YearPicker from '../YearPicker/YearPicker'
 import { YEAR_LOWER_BOUND, YEAR_UPPER_BOUND } from '../../constants/MastersDatabase'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore'
+import { Rating } from '../../types/Rating'
+import { TimeControl } from '../../types/TimeControl'
 
 export default function DatabaseSelect() {
 
@@ -26,7 +28,7 @@ export default function DatabaseSelect() {
   const mastersOptions = useDatabaseSettingsStore(state=>state.mastersOptions)
   const setMastersOptions = useDatabaseSettingsStore(state=>state.setMastersOptions)
 
-  const allDatabases : Database[] = ['lichess', 'masters', 'player']
+  
 
   const buttonNameDict = new Dictionary<string, string>();{
     buttonNameDict.setValue('masters', 'Master Database')
@@ -72,6 +74,45 @@ export default function DatabaseSelect() {
     setMastersOptions({since: mastersOptions.since, until: year})
   }
 
+  function MastersView(){
+    return (
+      <div className={styles.mastersDatepickers}>
+        <YearPicker onChange={onMastersSinceYearChange} label='since' currentYear={mastersOptions.since} 
+        yearOrder='asc' defaultYear={YEAR_LOWER_BOUND} minYear={YEAR_LOWER_BOUND} 
+        maxYear={mastersOptions.until}/>
+
+        <YearPicker onChange={onMastersUntilYearChange} label='until' currentYear={mastersOptions.until} 
+        yearOrder='desc' defaultYear={YEAR_UPPER_BOUND} minYear={mastersOptions.since} 
+        maxYear={YEAR_UPPER_BOUND}/>
+      </div>
+    )
+  }
+
+  function LichessView(){
+
+    const allRatings : Rating[] = [0,1000,1200,1400,1600,1800,2000,2200,2500]
+    const allTimeControls : TimeControl[] = ['ultraBullet','bullet','blitz','rapid','classical','correspondence']
+
+    return (
+      <div className={styles.lichessView}>
+        <div className={styles.timeControls}>
+          {
+            allTimeControls.map((timeControl, key)=>{
+              return <></>
+            })
+          }
+        </div>
+        <div className={styles.ratings}>
+
+        </div>
+      </div>
+    )
+  }
+
+  function PlayerView(){
+    return <div></div>
+  }
+
   useEffect(()=>{
     console.log(mastersOptions)
   }, [mastersOptions])
@@ -96,29 +137,11 @@ export default function DatabaseSelect() {
         </div>
       </div>
       {
-        allDatabases.map((database, key)=>{
-          if (database == 'masters'){
-            return (
-              <div className={styles.mastersDatepickers}>
-                <YearPicker onChange={onMastersSinceYearChange} label='since' currentYear={mastersOptions.since} 
-                yearOrder='asc' defaultYear={YEAR_LOWER_BOUND} minYear={YEAR_LOWER_BOUND} 
-                maxYear={mastersOptions.until}/>
-
-                <YearPicker onChange={onMastersUntilYearChange} label='until' currentYear={mastersOptions.until} 
-                yearOrder='desc' defaultYear={YEAR_UPPER_BOUND} minYear={mastersOptions.since} 
-                maxYear={YEAR_UPPER_BOUND}/>
-              </div>
-            )
-
-          }
-          else if (database == 'player'){
-
-          }
-          else if (database == 'lichess'){
-            
-          }
-          return <></>
-        })
+        selectedDatabase == 'masters' 
+          ? MastersView() 
+          : selectedDatabase == 'lichess' 
+            ? LichessView()
+            : PlayerView()
       }
     </div>
     
