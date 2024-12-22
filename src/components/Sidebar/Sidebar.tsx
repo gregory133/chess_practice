@@ -10,8 +10,11 @@ import DatabaseSelect from './DatabaseSelect/DatabaseSelect'
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser'
 import { Database, fetchDB } from '../../api/DBApi'
 import * as cg from 'chessground/types.js';
-import DatabaseSettingsFactory from '../../classes/DatabaseSettingsFactory'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore'
+import DatabaseSettings from '../../interfaces/DatabaseSettings'
+import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings'
+import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings'
+import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings'
 
 export default function Sidebar() {
 
@@ -36,10 +39,9 @@ export default function Sidebar() {
   const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
   const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
 
-  const since=useDatabaseSettingsStore(state=>state.since)
-	const until=useDatabaseSettingsStore(state=>state.until)
-	const ratings=useDatabaseSettingsStore(state=>state.ratings)
-	const timeControls=useDatabaseSettingsStore(state=>state.timeControls)
+  const lichessOptions = useDatabaseSettingsStore(state=>state.lichessOptions)
+  const mastersOptions = useDatabaseSettingsStore(state=>state.mastersOptions)
+  const playerOptions = useDatabaseSettingsStore(state=>state.playerOptions)
 
   /**
 	 * updates the state variables associated with the sidebar
@@ -94,7 +96,21 @@ export default function Sidebar() {
 
   useEffect(()=>{
 
-    fetchDB(currentFen, new DatabaseSettingsFactory(since, until, timeControls, ratings).constructDatabaseSettingsObject(database)!)
+    let databaseSettings : DatabaseSettings
+    if (database=='masters'){
+      databaseSettings = new MastersDatabaseSettings(currentFen, mastersOptions.since, 
+      mastersOptions.until)
+    }
+    else if (database == 'lichess'){
+      databaseSettings = new LichessDatabaseSettings(currentFen, lichessOptions.timeControls, 
+      lichessOptions.ratings)
+    }
+    else{
+      databaseSettings = new PlayerDatabaseSettings(playerOptions.username, playerOptions.color, 
+      playerOptions.maxGames, playerOptions.vsPlayer, playerOptions.timeControl)
+    }
+
+    fetchDB(databaseSettings)
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
       updateSidebar()

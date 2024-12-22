@@ -6,40 +6,30 @@ import { Database } from "../../api/DBApi";
 
 export default class LichessDatabaseSettings implements DatabaseSettings{
 
-  private timeControls:Set<TimeControl>
-  private ratings:Set<Rating>
+  private fen:string
+  private timeControls:TimeControl[]
+  private ratings:Rating[]
   
-  public constructor(timeControls: Set<TimeControl>, ratings: Set<Rating>){
-    this.timeControls=timeControls
-    this.ratings=ratings
+  public constructor(fen:string, timeControls: TimeControl[], ratings: Rating[]){
+    this.fen = fen
+    this.timeControls = timeControls
+    this.ratings = ratings
   }
 
   public getDatabaseName():Database{
     return 'lichess'
   }
-  
-  public getURLParameters(){
 
-    let speeds=''
-    let ratings=''
 
-    this.timeControls.forEach((timeControl)=>{
-      speeds=speeds+timeControl+','
-    })
-    speeds=speeds.slice(0, -1)
+  public getURL() : URL{
 
-    this.ratings.forEach((rating)=>{
-      ratings=ratings+rating+','
-    })
-    ratings=ratings.slice(0, -1)
+    const url = new URL('https://explorer.lichess.ovh/lichess')
 
-    const dict=new Dictionary<string, string>();{
-      dict.setValue('speeds', speeds)
-      dict.setValue('ratings', ratings)
-    }
+    url.searchParams.set('fen', this.fen)
+    url.searchParams.set('speeds', this.timeControls.toString())
+    url.searchParams.set('ratings', this.ratings.toString())
 
-    return dict
-      
+    return url
   }
   
 }

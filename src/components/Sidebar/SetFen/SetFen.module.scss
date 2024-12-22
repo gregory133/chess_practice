@@ -1,6 +1,8 @@
 @import '../../../styles/Variables.module.scss';
 
 .container{
+
+  flex: 0;
   font-size: $font-size-small;
   width: 100%;
   display: flex;

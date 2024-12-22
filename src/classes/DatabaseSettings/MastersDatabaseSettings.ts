@@ -4,25 +4,29 @@ import { Database } from "../../api/DBApi";
 
 export default class MastersDatabaseSettings implements DatabaseSettings{
 
+  private fen:string
   private since:number
   private until:number
 
-  public constructor(since:number, until:number){
-    this.since=since
-    this.until=until
+  public constructor(fen:string, since:number, until:number){
+    this.fen = fen
+    this.since = since
+    this.until = until
   }
 
   public getDatabaseName():Database{
     return 'masters'
   }
   
-  public getURLParameters(){
+  public getURL() : URL{
 
-    const dict=new Dictionary<string, string>();{
-      dict.setValue('since', this.since.toString())
-      dict.setValue('until', this.until.toString())
-    }
-    return dict
+    const url = new URL('https://explorer.lichess.ovh/masters')
+    url.searchParams.set('fen', this.fen)
+    url.searchParams.set('since', this.since.toString())
+    url.searchParams.set('until', this.until.toString())
+
+    return url
+
   }
 
   

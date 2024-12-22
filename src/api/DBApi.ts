@@ -15,7 +15,7 @@ export type Database='masters'|'lichess'|'player'
  * @param url
  * @returns 
  */
-export function fetchDBByUrl(url:string){
+export function fetchDBByUrl(url:URL){
 
   return new Promise((res, rej)=>{
     fetch(url)
@@ -30,15 +30,16 @@ export function fetchDBByUrl(url:string){
 
 }
 
+
 /**
  * returns a promise resolving into json object corresponding to the response of a 
- * fetch query to the lichesss masters database with the given uci list
+ * fetch query to the database with the given uci list
  * @param uciList 
  */
-export function fetchDB(fen:string, databaseSettings:DatabaseSettings):Promise<any>{
+export function fetchDB(databaseSettings:DatabaseSettings):Promise<any>{
 
   return new Promise((res, rej)=>{
-    fetchDBByUrl(constructDBUrl(fen, databaseSettings))
+    fetchDBByUrl(databaseSettings.getURL())
     .then(json=>res(json))
   })
 }
@@ -56,19 +57,4 @@ export function getSanListFromDB(json:any):{san:string, frequency:number}[]{
   return json.moves.map((move:any)=>{
     return {san: move.san, frequency:(move.white+move.black+move.draws)/totalFrequency} 
   })
-}
-
-/**
- * utility function to construct and obtain the url of a lichess database
- * @param uciList 
- * @returns 
- */
-function constructDBUrl(fen:string, databaseSettings:DatabaseSettings):string{
-  let url=new URL(`${baseHost}/${databaseSettings.getDatabaseName()}`);
-  
-  databaseSettings.getURLParameters().forEach((key, value)=>{
-    url.searchParams.append(key, value)
-  })
-  url.searchParams.append('fen', fen)
-  return url.toString()
 }

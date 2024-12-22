@@ -31,6 +31,7 @@
   
 }
 .noMoreGame{
+  flex: 0 0 90px;
   @include text-mixin();
   font-weight: 500;
   font-size: 22px;
@@ -42,17 +43,18 @@
 }
 
 .openingName{
-  flex: 1 1 10px;
+  flex: 0 0 120px;
   box-sizing: border-box;
   border-radius: 5px 5px 0px 0px;
-  margin: 0px 20px;
+  margin: 0px 10px;
   padding: 20px 5px;
   text-align: center;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-medium;
+  // font-size: $font-size-small;
+  font-size: 3vmin;
 }
 
 .winrateBarContainer{
