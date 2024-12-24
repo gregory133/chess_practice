@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import styles from './OptionButton.module.scss'
 
 interface Props{
-  button: Button,
+  button: OptionButtonInterface,
   isHighlighted: boolean
 }
 
-export interface Button{
+export interface OptionButtonInterface{
   id: string,
   bgImage: string,
   onClick:()=>void,

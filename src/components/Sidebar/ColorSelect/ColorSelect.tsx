@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './ColorSelect.module.scss'
 import { useChessStore } from '../../../stores/chessStore'
 import { Dictionary } from 'typescript-collections'
-import OptionButton, { Button } from '../OptionsButton/OptionButton'
+import OptionButton, { OptionButtonInterface } from '../OptionsButton/OptionButton'
 
 type Color='white'|'random'|'black'
 
@@ -18,7 +18,7 @@ export default function ColorSelect() {
     buttonNameDict.setValue('black', 'Black')
   }
 
-  const buttons: Button[]=[
+  const buttons: OptionButtonInterface[]=[
     {id: 'white', bgImage: `${process.env.PUBLIC_URL}/images/white.png`, 
     onClick:()=>{onClickChooseColorButton('white')},
     hoverText: 'Play as White'},
@@ -43,7 +43,7 @@ export default function ColorSelect() {
       <div className={styles.container}>
 
         {
-          buttons.map((button:Button, key:number)=>{
+          buttons.map((button:OptionButtonInterface, key:number)=>{
             return (
               <div key={key} className={styles.button}>
                 <OptionButton button={button}  

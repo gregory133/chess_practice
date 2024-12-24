@@ -14,13 +14,27 @@
 }
 
 .lichessView{
+  
+  // height: 20px;
+  flex: 1 0 10px;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
 
   .timeControls{
-
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 0px;
+    align-items: center;
+    padding: 0px 10px;
   }
 
   .ratings{
-
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 0px;
+    align-items: center;
   }
   
 }
@@ -34,6 +48,7 @@
   justify-content: space-around;
   padding: 10px;
   box-sizing: border-box;
+  flex: 1 1 auto;
 }
 
 .parent{
