@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 // import OptionButton, { Button } from '../OptionsButton/OptionButton'
 import styles from './DatabaseSelect.module.scss'
 import { useChessStore } from '../../../stores/chessStore'
@@ -21,6 +21,11 @@ import Avatar from '@mui/material/Avatar';
 import { useDatePickerDefaultizedProps } from '@mui/x-date-pickers/DatePicker/shared';
 import Slider from '@mui/material/Slider';
 import { Mark } from '@mui/material/Slider/useSlider.types';
+import InputTextbox from '../../InputTextbox/InputTextbox';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 
 export default function DatabaseSelect() {
 
@@ -33,8 +38,10 @@ export default function DatabaseSelect() {
 
   const mastersOptions = useDatabaseSettingsStore(state=>state.mastersOptions)
   const lichessOptions = useDatabaseSettingsStore(state => state.lichessOptions)
+  const playerOptions = useDatabaseSettingsStore(state => state.playerOptions)
   const setMastersOptions = useDatabaseSettingsStore(state=>state.setMastersOptions)
   const setLichessOptions = useDatabaseSettingsStore(state=>state.setLichessOptions)
+  const setPlayerOptions = useDatabaseSettingsStore(state=>state.setPlayerOptions)
   
   const [ratingSliderValue, setRatingSliderValue] = useState<number[]>([50, 75])
   const [timeControlSliderValue, setTimeControlSliderValue] = useState<number[]>([40, 100])
@@ -75,15 +82,16 @@ export default function DatabaseSelect() {
     setIsDatabaseModalOpen(true)
   }
 
-  function onMastersSinceYearChange(year:number){
-    setMastersOptions({since: year, until: mastersOptions.until})
-  }
-
-  function onMastersUntilYearChange(year:number){
-    setMastersOptions({since: mastersOptions.since, until: year})
-  }
-
   function MastersView(){
+
+    function onMastersSinceYearChange(year:number){
+      setMastersOptions({since: year, until: mastersOptions.until})
+    }
+
+    function onMastersUntilYearChange(year:number){
+      setMastersOptions({since: mastersOptions.since, until: year})
+    }
+
     return (
       <div className={styles.mastersDatepickers}>
         <YearPicker onChange={onMastersSinceYearChange} label='since' currentYear={mastersOptions.since} 
@@ -191,12 +199,44 @@ export default function DatabaseSelect() {
   }
 
   function PlayerView(){
-    return <div></div>
+
+    function onChangeColor(event:ChangeEvent<HTMLInputElement>){
+      const newColor = event.target.value as 'white'|'black'
+      setPlayerOptions({username: playerOptions.username, color: newColor})
+    }
+
+    function onChangePlayerUsername(newValue:string){
+      setPlayerOptions({username: newValue, color:playerOptions.color})
+    }
+
+    return (
+      <div className={styles.playerView}>
+        <div className={styles.row1}>
+          <InputTextbox onChange={onChangePlayerUsername}/>
+          <div className={styles.radioGroupWrapper}>
+            <RadioGroup onChange={onChangeColor} row defaultValue='white'>
+              <FormControlLabel value="white" control={<Radio sx={{
+                '& .MuiSvgIcon-root' : {
+                  color: 'white'
+                }
+              }}/>} label="White" />
+              <FormControlLabel value="black" control={<Radio sx={{
+                '& .MuiSvgIcon-root' : {
+                  color: 'white'
+                }
+              }}/>} label="Black" />
+            </RadioGroup>
+          </div>
+          
+        </div>
+        
+      </div>
+    )
   }
 
   useEffect(()=>{
-    console.log(mastersOptions)
-  }, [mastersOptions])
+    console.log(playerOptions)
+  }, [playerOptions])
 
   return (
     <div className={styles.main}>

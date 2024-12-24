@@ -6,9 +6,10 @@ import { TimeControl } from "../../types/TimeControl";
 export default class PlayerDatabaseSettings implements DatabaseSettings{
 
     private username : string
+    private color : 'white'|'black'
+
     private maxGames? : number
     private vsPlayer? : string
-    private color : 'white'|'black'
     private timeControls? : TimeControl[]
 
     public constructor(username : string, color : 'white'|'black', maxGames? : number, vsPlayer? : string,

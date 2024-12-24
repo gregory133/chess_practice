@@ -39,6 +39,18 @@
   
 }
 
+.playerView{
+  .row1{
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .radioGroupWrapper{
+      margin: 0px 20px;
+    }
+  }
+}
+
 .main{
   font-size: $font-size-medium;
   width: 100%;

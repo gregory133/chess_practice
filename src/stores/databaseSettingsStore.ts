@@ -41,8 +41,8 @@ export interface DatabaseSettingsStore{
     }
     setMastersOptions : (newOptions : {since:number, until: number})=>void
     setLichessOptions : (newOptions : {timeControls: TimeControl[], ratings: Rating[]})=>void
-    setPlayerOptions : (newOptions : {username: string, maxGames? : number, vsPlayer? : string, 
-        color : 'white'|'black', timeControl : TimeControl[]})=>void
+    setPlayerOptions : (newOptions : {username: string, color : 'white'|'black', maxGames? : number, 
+        vsPlayer? : string, timeControl? : TimeControl[]})=>void
 }
 
 export const useDatabaseSettingsStore=create<DatabaseSettingsStore>()(set=>(
