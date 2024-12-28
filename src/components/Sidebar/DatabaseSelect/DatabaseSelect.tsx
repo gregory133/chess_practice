@@ -66,11 +66,11 @@ export default function DatabaseSelect() {
 
     hoverText: 'Use Lichess Database'},
 
-    {id: 'player', bgImage: `${process.env.PUBLIC_URL}/images/user.png`, 
-    onClick:()=>{
-      onClickDatabaseButton('player')
-    },
-    hoverText: 'Use Player Database'}
+    // {id: 'player', bgImage: `${process.env.PUBLIC_URL}/images/user.png`, 
+    // onClick:()=>{
+    //   onClickDatabaseButton('player')
+    // },
+    // hoverText: 'Use Player Database'}
   ]
 
   function onClickDatabaseButton(id:Database){
@@ -181,15 +181,39 @@ export default function DatabaseSelect() {
             margin: '0px 15px',
             '& .MuiSlider-markLabel' : {
               color : 'white'
+            },
+            '& .MuiSlider-rail':{
+              backgroundColor: 'white'
+            },
+            '& .MuiSlider-track' : {
+              color : 'white'
+            },
+            '& .MuiSlider-thumb' : {
+              color : 'white'
+            },
+            '& .MuiSlider-mark':{
+              color: 'white'
             }
           }} onChange={onChangeTimeControlSlider} value={timeControlSliderValue}
             step={100/(allTimeControls.length-1)} marks={timeControlSliderMarks} />
           </div>
         <div className={styles.ratings}>
           <Slider sx={{
-            margin: '0px 15px',
+            margin: '0px 15px',  
             '& .MuiSlider-markLabel' : {
               color : 'white'
+            },
+            '& .MuiSlider-rail':{
+              backgroundColor: 'white'
+            },
+            '& .MuiSlider-track' : {
+              color : 'white'
+            },
+            '& .MuiSlider-thumb' : {
+              color : 'white'
+            },
+            '& .MuiSlider-mark':{
+              color: 'white'
             }
           }} onChange={onChangeRatingSlider} value={ratingSliderValue}
             step={100/(allRatings.length-1)} marks={ratingSliderMarks} />
