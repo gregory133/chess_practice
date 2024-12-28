@@ -29,6 +29,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 export default function DatabaseSelect() {
 
+  const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
   const selectedDatabase=useChessStore(state=>state.selectedDatabase)
   const setSelectedDatabase=useChessStore(state=>state.setSelectedDatabase)
 
@@ -200,11 +201,6 @@ export default function DatabaseSelect() {
 
   function PlayerView(){
 
-    function onChangeColor(event:ChangeEvent<HTMLInputElement>){
-      const newColor = event.target.value as 'white'|'black'
-      setPlayerOptions({username: playerOptions.username, color: newColor})
-    }
-
     function onChangePlayerUsername(newValue:string){
       setPlayerOptions({username: newValue, color:playerOptions.color})
     }
@@ -213,26 +209,18 @@ export default function DatabaseSelect() {
       <div className={styles.playerView}>
         <div className={styles.row1}>
           <InputTextbox onChange={onChangePlayerUsername}/>
-          <div className={styles.radioGroupWrapper}>
-            <RadioGroup onChange={onChangeColor} row defaultValue='white'>
-              <FormControlLabel value="white" control={<Radio sx={{
-                '& .MuiSvgIcon-root' : {
-                  color: 'white'
-                }
-              }}/>} label="White" />
-              <FormControlLabel value="black" control={<Radio sx={{
-                '& .MuiSvgIcon-root' : {
-                  color: 'white'
-                }
-              }}/>} label="Black" />
-            </RadioGroup>
-          </div>
           
         </div>
         
       </div>
     )
   }
+
+  useEffect(()=>{
+    let color:'white'|'black'
+    color = colorPlayerCanControl=='white' ? 'black' : 'white'
+    setPlayerOptions({username:playerOptions.username, color: color})
+  }, [colorPlayerCanControl])
 
   useEffect(()=>{
     console.log(playerOptions)
