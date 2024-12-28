@@ -72,6 +72,10 @@
   padding: 10px;
   box-sizing: border-box;
 
+  .selectDatabase{
+    width: 200px;
+  }
+
   p{
     text-align: center;
     display: flex;
@@ -87,6 +91,7 @@
 }
 
 .button{
+  margin: 0px 10px;
   display: flex;
   flex-direction: column;
   font-size: 15px;

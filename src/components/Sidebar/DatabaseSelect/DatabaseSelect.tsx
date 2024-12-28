@@ -265,8 +265,8 @@ export default function DatabaseSelect() {
   return (
     <div className={styles.main}>
       <div className={styles.parent}>
-        <div onClick={onClickSettingsButton} className={styles.settingsButton}/>
-        <p>Select Database: </p>
+        {/* <div onClick={onClickSettingsButton} className={styles.settingsButton}/> */}
+        <p className={styles.selectDatabase}>Select Database: </p>
         <div className={styles.container}>
           {
             buttons.map((button:OptionButtonInterface, key:number)=>{

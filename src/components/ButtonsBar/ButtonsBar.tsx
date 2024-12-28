@@ -22,17 +22,17 @@ export default function ButtonsBar() {
       onClick: reset
     },
 
-    {
-      iconImgPath: '/images/small_board.png',
-      hoverHintText: 'Load Opening',
-      onClick: ()=>{}
-    },
+    // {
+    //   iconImgPath: '/images/small_board.png',
+    //   hoverHintText: 'Load Opening',
+    //   onClick: ()=>{}
+    // },
 
-    {
-      iconImgPath: '/images/user.png',
-      hoverHintText: 'Load Player',
-      onClick: ()=>{}
-    }
+    // {
+    //   iconImgPath: '/images/user.png',
+    //   hoverHintText: 'Load Player',
+    //   onClick: ()=>{}
+    // }
   ]
 
   return (
