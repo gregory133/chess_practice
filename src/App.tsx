@@ -11,6 +11,7 @@ import EvalBar from './components/EvalBar/EvalBar';
 import MaterialCount from './components/EvalBar/MaterialCount/MaterialCount';
 import StockfishComponent from './components/Stockfish/StockfishComponent';
 import ButtonsBar from './components/ButtonsBar/ButtonsBar';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
   const evaluation=useChessStore(state=>state.evaluation)
@@ -55,19 +56,23 @@ function App() {
 
   return (
 
-    <div className={styles.container}>
-      <ButtonsBar/>
-      <div className={styles.boardParent} ref={boardParentRef}>
-        <Board parentRef={boardParentRef}/>
+    <div className={styles.main}>
+      <Navbar/>
+      <div className={styles.container}>
+        <ButtonsBar/>
+        <div className={styles.boardParent} ref={boardParentRef}>
+          <Board parentRef={boardParentRef}/>
+        </div>
+        <div className={styles.bar}>
+          <EvalBar/>
+          <MaterialCount/>
+        </div>
+        
+        <Sidebar/>
+        <StockfishComponent/>
       </div>
-      <div className={styles.bar}>
-        <EvalBar/>
-        <MaterialCount/>
-      </div>
-      
-      <Sidebar/>
-      <StockfishComponent/>
     </div>
+    
   
    
   );
