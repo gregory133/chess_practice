@@ -1,14 +1,13 @@
 @import '../../../styles/Variables.module.scss';
 
 .container{
-  flex: 0 0 90px;
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: fit-content;
   align-items: center;
+  flex : 1 1 0;
 
   > p{
+    margin: 0%;
     text-align: center;
     padding: 0px 15px;
     font-size: $font-size-small;

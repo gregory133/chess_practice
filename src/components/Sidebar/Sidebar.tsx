@@ -15,6 +15,7 @@ import DatabaseSettings from '../../interfaces/DatabaseSettings'
 import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings'
 import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings'
 import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings'
+import { Dictionary } from 'typescript-collections'
 
 export default function Sidebar() {
 
@@ -23,6 +24,7 @@ export default function Sidebar() {
   const currentFen=useChessStore(state=>state.currentFen)
   const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
   const database:Database=useChessStore(state=>state.selectedDatabase)
+
 
   const openingName=useChessStore(state=>state.openingName)
   const winrate=useChessStore(state=>state.winrate)
@@ -77,6 +79,32 @@ export default function Sidebar() {
     return {from:from, to:to}
   }
 
+  /**
+   * returns a string that corresponds to the css font size of the opening name 
+   * based on the number of characters in the opening name
+   */
+  function openingNameFontSize(openingName:string):string{
+
+    let returnVal:string = ''
+    
+    const numChar = openingName.length
+    const sizesDict = new Dictionary<number, string>();{
+      sizesDict.setValue(0, '3.5cqh')
+      sizesDict.setValue(30, '2.5cqh')    
+      sizesDict.setValue(80, '2cqh')   
+    }
+
+    const keys = sizesDict.keys().sort()
+    
+    keys.forEach(key=>{
+        if (numChar > key){
+          returnVal = sizesDict.getValue(key)!
+        }
+    })
+
+    return returnVal
+  }
+
   useEffect(()=>{
     if (!isStockfishArrowActive){
       setStockfishArrowSuggestion(null)
@@ -120,21 +148,27 @@ export default function Sidebar() {
 
   return (
     <div className={styles.sidebar}>
-      <p className={styles.openingName}>{openingName}</p>
+      <p style={{
+          fontSize: openingNameFontSize(openingName)
+        }} className={styles.openingName}>
+        {openingName}
+      </p>
       <div className={styles.winrateBarContainer}>
         {
           winrate ? <WinrateBar winrate={winrate}/> : <WinrateBar winrate={null}/>
         }
       </div>
-      {
-        (numGamesInDB && numMovesInDB && winrate) 
-          ? (<MoveStats numGamesInDB={numGamesInDB} 
-          numMovesInDB={numMovesInDB}/>)
-          : <div className={styles.noMoreGame}>There are no more Games in the Database</div>
-      }
+      <div className={styles.moveStatsContainer}>
+        {
+          (numGamesInDB && numMovesInDB && winrate) 
+            ? (<MoveStats numGamesInDB={numGamesInDB} 
+            numMovesInDB={numMovesInDB}/>)
+            : <div className={styles.noMoreGame}>There are no more Games in the Database</div>
+        }
+      </div>
       <SetFen/>
-      <ColorSelect/>
-      <DatabaseSelect/>
+      {/* <ColorSelect/>
+      <DatabaseSelect/> */}
     </div>
   )
 }

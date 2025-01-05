@@ -59,7 +59,6 @@ function App() {
     <div className={styles.main}>
       <Navbar/>
       <div className={styles.container}>
-        <ButtonsBar/>
         <div className={styles.boardParent} ref={boardParentRef}>
           <Board parentRef={boardParentRef}/>
         </div>
@@ -69,7 +68,7 @@ function App() {
         </div>
         
         <Sidebar/>
-        <StockfishComponent/>
+        {/* <StockfishComponent/> */}
       </div>
     </div>
     

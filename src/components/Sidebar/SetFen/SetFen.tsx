@@ -87,7 +87,8 @@ export default function SetFen() {
         <input style={{borderBottom: `1px solid ${underlineColor}`}} 
         ref={inputRef} onInput={handleOnInput}/>
 
-        <div title='Copy current FEN' className={styles.copyButton} style={getCopyButtonStyle()} onClick={onClickCopyButton}
+        <div title='Copy current FEN' className={styles.copyButton} style={getCopyButtonStyle()} 
+        onClick={onClickCopyButton}
         onMouseEnter={()=>setIsCopyButtonHovered(true)} onMouseLeave={()=>setIsCopyButtonHovered(false)}>
           <div/>
         </div>

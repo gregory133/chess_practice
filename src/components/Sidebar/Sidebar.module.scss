@@ -4,13 +4,14 @@
 @import '../../styles/Mixins.module.scss';
 
 .sidebar{
+  // box-sizing: border-box;
   margin-left: 30px;
   height: 100%;
   flex:1;
   background-color: $sidebar-bg;
   max-width: 500px;
   min-width: 460px;
-  min-height: 590px;
+  // min-height: 590px;
   color: white;
   font-family: $default-font;
   border: white;
@@ -28,40 +29,53 @@
   > *{
     flex: 1;
   }
+
+  .openingName{
+    min-height: 10%;
+    flex: 0 0 10%;
+    box-sizing: border-box;
+    border-radius: 5px 5px 0px 0px;
+    margin: 0px 10px;
+    padding: 20px 5px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  
+  .winrateBarContainer{
+    flex: 0 1 3%;
+    padding: 10px 0px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .noMoreGame{
+    flex: 0 1 10%;
+    @include text-mixin();
+    font-weight: 500;
+    font-size: 22px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .moveStatsContainer{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex: 0 1 10%;
+  }
   
 }
-.noMoreGame{
-  flex: 0 0 90px;
-  @include text-mixin();
-  font-weight: 500;
-  font-size: 22px;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
 
-.openingName{
-  flex: 0 0 120px;
-  box-sizing: border-box;
-  border-radius: 5px 5px 0px 0px;
-  margin: 0px 10px;
-  padding: 20px 5px;
-  text-align: center;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // font-size: $font-size-small;
-  font-size: 3vmin;
-}
 
-.winrateBarContainer{
-  $flex-factor: 0.2;
-  flex: $flex-factor $flex-factor auto;
-  padding: 10px 0px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
+
