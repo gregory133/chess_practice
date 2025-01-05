@@ -5,10 +5,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 export default function Navbar() {
 
     return (
-        <div>
-            <div className={styles.main}>
+        <div className={styles.main}>
+            <div className={styles.content}>
                 <div className={styles.logo}>
-                    <img src={`${process.env.PUBLIC_URL}/images/white.png`}/>
+                    <div className={styles.image} style={{backgroundImage: `url('${process.env.PUBLIC_URL}/images/white.png')`}}/>
                     <div>Chess Opening Practice</div>
                 </div>
                 <div className={styles.credits}>

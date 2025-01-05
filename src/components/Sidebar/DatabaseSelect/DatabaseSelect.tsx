@@ -262,7 +262,7 @@ export default function DatabaseSelect() {
     <div className={styles.main}>
       <div className={styles.parent}>
         {/* <div onClick={onClickSettingsButton} className={styles.settingsButton}/> */}
-        <p className={styles.selectDatabase}>Select Database: </p>
+        <span className={styles.selectDatabase}>Select Database: </span>
         <div className={styles.container}>
           {
             buttons.map((button:OptionButtonInterface, key:number)=>{
@@ -270,20 +270,20 @@ export default function DatabaseSelect() {
                 <div key={key} className={styles.button}>
                   <OptionButton button={button} 
                   isHighlighted={button.id==selectedId}/>
-                  <p>{buttonNameDict.getValue(button.id)}</p>
+                  {/* <p>{buttonNameDict.getValue(button.id)}</p> */}
                 </div>
               )
             })
           }
         </div>
       </div>
-      {
+      {/* {
         selectedDatabase == 'masters' 
           ? MastersView() 
           : selectedDatabase == 'lichess' 
             ? LichessView()
             : PlayerView()
-      }
+      } */}
     </div>
     
   )

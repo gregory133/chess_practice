@@ -48,7 +48,6 @@ export default function ColorSelect() {
               <div key={key} className={styles.button}>
                 <OptionButton button={button}  
                 isHighlighted={button.id==selectedId}/>
-                {/* <span className={styles.buttonText}>{buttonNameDict.getValue(button.id)}</span> */}
               </div>
               
             )

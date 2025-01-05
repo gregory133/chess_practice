@@ -1,24 +1,20 @@
 @import '../../../styles/Variables.module.scss';
 
-$button-length: 60px;
 $border-radius: 3px;
 
 .button{
+  aspect-ratio: 1/1;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  // height: $button-length;
   height: 80%;
-  width: $button-length;
-  margin: 5px;
-  padding: 10px;
   border-radius: 100%;
 
   img{
 
     border-radius: $border-radius;
-    height: 150%;
+    height: 75%;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
