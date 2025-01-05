@@ -168,7 +168,7 @@ export default function Sidebar() {
       </div>
       <SetFen/>
       <ColorSelect/>
-      {/* <DatabaseSelect/> */}
+      <DatabaseSelect/>
     </div>
   )
 }

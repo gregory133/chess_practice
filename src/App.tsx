@@ -59,13 +59,13 @@ function App() {
     <div className={styles.main}>
       <Navbar/>
       <div className={styles.container}>
-        <div className={styles.boardParent} ref={boardParentRef}>
+        {/* <div className={styles.boardParent} ref={boardParentRef}>
           <Board parentRef={boardParentRef}/>
         </div>
         <div className={styles.bar}>
           <EvalBar/>
           <MaterialCount/>
-        </div>
+        </div> */}
         
         <Sidebar/>
         {/* <StockfishComponent/> */}

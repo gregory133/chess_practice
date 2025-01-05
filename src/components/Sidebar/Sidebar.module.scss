@@ -7,11 +7,10 @@
   // box-sizing: border-box;
   margin-left: 30px;
   height: 100%;
-  flex:1;
+  flex:1 1 0;
   background-color: $sidebar-bg;
   max-width: 500px;
   min-width: 460px;
-  // min-height: 590px;
   color: white;
   font-family: $default-font;
   border: white;
@@ -23,7 +22,7 @@
 
   > :nth-child(odd){
     background-color: $sidebar-bg-light;
-    box-shadow: 0px 0px 2px white;
+    box-shadow: 0 0 2px white;
   }
 
   > *{

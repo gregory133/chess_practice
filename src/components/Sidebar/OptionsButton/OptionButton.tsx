@@ -24,7 +24,7 @@ export default function OptionButton(props:Props) {
         boxShadow: props.isHighlighted ? '0px 0px 10px white' : '0px 0px 10px transparent',
         backgroundColor: isHovered ? '#706F6D' : 'transparent'
       }} onClick={props.button.onClick}>
-      <img src={props.button.bgImage}/>
+        <div className={styles.image} style={{backgroundImage: `url('${props.button.bgImage}')`}} />
     </div>
   )
 }

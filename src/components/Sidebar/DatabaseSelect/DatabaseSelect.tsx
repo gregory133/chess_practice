@@ -261,7 +261,6 @@ export default function DatabaseSelect() {
   return (
     <div className={styles.main}>
       <div className={styles.parent}>
-        {/* <div onClick={onClickSettingsButton} className={styles.settingsButton}/> */}
         <span className={styles.selectDatabase}>Select Database: </span>
         <div className={styles.container}>
           {
