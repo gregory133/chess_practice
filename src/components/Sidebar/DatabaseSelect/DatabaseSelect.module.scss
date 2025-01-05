@@ -1,5 +1,17 @@
 @import '../../../styles/Variables.module.scss';
 
+.main{
+  font-size: $font-size-medium;
+  width: 100%;
+  height: $sidebar-section-height;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10px;
+  box-sizing: border-box;
+  flex: 1 1 0;
+}
+
 .settingsButton{
   background-image: url("../../../../public/images/setting.png");
   background-size: contain;
@@ -51,17 +63,7 @@
   }
 }
 
-.main{
-  font-size: $font-size-medium;
-  width: 100%;
-  height: $sidebar-section-height;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 10px;
-  box-sizing: border-box;
-  flex: 1 1 auto;
-}
+
 
 .parent{
 

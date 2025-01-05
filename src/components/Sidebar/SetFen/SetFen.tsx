@@ -90,8 +90,8 @@ export default function SetFen() {
         <div title='Copy current FEN' className={styles.copyButton} style={getCopyButtonStyle()} 
         onClick={onClickCopyButton}
         onMouseEnter={()=>setIsCopyButtonHovered(true)} onMouseLeave={()=>setIsCopyButtonHovered(false)}>
-          <div/>
-        </div>
+        <div className={styles.copyButtonIcon}/>
+      </div>
         
     </div>
   )

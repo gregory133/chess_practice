@@ -25,7 +25,7 @@ export default function ColorSelect() {
 
     {id: 'random', bgImage: `${process.env.PUBLIC_URL}/images/blackwhite.png`, 
     onClick:()=>{onClickChooseColorButton('random')},
-    hoverText: 'Play as random Color'},
+    hoverText: 'Play as Random Color'},
 
     {id: 'black', bgImage: `${process.env.PUBLIC_URL}/images/black.png`, 
     onClick:()=>{onClickChooseColorButton('black')},
@@ -48,7 +48,7 @@ export default function ColorSelect() {
               <div key={key} className={styles.button}>
                 <OptionButton button={button}  
                 isHighlighted={button.id==selectedId}/>
-                <p className={styles.buttonText}>{buttonNameDict.getValue(button.id)}</p>
+                {/* <span className={styles.buttonText}>{buttonNameDict.getValue(button.id)}</span> */}
               </div>
               
             )

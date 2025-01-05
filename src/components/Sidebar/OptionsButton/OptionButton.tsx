@@ -19,11 +19,11 @@ export default function OptionButton(props:Props) {
 
   return (
     <div onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)} 
-    title={props.button.hoverText} className={styles.button} 
-    style={{
-      boxShadow: props.isHighlighted ? '0px 0px 10px white' : '0px 0px 10px transparent',
-      backgroundColor: isHovered ? '#706F6D' : 'transparent'
-    }} onClick={props.button.onClick}>
+      title={props.button.hoverText} className={styles.button} 
+      style={{
+        boxShadow: props.isHighlighted ? '0px 0px 10px white' : '0px 0px 10px transparent',
+        backgroundColor: isHovered ? '#706F6D' : 'transparent'
+      }} onClick={props.button.onClick}>
       <img src={props.button.bgImage}/>
     </div>
   )

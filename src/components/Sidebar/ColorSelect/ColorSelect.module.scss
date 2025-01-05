@@ -1,39 +1,59 @@
 @import '../../../styles/Variables.module.scss';
 
 .parent{
-  flex: 0 0 135px;
-  font-size: 30px;
+  flex: 0 0 10%;
+  font-size: 2.3cqh;
   width: 100%;
   height: $sidebar-section-height;
   display: flex;
   justify-content: center;
-  padding: 10px;
+  padding: 0.2rem;
   box-sizing: border-box;
   align-items: center;
 
   p{
+    
+    // margin: 0;
     text-align: center;
     display: flex;
     align-items: center;
-    // margin-right: 5px;
+    margin: 0 1.88rem;
   }
+
+  .container{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    .button{
+      margin: 0 1rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      span{
+        font-size: 2cqh;
+        text-align: center;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .buttonText{
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+    }
+
+  }
+
 }
 
-.container{
-  display: flex;
-  align-items: center;
 
-}
 
-.button{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.buttonText{
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-}
+

@@ -258,10 +258,6 @@ export default function DatabaseSelect() {
     )
   }
 
-  useEffect(()=>{
-    console.log(playerOptions)
-  }, [playerOptions])
-
   return (
     <div className={styles.main}>
       <div className={styles.parent}>

@@ -2,8 +2,13 @@
 
 .container{
 
-  flex: 1 1 0;
-  font-size: $font-size-small;
+  p{
+    margin: 0;
+    font-size: 2cqh;
+  }
+
+  flex: 0 0 1cqh;
+  
   width: 100%;
   display: flex;
   padding: 10px;
@@ -16,10 +21,10 @@
     flex: 1;
     background: rgba(0, 0, 0, 0);
     border: none;
-    font-size: $font-size-tiny;
+    font-size: 1cqh;
     color: white;
     outline: none;
-    margin: 5px;
+    margin: 1cqh;
   }
 
   
@@ -31,7 +36,7 @@
   width: 30px;
   height: 30px;
 
-  div{
+  .copyButtonIcon{
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
