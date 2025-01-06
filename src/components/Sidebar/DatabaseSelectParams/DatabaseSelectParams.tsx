@@ -39,11 +39,11 @@ export default function DatabaseSelectParams() {
         function onMastersUntilYearChange(year:number){
           setMastersOptions({since: mastersOptions.since, until: year})
         }
-    
+
         return (
           <div className={styles.mastersDatepickers}>
             <YearPicker onChange={onMastersSinceYearChange} label='since' currentYear={mastersOptions.since} 
-            yearOrder='asc' defaultYear={YEAR_LOWER_BOUND} minYear={YEAR_UPPER_BOUND} 
+            yearOrder='asc' defaultYear={YEAR_LOWER_BOUND} minYear={YEAR_LOWER_BOUND} 
             maxYear={mastersOptions.until}/>
     
             <YearPicker onChange={onMastersUntilYearChange} label='until' currentYear={mastersOptions.until} 
@@ -120,7 +120,6 @@ export default function DatabaseSelectParams() {
             setTimeControlSliderValue(newValue)
         }
     }
-
 
     return (
         <div className={styles.lichessView}>

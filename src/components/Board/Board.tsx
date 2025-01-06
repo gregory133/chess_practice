@@ -130,10 +130,6 @@ export default function Board(props:Props) {
 
 	}, [fen])
 
-	// useEffect(()=>{
-	// 	console.log(lastFromToSquares);
-	// }, [lastFromToSquares])
-
 	useEffect(()=>{
 		if (positionList.size()==0){
 			setLastFromToSquares([])
@@ -172,6 +168,10 @@ export default function Board(props:Props) {
 	useEffect(()=>{
 		adjustBoardLength()
 	}, [props.parentRef])
+
+	useEffect(()=>{
+		console.log(lichessOptions)
+	}, [lichessOptions])
 
 	/**called to update the last move highlighted squares on the board */
 	function updateLastMoveHighlightedSquares(currentPosition:Position|null){
