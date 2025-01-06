@@ -58,23 +58,20 @@ export default function DatabaseSelect() {
   }
 
   return (
-      <div className={styles.parent}>
-        <span className={styles.selectDatabase}>Select Database: </span>
-        <div className={styles.container}>
-          {
-            buttons.map((button:OptionButtonInterface, key:number)=>{
-              return(
-                <div key={key} className={styles.button}>
-                  <OptionButton button={button} 
-                  isHighlighted={button.id==selectedId}/>
-                </div>
-              )
-            })
-          }
-        </div>
+    <div className={styles.parent}>
+      <span className={styles.selectDatabase}>Select Database:</span>
+      <div className={styles.container}>
+        {
+          buttons.map((button:OptionButtonInterface, key:number)=>{
+            return(
+              <div key={key} className={styles.button}>
+                <OptionButton button={button} 
+                isHighlighted={button.id==selectedId}/>
+              </div>
+            )
+          })
+        }
       </div>
-      
-
-    
+    </div> 
   )
 }

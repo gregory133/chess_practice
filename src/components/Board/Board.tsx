@@ -169,10 +169,6 @@ export default function Board(props:Props) {
 		adjustBoardLength()
 	}, [props.parentRef])
 
-	useEffect(()=>{
-		console.log(lichessOptions)
-	}, [lichessOptions])
-
 	/**called to update the last move highlighted squares on the board */
 	function updateLastMoveHighlightedSquares(currentPosition:Position|null){
 		if (currentPosition){

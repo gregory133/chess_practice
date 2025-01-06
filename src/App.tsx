@@ -68,7 +68,7 @@ function App() {
         </div>
         
         <Sidebar/>
-        {/* <StockfishComponent/> */}
+        <StockfishComponent/>
       </div>
     </div>
     

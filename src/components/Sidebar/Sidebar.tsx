@@ -17,6 +17,7 @@ import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatab
 import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings'
 import { Dictionary } from 'typescript-collections'
 import DatabaseSelectParams from './DatabaseSelectParams/DatabaseSelectParams'
+import ResetBar from './ResetBar/ResetBar'
 
 export default function Sidebar() {
 
@@ -168,6 +169,7 @@ export default function Sidebar() {
         }
       </div>
       <SetFen/>
+      <ResetBar/>
       <ColorSelect/>
       <DatabaseSelect/>
       <DatabaseSelectParams/>

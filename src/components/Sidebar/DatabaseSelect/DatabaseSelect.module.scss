@@ -41,61 +41,8 @@
       }
 
     }
-    
-
-  }
-
-}
-
-
-.settingsButton{
-  background-image: url("../../../../public/images/setting.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  flex: 1 1 50px;
-}
-
-.mastersDatepickers{
-  display: flex;
-  flex-direction: row;
-}
-
-.lichessView{
-  
-  // height: 20px;
-  flex: 1 0 10px;
-  display: flex;
-  flex-direction: column;
-  font-size: 20px;
-
-  .timeControls{
-    display: flex;
-    flex-direction: row;
-    flex: 1 1 0px;
-    align-items: center;
-    padding: 0px 10px;
-  }
-
-  .ratings{
-    padding: 0px 10px;
-    display: flex;
-    flex-direction: row;
-    flex: 1 1 0px;
-    align-items: center;
-  }
-  
-}
-
-.playerView{
-  .row1{
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    .radioGroupWrapper{
-      margin: 0px 20px;
-    }
   }
 }
+
+
 
