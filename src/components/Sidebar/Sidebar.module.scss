@@ -5,6 +5,7 @@
 
 .sidebar{
   // box-sizing: border-box;
+  
   margin-left: 30px;
   height: 100%;
   flex:1 1 0;
@@ -45,8 +46,9 @@
   }
   
   .winrateBarContainer{
+    box-sizing: border-box;
     flex: 0 1 3%;
-    padding: 10px 0px;
+    padding: 2rem 0.63rem;
     width: 100%;
     display: flex;
     align-items: center;

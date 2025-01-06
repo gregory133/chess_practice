@@ -276,13 +276,13 @@ export default function DatabaseSelect() {
           }
         </div>
       </div>
-      {/* {
+      {
         selectedDatabase == 'masters' 
           ? MastersView() 
           : selectedDatabase == 'lichess' 
             ? LichessView()
             : PlayerView()
-      } */}
+      }
     </div>
     
   )
