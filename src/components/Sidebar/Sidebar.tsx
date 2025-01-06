@@ -16,6 +16,7 @@ import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatab
 import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings'
 import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings'
 import { Dictionary } from 'typescript-collections'
+import DatabaseSelectParams from './DatabaseSelectParams/DatabaseSelectParams'
 
 export default function Sidebar() {
 
@@ -169,6 +170,7 @@ export default function Sidebar() {
       <SetFen/>
       <ColorSelect/>
       <DatabaseSelect/>
+      <DatabaseSelectParams/>
     </div>
   )
 }

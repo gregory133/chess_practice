@@ -1,59 +1,52 @@
 @import '../../../styles/Variables.module.scss';
 
-.main{
-  font-size: $font-size-medium;
+.parent{
+  flex: 0 0 10%;
+  font-size: 2.3cqh;
   width: 100%;
+  height: $sidebar-section-height;
   display: flex;
-  flex-direction: column;
-  // justify-content: space-around;
-  padding: 10px;
+  justify-content: center;
+  padding: 0.2rem;
   box-sizing: border-box;
-  flex: 1 1 0;
+  align-items: center;
 
-  .parent{
-    height: 20%;
-    width: 100%;
+  .selectDatabase{
+    font-size: 2cqh;
+    flex: 0 0 20%;
+    text-align: center;
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    margin: 0 1rem;
+  }
+
+  .container{
+    height: 100%;
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 10px;
-    box-sizing: border-box;
-  
-    .selectDatabase{
-      font-size: 2cqh;
-      flex: 0 0 20%;
-      text-align: center;
-      display: flex;
-      align-items: center;
+
+    .button{
+      aspect-ratio: 1/1;
       margin: 0 1rem;
-    }
-
-    .container{
-      flex: 1 1 0;
       display: flex;
-      align-items: center;
+      flex-direction: column;  
       justify-content: center;
-
-      .button{
-        aspect-ratio: 1/1;
-        margin: 0 1rem;
-        display: flex;
-        flex-direction: column;  
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-      
-        p{
-          margin: 0;
-        }
-
+      align-items: center;
+      height: 100%;
+    
+      p{
+        margin: 0;
       }
-      
 
     }
+    
 
   }
+
 }
+
 
 .settingsButton{
   background-image: url("../../../../public/images/setting.png");
