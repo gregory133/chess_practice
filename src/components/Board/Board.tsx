@@ -417,20 +417,40 @@ export default function Board(props:Props) {
 
 	/**
 	 * 
+	 * @returns The autoshape object which draws arrows on the board
+	 */
+	function getAutoShapes():DrawShape[]{
+		let autoShapes : DrawShape[] = []
+		if (lastFromToSquares.length!=0){
+			autoShapes.push(
+				{
+					orig: lastFromToSquares[0],
+					dest: lastFromToSquares[1],
+					brush: 'yellow',
+				}
+			)
+		}
+		if (isStockfishArrowActive && blueArrow){
+			autoShapes.push(
+				{
+					orig: blueArrow.from,
+					dest: blueArrow.to,
+					brush: 'blue',
+				}
+			)
+		}
+
+		return autoShapes
+	}
+
+	/**
+	 * 
 	 * @returns the config object required by Chessground
 	 */
 	function getConfig():Config{
 
 		const turnColor:cg.Color = fen.split(' ')[1]=='w'
 		? 'white' : 'black'
-
-		const autoShapes:DrawShape[] = !(isStockfishArrowActive && blueArrow) ? [] : [
-			{
-				orig: blueArrow.from,
-				dest: blueArrow.to,
-				brush: 'blue',
-			}
-		]
 		
 		let config:Config={
 			fen: fen,
@@ -442,7 +462,7 @@ export default function Board(props:Props) {
 				},
 				lastMove: lastFromToSquares,
 				highlight:{
-
+					lastMove: false,
 					check:true,
 				},
 				movable: {
@@ -453,7 +473,7 @@ export default function Board(props:Props) {
 					}
 				},
 				drawable: {
-					autoShapes: autoShapes
+					autoShapes: getAutoShapes()
 				}
 		}
 		return config
