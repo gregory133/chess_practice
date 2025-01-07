@@ -8,7 +8,8 @@
     display: flex;
     flex-direction: column;
     font-family: $default-font;
-    
+    font-size: 1.4rem;
+    font-weight: 500;
     background-image: linear-gradient(#2e2a22, $bg-color-light);
 
     .content{
@@ -29,6 +30,7 @@
             height: 100%;
         
             .image{
+                margin-right: 2rem;
                 aspect-ratio: 1/1;
                 height: 100%;
                 background-size: contain;
@@ -49,13 +51,24 @@
                 margin: 0px 20px;
             }
 
-            a{
-                aspect-ratio: 1/1;
+            .githubLogoContainer{
+            
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 80%;
+                height: 100%;
+                aspect-ratio: 1/1;
+
+                a{
+                    aspect-ratio: 1/1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 80%;
+                }
             }
+
+            
         }
     }
     

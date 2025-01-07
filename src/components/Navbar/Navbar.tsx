@@ -13,11 +13,16 @@ export default function Navbar() {
                 </div>
                 <div className={styles.credits}>
                     <span>Made by Gregory Marcelin</span>
-                    <a target='_blank' href='https://github.com/gregory133/chess_practice'>
-                        <GitHubIcon sx={{
-                            color: 'white'
-                        }}/>
-                    </a>
+                    <div className={styles.githubLogoContainer}>
+                        <a target='_blank' href='https://github.com/gregory133/chess_practice'>
+                            <GitHubIcon sx={{
+                                height: '3rem',
+                                width: '3rem',
+                                color: 'white'
+                            }}/>
+                        </a>
+                    </div>
+                    
                     
                 </div>
                 
