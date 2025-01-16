@@ -1,4 +1,13 @@
+@import './Fonts.scss';
+
 #root{
   width: 100vw;
   height: 100vh;
+}
+
+body{
+  color: white;
+  font-weight: 600;
+  font-family: $default-font;
+  margin: 0;
 }

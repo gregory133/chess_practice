@@ -2,16 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import Board from './components/Board/Board';
 import Sidebar from './components/Sidebar/Sidebar';
 
-import styles from './styles/App.module.scss'
+
 import './styles/Colors.scss'
 import './styles/Fonts.scss'
 
 import { useChessStore } from './stores/chessStore';
-import EvalBar from './components/EvalBar/EvalBar';
-import MaterialCount from './components/EvalBar/MaterialCount/MaterialCount';
-import StockfishComponent from './components/Stockfish/StockfishComponent';
-import ButtonsBar from './components/ButtonsBar/ButtonsBar';
+import { useMediaQuery } from 'react-responsive'
 import Navbar from './components/Navbar/Navbar';
+import LandscapeLayout from './components/Layouts/LandscapeLayout/LandscapeLayout';
+import Portrait from './components/Layouts/Portrait/Portrait';
 
 function App() {
   const evaluation=useChessStore(state=>state.evaluation)
@@ -19,6 +18,10 @@ function App() {
   const navigateForward=useChessStore(state=>state.navigatePositionListForward)
   const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
   const boardParentRef=useRef(null)
+
+  const isLandscape = useMediaQuery({
+    query : '(min-width: 1100px)'
+  })
 
   useEffect(()=>{
     hookupArrowKeyEvents()
@@ -55,26 +58,15 @@ function App() {
   }
 
   return (
-
-    <div className={styles.main}>
-      <Navbar/>
-      <div className={styles.container}>
-        <div className={styles.boardParent} ref={boardParentRef}>
-          <Board parentRef={boardParentRef}/>
-        </div>
-        <div className={styles.bar}>
-          <EvalBar/>
-          <MaterialCount/>
-        </div>
-        
-        <Sidebar/>
-        <StockfishComponent/>
-      </div>
-    </div>
-    
-  
-   
-  );
+    // <>
+    //   {
+    //     isLandscape 
+    //       ? <LandscapeLayout boardParentRef={boardParentRef}/>
+    //       : <Portrait boardParentRef={boardParentRef}/> 
+    //   }
+    // </>
+    <Portrait/> 
+  )
 }
 
 export default App;
