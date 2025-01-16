@@ -31,19 +31,23 @@ export default function YearPicker(props:Props) {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <div style={{margin: '10px'}} onMouseEnter={()=>{setColor(HOVERED_COLOR)}} 
+            <div style={{margin: '0.5% 0.6rem'}} onMouseEnter={()=>{setColor(HOVERED_COLOR)}} 
             onMouseLeave={()=>{setColor(UNHOVERED_COLOR)}}>
-                <DatePicker 
+                <DatePicker
                 value={dayjs(Date.parse(`02 Aug ${props.currentYear} 00:12:00 GMT`))}
                 yearsOrder={props.yearOrder} minDate={dayjs(Date.parse(`02 Aug ${props.minYear} 00:12:00 GMT`))} 
                 maxDate={dayjs(Date.parse(`02 Aug ${props.maxYear} 00:12:00 GMT`))} label={`${props.label}`} 
                 onChange={onChange}
+                slotProps={{
+                    textField: {size: "small"}
+                }}
                 sx={{
                 '& .MuiFormLabel-root' :{
-                    color: 'white'
+                    color: 'white'    
                 },
                 '& .MuiOutlinedInput-root':{
                     color: 'white'
+                    
                 },
                 '& .MuiOutlinedInput-notchedOutline' :{
                     borderColor: `${color} !important`

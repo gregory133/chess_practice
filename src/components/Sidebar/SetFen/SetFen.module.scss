@@ -27,21 +27,22 @@
     margin: 1cqh;
   }
 
+  .copyButton{
+
+    padding: 0.31rem;
+    border-radius: 0.31rem;
+    aspect-ratio: 1/1;
+    height: 60%;
   
-}
-.copyButton{
-
-  padding: 5px;
-  border-radius: 5px;
-  width: 30px;
-  height: 30px;
-
-  .copyButtonIcon{
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    background-image: url('../../../../public/images/copy.png');
+    .copyButtonIcon{
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url('../../../../public/images/copy.png');
+    }
   }
+  
+  
 }
