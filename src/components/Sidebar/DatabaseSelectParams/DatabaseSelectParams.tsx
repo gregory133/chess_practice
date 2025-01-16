@@ -121,48 +121,56 @@ export default function DatabaseSelectParams() {
         }
     }
 
+    let color = 'white'
     return (
         <div className={styles.lichessView}>
             <div className={styles.timeControls}>
-                <Slider sx={{
+                <Slider
+                size='small'
+                sx={{
                     width: '90%',
-                    margin: '0px 15px',
+                    margin: '0 0.94rem',
                     '& .MuiSlider-markLabel' : {
-                        color : 'white'
+                        color : `${color}`,
+                        fontWeight: 700,
+                        fontSize: '1.1cqh'
                     },
                     '& .MuiSlider-rail':{
-                        backgroundColor: 'white'
+                        backgroundColor: `${color}`
                     },
                     '& .MuiSlider-track' : {
-                        color : 'white'
+                        color : `${color}`
                     },
                     '& .MuiSlider-thumb' : {
-                        color : 'white'
+                        color : `${color}`
                     },
                     '& .MuiSlider-mark':{
-                        color: 'white'
+                        color: `${color}`
                     }
                 }} onChange={onChangeTimeControlSlider} value={timeControlSliderValue}
                 step={100/(allTimeControls.length-1)} marks={timeControlSliderMarks} />
             </div>
             <div className={styles.ratings}>
-            <Slider sx={{
+            <Slider size='small' sx={{
+                
+                fontWeight: 700,
                 width: '90%',
-                margin: '0px 15px',  
+                margin: '0px 0.94rem',  
                 '& .MuiSlider-markLabel' : {
-                    color : 'white'
+                    color : `${color}`,
+                    fontSize: '1.1cqh'
                 },
                 '& .MuiSlider-rail':{
-                    backgroundColor: 'white'
+                    backgroundColor: `${color}`
                 },
                 '& .MuiSlider-track' : {
-                    color : 'white'
+                    color : `${color}`
                 },
                 '& .MuiSlider-thumb' : {
-                    color : 'white'
+                    color : `${color}`
                 },
                 '& .MuiSlider-mark':{
-                    color: 'white'
+                    color: `${color}`
                 }
             }} onChange={onChangeRatingSlider} value={ratingSliderValue}
             step={100/(allRatings.length-1)} marks={ratingSliderMarks} />
