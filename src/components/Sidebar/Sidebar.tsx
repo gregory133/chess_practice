@@ -150,9 +150,9 @@ export default function Sidebar() {
 
   return (
     <div className={styles.sidebar}>
-      <p style={{
+      <p className={styles.openingName} style={{
           fontSize: openingNameFontSize(openingName)
-        }} className={styles.openingName}>
+        }}>
         {openingName}
       </p>
       <div className={styles.winrateBarContainer}>
@@ -160,7 +160,7 @@ export default function Sidebar() {
           winrate ? <WinrateBar winrate={winrate}/> : <WinrateBar winrate={null}/>
         }
       </div>
-      <div className={styles.moveStatsContainer}>
+      {/* <div className={styles.moveStatsContainer}>
         {
           (numGamesInDB && numMovesInDB && winrate) 
             ? (<MoveStats numGamesInDB={numGamesInDB} 
@@ -172,7 +172,7 @@ export default function Sidebar() {
       <ResetBar/>
       <ColorSelect/>
       <DatabaseSelect/>
-      <DatabaseSelectParams/>
+      <DatabaseSelectParams/> */}
     </div>
   )
 }

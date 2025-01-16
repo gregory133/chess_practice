@@ -438,11 +438,8 @@ export default function Board() {
 					autoShapes: getAutoShapes()
 				}
 		}
-		return config
-		
-		
+		return config	
 	}
-
 	
 	return (
 
