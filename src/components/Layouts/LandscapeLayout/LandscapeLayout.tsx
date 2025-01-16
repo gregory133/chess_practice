@@ -7,26 +7,15 @@ import Sidebar from '../../Sidebar/Sidebar'
 import StockfishComponent from '../../Stockfish/StockfishComponent'
 import styles from './LandscapeLayout.module.scss'
 
-interface Props{
-    boardParentRef : React.MutableRefObject<null>
-}
+//TODO: add left bar for something (e.g moves)
 
-export default function LandscapeLayout(props:Props) {
+export default function LandscapeLayout() {
   return (
     <div className={styles.main}>
-        <Navbar/>
-        <div className={styles.container}>
-          <div className={styles.boardParent} ref={props.boardParentRef}>
-            <Board parentRef={props.boardParentRef}/>
-          </div>
-          <div className={styles.bar}>
-            <EvalBar/>
-            <MaterialCount/>
-          </div>
-          
-          <Sidebar/>
-          <StockfishComponent/>
-        </div>
+      <Navbar mainStyles={{gridColumn: 'span 3'}}/>
+      <div className={styles.something}></div>
+      <Board/>
+      <Sidebar/> 
     </div>
   )
 }

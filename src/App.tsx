@@ -20,7 +20,7 @@ function App() {
   const boardParentRef=useRef(null)
 
   const isLandscape = useMediaQuery({
-    query : '(min-width: 1100px)'
+    query : '(min-aspect-ratio: 4/5)'
   })
 
   useEffect(()=>{
@@ -57,15 +57,20 @@ function App() {
     navigateForward()
   }
 
+  useEffect(()=>{
+    console.log(isLandscape)
+  }, [isLandscape])
+
   return (
-    // <>
-    //   {
-    //     isLandscape 
-    //       ? <LandscapeLayout boardParentRef={boardParentRef}/>
-    //       : <Portrait boardParentRef={boardParentRef}/> 
-    //   }
-    // </>
-    <Portrait/> 
+    <>
+      {
+        isLandscape
+          ? <LandscapeLayout/>
+          : <Portrait/> 
+      }
+    </>
+    
+    
   )
 }
 

@@ -1,11 +1,9 @@
 @import '../../../styles/Colors.scss';
 
-
-
 .main{
     display: grid;
     background: linear-gradient($bg-color-light, $bg-color-dark);
     height: 100%;
     width: 100%;
-    grid-template: minmax(4rem, 1fr) 10fr / 1fr;
+    grid-template: minmax(4rem, 1fr) 4fr 6fr / 1fr;
 }

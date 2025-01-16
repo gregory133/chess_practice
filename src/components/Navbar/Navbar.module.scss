@@ -2,14 +2,14 @@
 @import '../../styles/Colors.scss';
 
 .main{
-    font-size: 0.8rem;
+    font-size: 1rem;
     display: grid;
     grid-template: 1fr 1px / 1fr;
     height: 100%;
     width: 100%;
 
     @media (max-width: 400px) {
-        // font-size: 0.5rem;
+        font-size: 0.8rem;
     }
 
     .content{

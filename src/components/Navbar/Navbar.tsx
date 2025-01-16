@@ -3,12 +3,16 @@ import styles from './Navbar.module.scss'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useMediaQuery } from '@mui/material';
 
-export default function Navbar() {
+interface Props{
+    mainStyles? : React.CSSProperties
+}
+
+export default function Navbar(props:Props) {
 
     const isSmallWidth = useMediaQuery('(min-width: 400px)')
 
     return (
-        <div className={styles.main}>
+        <div style={props.mainStyles} className={styles.main}>
             <div className={styles.content}>
                 <div className={styles.logo}>
                     <div className={styles.logoImage} style={{backgroundImage: 
@@ -27,8 +31,7 @@ export default function Navbar() {
                     </div>
                     {
                         isSmallWidth ? <span>Made by Gregory Marcelin</span> : null
-                    }
-  
+                    }  
                 </div>
                 
             </div>

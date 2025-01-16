@@ -19,12 +19,9 @@ import DatabaseSettings from '../../interfaces/DatabaseSettings';
 import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings';
 import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings';
 import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings';
+import styles from './Board.module.scss'
 
-interface Props{
-	parentRef: React.MutableRefObject<null|HTMLInputElement>
-}
-
-export default function Board(props:Props) {
+export default function Board() {
 
 	const fen=useChessStore(state=>state.currentFen)
 	const lastFen=useChessStore(state=>state.lastFen)
@@ -71,13 +68,6 @@ export default function Board(props:Props) {
 	'a4' , 'b4' , 'c4' , 'd4' , 'e4' , 'f4' , 'g4' , 'h4' , 'a3' , 'b3' , 'c3' , 'd3' , 
 	'e3' , 'f3' , 'g3' , 'h3' , 'a2' , 'b2' , 'c2' , 'd2' , 'e2' , 'f2' , 'g2' , 'h2' , 
 	'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
-
-	useEffect(()=>{
-		addPositionToPositionListByFEN(fen, '')
-		window.addEventListener('resize', ()=>{
-			adjustBoardLength()
-		})
-	}, [])
 
 	useEffect(()=>{
 
@@ -165,10 +155,6 @@ export default function Board(props:Props) {
 		}
 	}, [isPromotionVisible])
 
-	useEffect(()=>{
-		adjustBoardLength()
-	}, [props.parentRef])
-
 	/**called to update the last move highlighted squares on the board */
 	function updateLastMoveHighlightedSquares(currentPosition:Position|null){
 		if (currentPosition){
@@ -179,30 +165,6 @@ export default function Board(props:Props) {
 				setLastFromToSquares([fromSquare,toSquare])
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @returns the smaller of the dimensions of the parent element
-	 * or -1 if the parentRef is null
-	 */
-	function getSmallerParentDimension(){
-		if (props.parentRef.current){
-			const parentWidth=props.parentRef.current.clientWidth
-			const parentHeight=props.parentRef.current.clientHeight
-			const smallerParentDimension=(parentHeight>parentWidth)
-				?parentWidth
-				:parentHeight
-			return smallerParentDimension
-		}	
-
-		return -1
-		
-	}
-
-	function adjustBoardLength(){
-		const smallerParentDimension=getSmallerParentDimension()
-		setLength(smallerParentDimension)
 	}
 
 	/**
@@ -484,19 +446,16 @@ export default function Board(props:Props) {
 	
 	return (
 
-		<ResponsiveSquare child={
-			<div style={{position: 'relative', width: '100%', height: '100%'}}>	
-				<div style={{position: 'relative', width: '100%', height: '100%', 
-				opacity:boardOpacity}}>
-					<Chessground config={getConfig()} contained={true}/>
-				</div>
-				
-				<PromotionDialog isVisible={isPromotionVisible}
-				top='0px' file={promotionFile} 
-				promotionChoiceFunction={promotionChoiceFunction}/>
+		<div className={styles.main}>	
+			<div className={styles.board} style={{opacity:boardOpacity}}>
+				<Chessground config={getConfig()} contained={true}/>
 			</div>
-		} 
-		squareLength={length}/>
+			
+			<PromotionDialog isVisible={isPromotionVisible}
+			top='0px' file={promotionFile} 
+			promotionChoiceFunction={promotionChoiceFunction}/>
+		</div>
+
 	)
 
 }
