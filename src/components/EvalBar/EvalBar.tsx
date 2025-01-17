@@ -153,13 +153,12 @@ export default function EvalBar() {
       onClick={onClickToggleArrowButton}>
         <div style={getToggleArrowImageStyles()}/>
       </div>
-      <p>
+      <p className={styles.spinnerContainer}>
         {
           loadingEval 
             ? <ClipLoader color='white'/>
             : <>{formatEvaluationValue(evaluation)}</>
         }    
-        
       </p>
       <div className={styles.bar} style={{
         transform: rotationTransform

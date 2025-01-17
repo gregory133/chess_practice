@@ -6,4 +6,9 @@
     height: 100%;
     width: 100%;
     grid-template: minmax(4rem, 1fr) 4fr 6fr / 1fr;
+
+    .boardContainer{
+        display: grid;
+        grid-template: 1fr / 5fr 1fr;
+    }
 }

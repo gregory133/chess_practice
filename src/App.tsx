@@ -10,7 +10,8 @@ import { useChessStore } from './stores/chessStore';
 import { useMediaQuery } from 'react-responsive'
 import Navbar from './components/Navbar/Navbar';
 import LandscapeLayout from './components/Layouts/LandscapeLayout/LandscapeLayout';
-import Portrait from './components/Layouts/Portrait/Portrait';
+import Portrait from './components/Layouts/PortraitLayout/PortraitLayout';
+import PortraitLayout from './components/Layouts/PortraitLayout/PortraitLayout';
 
 function App() {
   const evaluation=useChessStore(state=>state.evaluation)
@@ -66,7 +67,7 @@ function App() {
       {
         isLandscape
           ? <LandscapeLayout/>
-          : <Portrait/> 
+          : <PortraitLayout/> 
       }
     </>
     

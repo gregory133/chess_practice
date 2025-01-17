@@ -8,65 +8,83 @@ $border-radius: 10px;
 }
 
 .container{
+  container-type: size;
   box-sizing: border-box;
   padding: 0.63rem;
   width: 100%;
   height: 100%;
-  align-content: center;
+  display: grid;
+  grid-template: 1fr 1fr 10fr / 1fr;
+  place-items: center;
 
-  p{
+  .arrowToggleButton{
+
+    box-sizing: border-box;
+    padding: 10%;
+    width: 100%;
+    aspect-ratio: 1/1;
+  
+    div{
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+  }
+
+  .spinnerContainer{
+    
+    container-type: size;
+    aspect-ratio: 1/1;
+    
     margin: 0;
-    display: flex;
-    flex: 0 0 auto;
     color: white;
     
     font-family: $default-font;
     font-size: $font-size-small;
     font-weight: 500;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span{
+      aspect-ratio: 1/1 !important;
+      height: 50cqh !important;
+      width: 50cqh !important;
+    }
   }
-}
 
-.bar{
-  flex: 1;
-  margin: 0.63rem;
-  width: 0.9rem;
-  height: 80%;
-  display: flex;
-  flex-direction: column;
-}
+  .bar{
+    width: min(40%, 1.2rem);
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+  }
 
-.topBar{
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
-  background-color: #A0A0A0;
-
-}
-
-.bottomBar{
-  background-color: #666666;
-  border-bottom-left-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
-}
-
-.middleBar{
-  position: absolute;
-  background-color: #B37E5F;
-  width: 100%;
-  height: 1px;
-}
-
-.arrowToggleButton{
-
-  $length: 30px;
-  width: $length;
-  height: $length;
-  padding: 5px;
-
-  div{
+  .topBar{
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    background-color: #A0A0A0;
+  
+  }
+  
+  .bottomBar{
+    background-color: #666666;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+  
+  .middleBar{
+    position: absolute;
+    background-color: #B37E5F;
     width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+    height: 1px;
   }
 }
+
+
+
+
+
