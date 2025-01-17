@@ -8,15 +8,14 @@ $border-radius: 10px;
 }
 
 .container{
-  margin: 10px;
-  width: 15px;
+  box-sizing: border-box;
+  padding: 0.63rem;
+  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-content: center;
 
   p{
-    margin: 0px;
+    margin: 0;
     display: flex;
     flex: 0 0 auto;
     color: white;
@@ -29,9 +28,9 @@ $border-radius: 10px;
 
 .bar{
   flex: 1;
-  margin: 10px;
-  width: 15px;
-  height: 100%;
+  margin: 0.63rem;
+  width: 0.9rem;
+  height: 80%;
   display: flex;
   flex-direction: column;
 }

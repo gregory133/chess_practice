@@ -6,7 +6,7 @@
   width: 100%;
   background: linear-gradient($bg-color-light, $bg-color-dark);
   display: grid;
-  grid-template: minmax(4rem, 1fr) 10fr / 0.1fr 1fr 1fr;
+  grid-template: minmax(4rem, 1fr) 10fr / 0.1fr 1fr 0.1fr 1fr;
 }
 
 
