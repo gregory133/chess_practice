@@ -33,27 +33,29 @@ $border-radius: 10px;
     }
   }
 
-  .spinnerContainer{
+  // .spinnerContainer{
     
-    container-type: size;
-    aspect-ratio: 1/1;
+  //   container-type: size;
+  //   aspect-ratio: 1/1;
     
-    margin: 0;
-    color: white;
+  //   margin: 0;
+  //   color: white;
     
-    font-family: $default-font;
-    font-size: $font-size-small;
-    font-weight: 500;
+  //   font-family: $default-font;
+  //   font-size: $font-size-small;
+  //   font-weight: 500;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
 
-    span{
-      aspect-ratio: 1/1 !important;
-      height: 50cqh !important;
-      width: 50cqh !important;
-    }
+    
+  // }
+
+  span{
+    aspect-ratio: 1/1 !important;
+    height: min(10cqh, 3rem) !important;
+    width:  min(10cqh, 3rem) !important;
   }
 
   .bar{
