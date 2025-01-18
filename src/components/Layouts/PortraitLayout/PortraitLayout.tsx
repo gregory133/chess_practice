@@ -17,6 +17,7 @@ export default function PortraitLayout() {
         <EvalBar/> 
       </div>
      
+    
       <Sidebar/>
       {/* <SidebarPortrait/> */}
       <StockfishComponent/>
