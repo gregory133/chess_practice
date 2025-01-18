@@ -18,6 +18,7 @@ import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabas
 import { Dictionary } from 'typescript-collections'
 import DatabaseSelectParams from './DatabaseSelectParams/DatabaseSelectParams'
 import ResetBar from './ResetBar/ResetBar'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Sidebar() {
 
@@ -26,6 +27,10 @@ export default function Sidebar() {
   const currentFen=useChessStore(state=>state.currentFen)
   const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
   const database:Database=useChessStore(state=>state.selectedDatabase)
+
+  const isLandscape = useMediaQuery({
+    query : '(min-aspect-ratio: 4/5)'
+  })
 
 
   const openingName=useChessStore(state=>state.openingName)
@@ -158,7 +163,12 @@ export default function Sidebar() {
         }
       </div>
       <SetFen/>
-      <ResetBar/>
+      {
+        isLandscape 
+          ? <ResetBar/>
+          : null
+      }
+      
       <ColorSelect/>
       <DatabaseSelect/>
       <DatabaseSelectParams/>

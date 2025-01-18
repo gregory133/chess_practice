@@ -8,8 +8,14 @@
     width: 100%;
     grid-template: minmax(4rem, 1fr) 100cqw 6fr / 1fr;
 
-    .boardContainer{
+    .boardAndEvalContainer{
         display: grid;
         grid-template: 1fr / 5fr 1fr;
+
+        .boardContainer{
+            place-content: center;
+            display: grid;
+            grid-template: 1fr 0.15fr / 1fr;
+        }
     }
 }
