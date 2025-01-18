@@ -71,17 +71,6 @@ export default function Sidebar() {
 	}
 
   /**
-   * 
-   * @param move move to convert to 'to' and 'from' squares
-   * @returns 
-   */
-  function uciMoveToSquares(move:string):{to:cg.Key, from:cg.Key}{
-    const from=move.slice(0, 2) as cg.Key
-    const to=move.slice(2, 4) as cg.Key
-    return {from:from, to:to}
-  }
-
-  /**
    * returns a string that corresponds to the css font size of the opening name 
    * based on the number of characters in the opening name
    */

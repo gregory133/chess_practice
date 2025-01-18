@@ -154,6 +154,7 @@ export default function EvalBar() {
         <div style={getToggleArrowImageStyles()}/>
       </div>
         {
+          // <div/>
           loadingEval 
             ? <ClipLoader color='white'/>
             : <>{formatEvaluationValue(evaluation)}</>

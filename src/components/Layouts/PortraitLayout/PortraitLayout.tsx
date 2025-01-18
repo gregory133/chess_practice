@@ -4,6 +4,8 @@ import Navbar from '../../Navbar/Navbar'
 import Board from '../../Board/Board'
 import SidebarPortrait from '../../SidebarPortrait/SidebarPortrait'
 import EvalBar from '../../EvalBar/EvalBar'
+import StockfishComponent from '../../Stockfish/StockfishComponent'
+import Sidebar from '../../Sidebar/Sidebar'
 
 
 export default function PortraitLayout() {
@@ -15,7 +17,9 @@ export default function PortraitLayout() {
         <EvalBar/> 
       </div>
      
-      <SidebarPortrait/>
+      <Sidebar/>
+      {/* <SidebarPortrait/> */}
+      <StockfishComponent/>
     </div>
   )
 }

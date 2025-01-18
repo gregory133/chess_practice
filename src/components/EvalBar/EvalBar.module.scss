@@ -8,6 +8,7 @@ $border-radius: 10px;
 }
 
 .container{
+  font-size: clamp(0.5rem, 1cqw, 1.5rem);
   container-type: size;
   box-sizing: border-box;
   padding: 0.63rem;
@@ -60,30 +61,34 @@ $border-radius: 10px;
 
   .bar{
     width: min(40%, 1.2rem);
-    height: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+
+    .topBar{
+      width: 100%;
+      border-top-left-radius: $border-radius;
+      border-top-right-radius: $border-radius;
+      background-color: #A0A0A0;
+    
+    }
+    
+    .bottomBar{
+      width: 100%;
+      background-color: #666666;
+      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+    }
+    
+    .middleBar{
+      position: absolute;
+      background-color: #B37E5F;
+      width: 100%;
+      height: 1px;
+    }
   }
 
-  .topBar{
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
-    background-color: #A0A0A0;
   
-  }
-  
-  .bottomBar{
-    background-color: #666666;
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-  }
-  
-  .middleBar{
-    position: absolute;
-    background-color: #B37E5F;
-    width: 100%;
-    height: 1px;
-  }
 }
 
 
