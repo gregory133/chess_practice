@@ -55,128 +55,128 @@ export default function DatabaseSelectParams() {
     
     function LichessView(){
 
-    const UNSELECTED_HOVER_BUTTON_COLOR='#c4c0bb'
-    const UNSELECTED_BUTTON_COLOR='#393632'
-    const SELECTED_BUTTON_COLOR='#629924'
+        const UNSELECTED_HOVER_BUTTON_COLOR='#c4c0bb'
+        const UNSELECTED_BUTTON_COLOR='#393632'
+        const SELECTED_BUTTON_COLOR='#629924'
 
-    const allRatings : Rating[] = [0,1000,1200,1400,1600,1800,2000,2200,2500]
-    const allTimeControls : TimeControl[] = ['ultraBullet','bullet','blitz','rapid',
-    'classical','correspondence']
-    const timeControlLabelDict=new Dictionary<TimeControl, string>();{
-        timeControlLabelDict.setValue('ultraBullet', "Ul.Bullet")
-        timeControlLabelDict.setValue('bullet', "Bullet")
-        timeControlLabelDict.setValue('blitz', "Blitz")
-        timeControlLabelDict.setValue('rapid', "Rapid")
-        timeControlLabelDict.setValue('classical', "Class.")
-        timeControlLabelDict.setValue('correspondence', "Corr.")
-    }
+        const allRatings : Rating[] = [0,1000,1200,1400,1600,1800,2000,2200,2500]
+        const allTimeControls : TimeControl[] = ['ultraBullet','bullet','blitz','rapid',
+        'classical','correspondence']
+        const timeControlLabelDict=new Dictionary<TimeControl, string>();{
+            timeControlLabelDict.setValue('ultraBullet', "Ul.Bullet")
+            timeControlLabelDict.setValue('bullet', "Bullet")
+            timeControlLabelDict.setValue('blitz', "Blitz")
+            timeControlLabelDict.setValue('rapid', "Rapid")
+            timeControlLabelDict.setValue('classical', "Class.")
+            timeControlLabelDict.setValue('correspondence', "Corr.")
+        }
 
-    let ratingSliderMarks : Mark[] = []
-    let timeControlSliderMarks : Mark[] = []
+        let ratingSliderMarks : Mark[] = []
+        let timeControlSliderMarks : Mark[] = []
 
-    allRatings.forEach((rating, index)=>{
-        ratingSliderMarks.push(
-            {
-                value : (index/(allRatings.length-1))*100,
-                label : rating
-            }
-        )
-    })
+        allRatings.forEach((rating, index)=>{
+            ratingSliderMarks.push(
+                {
+                    value : (index/(allRatings.length-1))*100,
+                    label : rating
+                }
+            )
+        })
 
-    allTimeControls.forEach((timecontrol, index)=>{
-        timeControlSliderMarks.push(
-            {
-                value : (index/(allTimeControls.length-1))*100,
-                label : timeControlLabelDict.getValue(timecontrol)
-            }
-        )
-    })
+        allTimeControls.forEach((timecontrol, index)=>{
+            timeControlSliderMarks.push(
+                {
+                    value : (index/(allTimeControls.length-1))*100,
+                    label : timeControlLabelDict.getValue(timecontrol)
+                }
+            )
+        })
 
-    function onChangeRatingSlider(event:Event, newValue:number|number[]){
-        if (typeof newValue !== 'number'){
-            const lowerBound = newValue[0]/(100/(allRatings.length-1))
-            const upperBound = newValue[1]/(100/(allRatings.length-1))
-            let selectedRatings : Rating[] = []
-            for (let i=lowerBound; i<upperBound+1; i++){
-                selectedRatings.push(allRatings[i])
+        function onChangeRatingSlider(event:Event, newValue:number|number[]){
+            if (typeof newValue !== 'number'){
+                const lowerBound = newValue[0]/(100/(allRatings.length-1))
+                const upperBound = newValue[1]/(100/(allRatings.length-1))
+                let selectedRatings : Rating[] = []
+                for (let i=lowerBound; i<upperBound+1; i++){
+                    selectedRatings.push(allRatings[i])
+                }
+                
+                setLichessOptions({timeControls: lichessOptions.timeControls, ratings: selectedRatings})
+                setRatingSliderValue(newValue)
             }
             
-            setLichessOptions({timeControls: lichessOptions.timeControls, ratings: selectedRatings})
-            setRatingSliderValue(newValue)
         }
-        
-    }
 
-    function onChangeTimeControlSlider(event:Event, newValue:number|number[]){
-        if (typeof newValue !== 'number'){
-            const lowerBound = newValue[0]/(100/(allTimeControls.length-1))
-            const upperBound = newValue[1]/(100/(allTimeControls.length-1))
-            let selectedTimeControls : TimeControl[] = []
-            for (let i=lowerBound; i<upperBound+1; i++){
-                selectedTimeControls.push(allTimeControls[i])
-            }
-
-            setLichessOptions({timeControls: selectedTimeControls, ratings: lichessOptions.ratings})
-            setTimeControlSliderValue(newValue)
-        }
-    }
-
-    let color = 'white'
-    return (
-        <div className={styles.lichessView}>
-            <div className={styles.timeControls}>
-                <Slider
-                size='small'
-                sx={{
-                    width: '90%',
-                    margin: '0 0.94rem',
-                    '& .MuiSlider-markLabel' : {
-                        color : `${color}`,
-                        fontWeight: 700,
-                        fontSize: '1.1cqh'
-                    },
-                    '& .MuiSlider-rail':{
-                        backgroundColor: `${color}`
-                    },
-                    '& .MuiSlider-track' : {
-                        color : `${color}`
-                    },
-                    '& .MuiSlider-thumb' : {
-                        color : `${color}`
-                    },
-                    '& .MuiSlider-mark':{
-                        color: `${color}`
-                    }
-                }} onChange={onChangeTimeControlSlider} value={timeControlSliderValue}
-                step={100/(allTimeControls.length-1)} marks={timeControlSliderMarks} />
-            </div>
-            <div className={styles.ratings}>
-            <Slider size='small' sx={{
-                
-                fontWeight: 700,
-                width: '90%',
-                margin: '0px 0.94rem',  
-                '& .MuiSlider-markLabel' : {
-                    color : `${color}`,
-                    fontSize: '1.1cqh'
-                },
-                '& .MuiSlider-rail':{
-                    backgroundColor: `${color}`
-                },
-                '& .MuiSlider-track' : {
-                    color : `${color}`
-                },
-                '& .MuiSlider-thumb' : {
-                    color : `${color}`
-                },
-                '& .MuiSlider-mark':{
-                    color: `${color}`
+        function onChangeTimeControlSlider(event:Event, newValue:number|number[]){
+            if (typeof newValue !== 'number'){
+                const lowerBound = newValue[0]/(100/(allTimeControls.length-1))
+                const upperBound = newValue[1]/(100/(allTimeControls.length-1))
+                let selectedTimeControls : TimeControl[] = []
+                for (let i=lowerBound; i<upperBound+1; i++){
+                    selectedTimeControls.push(allTimeControls[i])
                 }
-            }} onChange={onChangeRatingSlider} value={ratingSliderValue}
-            step={100/(allRatings.length-1)} marks={ratingSliderMarks} />
+
+                setLichessOptions({timeControls: selectedTimeControls, ratings: lichessOptions.ratings})
+                setTimeControlSliderValue(newValue)
+            }
+        }
+
+        let color = 'white'
+        return (
+            <div className={styles.lichessView}>
+                <div className={styles.timeControls}>
+                    <Slider
+                    size='small'
+                    sx={{
+                        width: '90cqw',
+                        margin: '0 0.94rem',
+                        '& .MuiSlider-markLabel' : {
+                            color : `${color}`,
+                            fontWeight: 700,
+                            fontSize: 'clamp(0.6rem, 3cqw, 1rem)'
+                        },
+                        '& .MuiSlider-rail':{
+                            backgroundColor: `${color}`
+                        },
+                        '& .MuiSlider-track' : {
+                            color : `${color}`
+                        },
+                        '& .MuiSlider-thumb' : {
+                            color : `${color}`
+                        },
+                        '& .MuiSlider-mark':{
+                            color: `${color}`
+                        }
+                    }} onChange={onChangeTimeControlSlider} value={timeControlSliderValue}
+                    step={100/(allTimeControls.length-1)} marks={timeControlSliderMarks} />
+                </div>
+                <div className={styles.ratings}>
+                    <Slider size='small' sx={{
+                        
+                        fontWeight: 700,
+                        width: '90%',
+                        margin: '0px 0.94rem',  
+                        '& .MuiSlider-markLabel' : {
+                            color : `${color}`,
+                            fontSize: 'clamp(0.5rem, 4cqw, 0.8rem)'
+                        },
+                        '& .MuiSlider-rail':{
+                            backgroundColor: `${color}`
+                        },
+                        '& .MuiSlider-track' : {
+                            color : `${color}`
+                        },
+                        '& .MuiSlider-thumb' : {
+                            color : `${color}`
+                        },
+                        '& .MuiSlider-mark':{
+                            color: `${color}`
+                        }
+                    }} onChange={onChangeRatingSlider} value={ratingSliderValue}
+                    step={100/(allRatings.length-1)} marks={ratingSliderMarks} />
+                </div>
             </div>
-        </div>
-    )
+        )
     }
 
     function PlayerView(){

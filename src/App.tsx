@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Board from './components/Board/Board';
 import Sidebar from './components/Sidebar/Sidebar';
 
-
 import './styles/Colors.scss'
 import './styles/Fonts.scss'
 
