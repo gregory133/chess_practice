@@ -92,6 +92,10 @@ export default function Board() {
 		})	
 	}, [lastFen])
 
+	// useEffect(()=>{
+	// 	console.log(lastFen)
+	// }, [lastFen])
+
 	useEffect(()=>{
 		const currentPosition=positionList.getCurrentPosition()
 		const lastPosition=positionList.getLastPosition()
@@ -258,6 +262,7 @@ export default function Board() {
 	 * @param move 
 	 */
 	function updateChessObject(move:string){
+		// console.log(chess.fen())
 		chess.move(move)
 		const lastLAN = chess.history({verbose:true})[chess.history().length-1].lan
 		// console.log(lastLAN);
@@ -317,6 +322,7 @@ export default function Board() {
 
 	/**called when any move needs to be made, human or engine */
 	function applyMove(move:string){
+		// console.log(move)
 		updateChessObject(move)
 	}
 

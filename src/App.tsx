@@ -57,9 +57,9 @@ function App() {
     navigateForward()
   }
 
-  useEffect(()=>{
-    console.log(isLandscape)
-  }, [isLandscape])
+  // useEffect(()=>{
+  //   console.log(isLandscape)
+  // }, [isLandscape])
 
   return (
     <>

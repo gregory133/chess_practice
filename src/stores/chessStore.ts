@@ -157,7 +157,10 @@ function initialize(set:any):ChessStoreState{
     }),
     addPositionToPositionListByUCI: (moveUCI:string)=>
     set((state:ChessStoreState)=>{
+      // console.log('adding position to positionList', moveUCI)
+      
       let clone=state.positionList.clone()
+      // console.log('current fen before adding: ', clone.getCurrentPosition())
       clone.addPositionByUCI(moveUCI)
       return {positionList: clone}
     }),
@@ -202,9 +205,15 @@ function initialize(set:any):ChessStoreState{
       else{
         playerColor=state.selectedColor
       }
+      const positionList = new PositionList()
+      
+      if (startingFen){
+        positionList.setFirstPosition(startingFen)
+        positionList.addPosition(new Position(startingFen, ''))
+      }
 
       return {
-        positionList: new PositionList(),
+        positionList: positionList,
         currentFen: newFen,
         lastFen: newFen,
         numGamesInDB: null, 

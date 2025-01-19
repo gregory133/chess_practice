@@ -5,13 +5,14 @@ import { INITIAL_FEN } from './ChessUtil'
 
 export default class PositionList{
 
-  
+  private firstPosition: string
   private positionList:LinkedList
   private currentIndex:number
 
   public constructor(){
     this.positionList=new LinkedList()
     this.currentIndex=-1
+    this.firstPosition = INITIAL_FEN
   }
 
   /**
@@ -22,21 +23,22 @@ export default class PositionList{
   public addPosition(position:Position){
     this.positionList.insert(position)
     this.currentIndex=this.positionList.getSize()-1
-
     
   }
 
   public addPositionByUCI(moveUCI:string){
+
     let lastPosition=this.positionList.getTailNode()?.data as Position
     if (!lastPosition){
-      this.addPosition(new Position(INITIAL_FEN, ''))
+      this.addPosition(new Position(this.firstPosition, ''))
     }
     lastPosition=this.positionList.getTailNode()?.data as Position
     let chess=new Chess(lastPosition.fen)
-      chess.move(moveUCI)
-      let newPosition=new Position(
-        chess.fen(), chess.history({verbose:true})[chess.history().length-1].lan)
-      this.addPosition(newPosition)
+
+    chess.move(moveUCI)
+    let newPosition=new Position(
+    chess.fen(), chess.history({verbose:true})[chess.history().length-1].lan)
+    this.addPosition(newPosition)
   }
 
   /**
@@ -139,6 +141,11 @@ export default class PositionList{
     }
   }
 
-
+  /**When called with a given FEN string, this method will replace the first position (initial fen)
+   * of the PositionList object. This should be used when setting the position's starting FEN
+  */
+  public setFirstPosition(fen:string){
+    this.firstPosition = fen
+  }
 
 }
