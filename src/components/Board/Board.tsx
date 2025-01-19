@@ -23,6 +23,7 @@ import styles from './Board.module.scss'
 
 export default function Board() {
 
+	const startingFen = useChessStore(state=>state.startingFen)
 	const fen=useChessStore(state=>state.currentFen)
 	const lastFen=useChessStore(state=>state.lastFen)
 	const setFen=useChessStore(state=>state.setCurrentFen)
@@ -70,6 +71,10 @@ export default function Board() {
 	'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	useEffect(()=>{
+		
+		if (startingFen == lastFen){
+			setLastFromToSquares([])
+		}
 
 		let databaseSettings : DatabaseSettings
 		if (database=='masters'){
@@ -91,6 +96,7 @@ export default function Board() {
 			makeEngineMoveIfNeeded(json)	
 		})	
 	}, [lastFen])
+
 
 	// useEffect(()=>{
 	// 	console.log(lastFen)
