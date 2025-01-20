@@ -7,10 +7,16 @@ import WinrateBar from '../Sidebar/WinrateBar/WinrateBar'
 import { fetchDB, getPlayrateFromDB, getSanListFromDB } from '../../api/DBApi'
 import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings'
 import DatabaseSettings from '../../interfaces/DatabaseSettings'
+import { useChessStore } from '../../stores/chessStore'
 
 export default function MovesBar() {
 
+  const playrate = useChessStore(state=>state.playrate)
   const [movesPlayRate, setMovesPlayRate] = useState<Playrate | null>(null)
+
+  useEffect(()=>{
+    console.log('playrate', playrate.toString())
+  }, [playrate])
 
   useEffect(()=>{
     const db : DatabaseSettings = new MastersDatabaseSettings('rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2', 

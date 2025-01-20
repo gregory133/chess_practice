@@ -10,7 +10,7 @@ import "../../styles/chessground.cburnett.scss";
 import ResponsiveSquare from '../ResponsiveSquare/ResponsiveSquare';
 import { useChessStore } from '../../stores/chessStore';
 import Engine from '../../classes/Engine';
-import { Database, fetchDB } from '../../api/DBApi';
+import { Database, fetchDB, getPlayrateFromDB } from '../../api/DBApi';
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser';
 import {DrawShape} from 'chessground/draw'
 import { useDatabaseSettingsStore } from '../../stores/databaseSettingsStore';
@@ -76,31 +76,12 @@ export default function Board() {
 			setLastFromToSquares([])
 		}
 
-		let databaseSettings : DatabaseSettings
-		if (database=='masters'){
-			databaseSettings = new MastersDatabaseSettings(lastFen, mastersOptions.since, 
-			mastersOptions.until)
-		}
-		else if (database == 'lichess'){
-			databaseSettings = new LichessDatabaseSettings(lastFen, lichessOptions.timeControls, 
-			lichessOptions.ratings)
-		}
-		else{
-			databaseSettings = new PlayerDatabaseSettings(playerOptions.username, playerOptions.color, 
-			playerOptions.maxGames, playerOptions.vsPlayer, playerOptions.timeControl)
-		}
-
-		fetchDB(databaseSettings)
+		fetchDB(getDatabaseSettings(lastFen))
 		.then(json=>{
 			jsonParserRef.current.setJson(json)
 			makeEngineMoveIfNeeded(json)	
 		})	
 	}, [lastFen])
-
-
-	// useEffect(()=>{
-	// 	console.log(lastFen)
-	// }, [lastFen])
 
 	useEffect(()=>{
 		const currentPosition=positionList.getCurrentPosition()
@@ -109,6 +90,8 @@ export default function Board() {
 
 		const currentFen=currentPosition?.fen
 		const lastFen=lastPosition?.fen
+
+		updatePlayrateMoves()
 
 		if (currentFen!=lastFen){
 			const lastLAN=currentPosition?.lastLAN
@@ -122,7 +105,7 @@ export default function Board() {
 	
 			setLastFromToSquares(lastFromTo)
 			setForceDisplayHighlight(true)
-			
+
 		}
 		else{
 			setForceDisplayHighlight(false)
@@ -165,6 +148,35 @@ export default function Board() {
 		}
 	}, [isPromotionVisible])
 
+	/**called to update the playrate in the MovesBar component */
+	function updatePlayrateMoves(){
+		
+		const color = fen.split(' ')[1] == 'w' ? 'white' : 'black'
+		fetchDB(getDatabaseSettings(fen))
+		.then(json=>{
+			const playrate = getPlayrateFromDB(database, color, json)
+		})
+	}
+
+	/**returns the DatabaseSettingsObject corresponding to the current database */
+	function getDatabaseSettings(fen:string):DatabaseSettings{
+		let databaseSettings : DatabaseSettings
+		if (database=='masters'){
+			databaseSettings = new MastersDatabaseSettings(fen, mastersOptions.since, 
+			mastersOptions.until)
+		}
+		else if (database == 'lichess'){
+			databaseSettings = new LichessDatabaseSettings(fen, lichessOptions.timeControls, 
+			lichessOptions.ratings)
+		}
+		else{
+			databaseSettings = new PlayerDatabaseSettings(playerOptions.username, 
+			playerOptions.color, playerOptions.maxGames, playerOptions.vsPlayer, 
+			playerOptions.timeControl)
+		}
+		return databaseSettings
+	}
+
 	/**called to update the last move highlighted squares on the board */
 	function updateLastMoveHighlightedSquares(currentPosition:Position|null){
 		if (currentPosition){
@@ -184,7 +196,7 @@ export default function Board() {
 	 */
 	function makeEngineMoveIfNeeded(json:any){
 		const turnColor=fen.split(' ')[1]=='w' ? 'white' : 'black'
-
+		// console.log(json)
 		if (turnColor!=colorPlayerCanControl){
 			
 			const move:string=engineRef.current.getRandomResponseFromDB(json)

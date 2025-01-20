@@ -5,6 +5,7 @@ import PositionList from '../classes/PositionList';
 import * as cg from 'chessground/types.js';
 import { Eval, Evaluation } from '../components/Stockfish/StockfishComponent';
 import Position from '../classes/Position';
+import Playrate from '../classes/Playrate';
 
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -23,6 +24,7 @@ export interface ChessStoreState{
   positionList: PositionList
   evaluation:Evaluation|null
   isStockfishArrowActive: boolean
+  playrate: Playrate
   blueArrow: {from:cg.Key, to:cg.Key}|null
 
   setStartingFen:(newFen:string)=>void
@@ -37,6 +39,7 @@ export interface ChessStoreState{
   setSelectedColor: (newVal:'white'|'random'|'black')=>void
   setSelectedDatabase: (newVal:Database)=>void
   setEvaluation: (evaluation:Evaluation|null)=>void
+  setPlayrate: (playrate:Playrate)=>void
 
   addPositionToPositionListByFEN: (fen:string, lastLAN:string)=>void
   addPositionToPositionListByUCI: (moveUCI:string)=>void
@@ -108,6 +111,7 @@ function initialize(set:any):ChessStoreState{
     positionList: new PositionList(),
     evaluation: null,
     blueArrow:null,
+    playrate: new Playrate(),
     isStockfishArrowActive: false,
 
     setStartingFen: (newFen:string)=>set((state:ChessStoreState)=>{
@@ -184,6 +188,9 @@ function initialize(set:any):ChessStoreState{
     }),
     setBlueArrow: (value: {from:cg.Key, to:cg.Key}|null)=>set((state:ChessStoreState)=>{
       return {blueArrow: value}
+    }),
+    setPlayrate: (value:Playrate)=>set((state:ChessStoreState)=>{
+      return {playrate: value}
     }),
 
     reset: ()=>set((state:ChessStoreState)=>{
