@@ -39,7 +39,7 @@ export default class DatabaseJsonParser{
             let movesWinrate: Dictionary<string, Winrate> = new Dictionary()
             json.moves.forEach((move:any)=>{
                 const moveSum = move.white + move.black + move.draws
-                movesWinrate.setValue(move.uci, new Winrate(move.white/moveSum, move.black/moveSum))
+                movesWinrate.setValue(move.san, new Winrate(move.white/moveSum, move.black/moveSum))
             })
 
             return {

@@ -1,23 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './MovesBar.module.scss'
 import { Dictionary } from 'typescript-collections'
 import Playrate from '../../classes/Playrate'
 import Winrate from '../../classes/Winrate'
 import WinrateBar from '../Sidebar/WinrateBar/WinrateBar'
+import { fetchDB, getPlayrateFromDB, getSanListFromDB } from '../../api/DBApi'
+import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings'
+import DatabaseSettings from '../../interfaces/DatabaseSettings'
 
 export default function MovesBar() {
 
-  const movesPlayRate = new Playrate()
+  const [movesPlayRate, setMovesPlayRate] = useState<Playrate | null>(null)
 
-  {
-    movesPlayRate.add('e4', 0.45, new Winrate(0.24, 0.32))
-    movesPlayRate.add('d4', 0.36, new Winrate(0.23, 0.33))
-    movesPlayRate.add('Nf3', 0.10, new Winrate(0.22, 0.34))
-    movesPlayRate.add('c4', 0.07, new Winrate(0.23, 0.34))
-    movesPlayRate.add('g3', 0.01, new Winrate(0.25, 0.36))
+  useEffect(()=>{
+    const db : DatabaseSettings = new MastersDatabaseSettings('rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2', 
+      1952, 2024
+    )
+    fetchDB(db)
+    .then(json=>{
+      setMovesPlayRate(getPlayrateFromDB('masters', 'black', json))
+    })
+    
+  }, [])
 
-
-  }
   
   return (
     <div className={styles.main}>
@@ -27,7 +32,7 @@ export default function MovesBar() {
           </div>
           <div className={styles.playrateList}>
             {
-              movesPlayRate.getDict().keys().map((move:string, index:number)=>{
+              movesPlayRate?.getDict().keys().map((move:string, index:number)=>{
                 return (
                   <div key={index} className={styles.playrateListItem}>
                     <span className={styles.move}>{move}</span>

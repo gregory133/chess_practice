@@ -24,7 +24,7 @@ export default class Playrate{
         
         let entries : string[] = []
         this.playrateDict.keys().forEach(key=>{
-            entries.push(key + ' -> ' + this.playrateDict.getValue(key)?.playrate + '% ' +
+            entries.push(key + ' -> ' + Math.round(this.playrateDict.getValue(key)?.playrate! * 10000) / 100  + '% ' +
             this.playrateDict.getValue(key)?.winrate.toString())
         })
 

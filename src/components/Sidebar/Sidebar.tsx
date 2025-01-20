@@ -143,6 +143,7 @@ export default function Sidebar() {
   }, [currentFen])
 
   return (
+
     <div className={styles.sidebar}>
       <p className={styles.openingName} style={{
           fontSize: openingNameFontSize(openingName)
