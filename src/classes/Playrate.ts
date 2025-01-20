@@ -16,6 +16,10 @@ export default class Playrate{
         }
     }
 
+    public getDict(){
+        return this.playrateDict
+    }
+
     public toString():string{
         
         let entries : string[] = []

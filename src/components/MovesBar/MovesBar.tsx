@@ -3,6 +3,7 @@ import styles from './MovesBar.module.scss'
 import { Dictionary } from 'typescript-collections'
 import Playrate from '../../classes/Playrate'
 import Winrate from '../../classes/Winrate'
+import WinrateBar from '../Sidebar/WinrateBar/WinrateBar'
 
 export default function MovesBar() {
 
@@ -14,14 +15,31 @@ export default function MovesBar() {
     movesPlayRate.add('Nf3', 0.10, new Winrate(0.22, 0.34))
     movesPlayRate.add('c4', 0.07, new Winrate(0.23, 0.34))
     movesPlayRate.add('g3', 0.01, new Winrate(0.25, 0.36))
+
+
   }
   
-  console.log(movesPlayRate.toString())
-
   return (
     <div className={styles.main}>
         <div className={styles.bar}>
-      
+          <div className={styles.title}>
+            Database Moves
+          </div>
+          <div className={styles.playrateList}>
+            {
+              movesPlayRate.getDict().keys().map((move:string, index:number)=>{
+                return (
+                  <div key={index} className={styles.playrateListItem}>
+                    <span className={styles.move}>{move}</span>
+                    <span className={styles.playrate}>
+                      {Math.round(movesPlayRate.getDict().getValue(move)!.playrate * 10000) / 100}%
+                    </span>
+                    <WinrateBar winrate={movesPlayRate.getDict().getValue(move)!.winrate}/>
+                  </div>
+                )
+              })
+            }
+          </div>
         </div>
     </div>
   )
