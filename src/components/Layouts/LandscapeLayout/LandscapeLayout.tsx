@@ -8,14 +8,13 @@ import StockfishComponent from '../../Stockfish/StockfishComponent'
 import styles from './LandscapeLayout.module.scss'
 import Winrate from '../../../classes/Winrate'
 import WinrateBar from '../../Sidebar/WinrateBar/WinrateBar'
-
-//TODO: add left bar for something (e.g moves)
+import MovesBar from '../../MovesBar/MovesBar'
 
 export default function LandscapeLayout() {
   return (
     <div className={styles.main}>
       <Navbar mainStyles={{gridColumn: 'span 4'}}/>
-      <div className={styles.something}></div>
+      <MovesBar/>
       <Board/>
       <EvalBar/>
       <Sidebar/> 
