@@ -28,6 +28,7 @@ export default function Board() {
 	const lastFen=useChessStore(state=>state.lastFen)
 	const setFen=useChessStore(state=>state.setCurrentFen)
 	const setLastFen=useChessStore(state=>state.setLastFen)
+	const setPlayrate = useChessStore(state=>state.setPlayrate)
 	const orientation=useChessStore(state=>state.orientation)
 	const colorPlayerCanControl=useChessStore(state=>state.colorPlayerCanControl)
 	const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
@@ -155,6 +156,7 @@ export default function Board() {
 		fetchDB(getDatabaseSettings(fen))
 		.then(json=>{
 			const playrate = getPlayrateFromDB(database, color, json)
+			setPlayrate(playrate)
 		})
 	}
 

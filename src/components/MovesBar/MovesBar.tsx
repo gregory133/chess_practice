@@ -12,23 +12,6 @@ import { useChessStore } from '../../stores/chessStore'
 export default function MovesBar() {
 
   const playrate = useChessStore(state=>state.playrate)
-  const [movesPlayRate, setMovesPlayRate] = useState<Playrate | null>(null)
-
-  useEffect(()=>{
-    console.log('playrate', playrate.toString())
-  }, [playrate])
-
-  useEffect(()=>{
-    const db : DatabaseSettings = new MastersDatabaseSettings('rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2', 
-      1952, 2024
-    )
-    fetchDB(db)
-    .then(json=>{
-      setMovesPlayRate(getPlayrateFromDB('masters', 'black', json))
-    })
-    
-  }, [])
-
   
   return (
     <div className={styles.main}>
@@ -38,14 +21,14 @@ export default function MovesBar() {
           </div>
           <div className={styles.playrateList}>
             {
-              movesPlayRate?.getDict().keys().map((move:string, index:number)=>{
+              playrate.getDict().keys().map((move:string, index:number)=>{
                 return (
                   <div key={index} className={styles.playrateListItem}>
                     <span className={styles.move}>{move}</span>
                     <span className={styles.playrate}>
-                      {Math.round(movesPlayRate.getDict().getValue(move)!.playrate * 10000) / 100}%
+                      {Math.round(playrate.getDict().getValue(move)!.playrate * 10000) / 100}%
                     </span>
-                    <WinrateBar winrate={movesPlayRate.getDict().getValue(move)!.winrate}/>
+                    <WinrateBar winrate={playrate.getDict().getValue(move)!.winrate}/>
                   </div>
                 )
               })
