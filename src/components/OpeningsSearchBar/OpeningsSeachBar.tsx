@@ -3,6 +3,8 @@ import styles from './OpeningsSearchBar.module.scss'
 import { Dictionary } from 'typescript-collections'
 import stringSimilarity from "string-similarity";
 import assert from 'assert';
+import { useChessStore } from '../../stores/chessStore';
+import { Chess } from 'chess.js';
 
 export default function OpeningsSeachBar() {
 
@@ -11,6 +13,10 @@ export default function OpeningsSeachBar() {
   const [openingNamesDict, setOpeningNamesDict] = useState<Dictionary<string,  string>>(new Dictionary())
   const [openingNamesSuggestions, setOpeningNamesSuggestions] = useState<string[]>([])
   const [inputFocused, setInputFocused] = useState<boolean>(false)
+
+  const reset = useChessStore(state=>state.reset)
+  const setStartingFen = useChessStore(state=>state.setStartingFen)
+     
   
   useEffect(()=>{
     loadOpeningNamesDict()
@@ -53,16 +59,35 @@ export default function OpeningsSeachBar() {
     setOpeningNamesSuggestions(findSimilarKeys(event.target.value, 5)) 
   }
 
+  function onClickOpeningSuggestion(openingName:string){
+    loadOpening(openingName)
+  }
+
+  function loadOpening(openingName:string){
+    const chess = new Chess()
+    const moves = openingNamesDict.getValue(openingName)
+    const moveList = moves?.split(' ')
+
+    moveList?.forEach(move=>{
+      chess.move(move)
+    })
+
+    setStartingFen(chess.fen())
+    reset()
+    
+  }
+
   return (
     <div className={styles.main}>
       <input onChange={onInputValueChange} ref={inputRef} placeholder='Search for an Opening' autoComplete='off' 
-      type='text' onBlur={()=>setInputFocused(false)} onFocus={()=>setInputFocused(true)}></input>
+      type='text' onBlur={()=>setTimeout(()=>{setInputFocused(false)}, 100) } 
+      onFocus={()=>setInputFocused(true)}></input>
       <div className={styles.suggestionList}>
         {
           !inputFocused ? null :
           openingNamesSuggestions.map((suggestion, index)=>{
             return (
-              <div key={index}>
+              <div onClick={()=>onClickOpeningSuggestion(suggestion)} key={index}>
                 {suggestion}
               </div>
             )

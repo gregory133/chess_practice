@@ -14,8 +14,9 @@
 
     .content{
         margin: 0.5rem;
-        display: grid;
-        grid-template: 1fr / 1fr 1fr 1fr;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
         .logo{
             

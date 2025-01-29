@@ -22,9 +22,10 @@ export default function Navbar(props:Props) {
                     <span>Chess Opening Practice</span>
                 </div>
 
-                <OpeningsSeachBar/>
+                
 
                 <div className={styles.credits}>
+                    
                     <div className={styles.githubLogoContainer}>
                         <a target='_blank' href='https://github.com/gregory133/chess_practice'>
                             <GitHubIcon sx={{
@@ -34,9 +35,11 @@ export default function Navbar(props:Props) {
                             }}/>
                         </a>
                     </div>
+                    
                     {
                         isSmallWidth ? <span>Made by Gregory Marcelin</span> : null
-                    }  
+                    } 
+                    <OpeningsSeachBar/> 
                 </div>
 
             </div>
