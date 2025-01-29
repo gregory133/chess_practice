@@ -9,6 +9,7 @@ import Position from './classes/Position';
 import PlayerGameDownloader from './api/PlayerGameDownloader';
 import PlayerDatabase from './classes/PlayerDatabase';
 import OpeningsSeachBar from './components/OpeningsSearchBar/OpeningsSeachBar';
+import Navbar from './components/Navbar/Navbar';
 
 
 const root = ReactDOM.createRoot(
@@ -19,5 +20,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <App/> 
+  // <Navbar/>
   // <OpeningsSeachBar/>
 );
