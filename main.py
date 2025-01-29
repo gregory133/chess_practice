@@ -12,6 +12,7 @@ for line in f:
     values = [s.strip() for s in values]
     values = [values[1], values[-1]]
     values = [values[0].replace('"', ''), values[1].replace('"', '')]
+    values = [values[0].split(';')[0], values[1]]
 
     l.append({values[0] : values[1]})
 

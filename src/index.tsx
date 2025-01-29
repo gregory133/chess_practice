@@ -18,6 +18,6 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-  // <App/> 
-  <OpeningsSeachBar/>
+  <App/> 
+  // <OpeningsSeachBar/>
 );
