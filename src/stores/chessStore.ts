@@ -13,6 +13,7 @@ export interface ChessStoreState{
   startingFen:string
   currentFen: string
   lastFen: string
+  lastFromToSquares : cg.Key[]
   numGamesInDB: number|null
   numMovesInDB: number|null
   winrate: Winrate|null
@@ -30,6 +31,7 @@ export interface ChessStoreState{
   setStartingFen:(newFen:string)=>void
   setCurrentFen:(newFen:string)=>void
   setLastFen: (newFen:string)=>void
+  setLastFromToSquares: (newVal:cg.Key[])=>void
   setNumGamesInDB: (num:number|null)=>void
   setNumMovesInDB: (num:number|null)=>void
   setWinrate: (newVal: Winrate|null)=>void
@@ -97,9 +99,11 @@ function initialize(set:any):ChessStoreState{
   const randomColor=getRandomColor()
 
   return {
+    
     startingFen: INITIAL_FEN,
     currentFen: INITIAL_FEN,
     lastFen: INITIAL_FEN,
+    lastFromToSquares: [],
     numGamesInDB: null,
     numMovesInDB: null,
     winrate: null,
@@ -122,6 +126,9 @@ function initialize(set:any):ChessStoreState{
     }),
     setLastFen: (newFen:string)=>set((state:ChessStoreState)=>{
       return {lastFen: newFen}
+    }),
+    setLastFromToSquares: (newVal:cg.Key[])=>set((state:ChessStoreState)=>{
+      return {lastFromToSquares: newVal}
     }),
     setNumGamesInDB: (num:number|null)=>set((state:ChessStoreState)=>{
       return {numGamesInDB:num}

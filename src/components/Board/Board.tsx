@@ -42,7 +42,6 @@ export default function Board() {
 	const jsonParserRef=useRef(new LichessDatabaseJSONParser(null))
 	
 	const [forceDisplayHighlight, setForceDisplayHighlight]=useState(false)
-	const [lastFromToSquares, setLastFromToSquares]=useState<cg.Key[]>([])
 	const [isPromotionVisible, setIsPromotionVisible]=useState(false)
 	const [length, setLength]=useState(0)
 	const [boardOpacity, setBoardOpacity]=useState<number>(1)
@@ -50,17 +49,20 @@ export default function Board() {
 	const [stockfishArrowSuggestion, setStockfishArrowSuggestion]
 	=useState<{from:cg.Key, to:cg.Key}|null>(null)
 
+	
+		
+	const lastFromToSquares = useChessStore(state=>state.lastFromToSquares)
+	const positionList=useChessStore(state=>state.positionList)
+	const database:Database=useChessStore(state=>state.selectedDatabase)
+	const blueArrow=useChessStore(state=>state.blueArrow)
+
 	const addPositionToPositionListByFEN=useChessStore(state=>state.
 		addPositionToPositionListByFEN)
 	const addPositionToPositionListByUCI=useChessStore(state=>state.
 		addPositionToPositionListByUCI)
-	
-	const positionList=useChessStore(state=>state.positionList)
-	const database:Database=useChessStore(state=>state.selectedDatabase)
-	const blueArrow=useChessStore(state=>state.blueArrow)
+	const setLastFromToSquares = useChessStore(state=>state.setLastFromToSquares)
 	
 	const chess=new Chess(fen)
-
 	const engineMoveDelay = 500 //in milliseconds
 		
 	const DISABLED_BOARD_OPACITY=0.5
