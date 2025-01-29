@@ -8,13 +8,16 @@ import PositionList from './classes/PositionList';
 import Position from './classes/Position';
 import PlayerGameDownloader from './api/PlayerGameDownloader';
 import PlayerDatabase from './classes/PlayerDatabase';
+import OpeningsSeachBar from './components/OpeningsSearchBar/OpeningsSeachBar';
 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+
+
 root.render(
-  <App/> 
-  // null
+  // <App/> 
+  <OpeningsSeachBar/>
 );

@@ -92,6 +92,7 @@ export default function SetFen() {
             onMouseEnter={()=>setIsCopyButtonHovered(true)} onMouseLeave={()=>setIsCopyButtonHovered(false)}>
           <div className={styles.copyButtonIcon}/>
         </div>
+        <div className={styles.openingBookIcon}/>
         
     </div>
   )
