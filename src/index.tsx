@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// document.documentElement.style.fontSize = '10px'
+// document.documentElement.style.fontSize = '5px'
 
 
 root.render(

@@ -10,6 +10,7 @@ import Playrate from '../classes/Playrate';
 export const INITIAL_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 export interface ChessStoreState{
+  resetDetector:boolean
   startingFen:string
   currentFen: string
   lastFen: string
@@ -99,7 +100,7 @@ function initialize(set:any):ChessStoreState{
   const randomColor=getRandomColor()
 
   return {
-    
+    resetDetector: true,
     startingFen: INITIAL_FEN,
     currentFen: INITIAL_FEN,
     lastFen: INITIAL_FEN,
@@ -202,8 +203,10 @@ function initialize(set:any):ChessStoreState{
 
     reset: ()=>set((state:ChessStoreState)=>{
    
+      
       const oldFen=state.currentFen
       const startingFen=state.startingFen
+
       let newFen:string
       if (oldFen==startingFen){
         newFen=varyFen(startingFen)
@@ -227,9 +230,11 @@ function initialize(set:any):ChessStoreState{
       }
 
       return {
+        resetDetector: !state.resetDetector,
         positionList: positionList,
         currentFen: newFen,
         lastFen: newFen,
+        lastFromToSquares: [],
         numGamesInDB: null, 
         numMovesInDB: null,
         winrate: null,

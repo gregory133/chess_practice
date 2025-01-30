@@ -50,7 +50,7 @@ export default function Board() {
 	=useState<{from:cg.Key, to:cg.Key}|null>(null)
 
 	
-		
+	const resetDetector = useChessStore(state=>state.resetDetector)
 	const lastFromToSquares = useChessStore(state=>state.lastFromToSquares)
 	const positionList=useChessStore(state=>state.positionList)
 	const database:Database=useChessStore(state=>state.selectedDatabase)
@@ -74,7 +74,10 @@ export default function Board() {
 	'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	useEffect(()=>{
-		
+		setLastFromToSquares([])
+	}, [resetDetector])
+
+	useEffect(()=>{
 		if (startingFen == lastFen){
 			setLastFromToSquares([])
 		}
@@ -87,6 +90,7 @@ export default function Board() {
 	}, [lastFen])
 
 	useEffect(()=>{
+
 		const currentPosition=positionList.getCurrentPosition()
 		const lastPosition=positionList.getLastPosition()
 		updateLastMoveHighlightedSquares(currentPosition)
