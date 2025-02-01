@@ -28,7 +28,7 @@ function App() {
     new PlayerGameDownloader().downloadGames({
       username: 'greg133', color: 'white', fen: 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'})
     .then(o=>{
-      console.log(o)
+      // console.log(o)
     })
   }, [])
 

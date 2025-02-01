@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// document.documentElement.style.fontSize = '5px'
+document.documentElement.style.fontSize = '16px'
 
 
 root.render(

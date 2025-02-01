@@ -12,7 +12,7 @@ $border-radius: 10px;
   container-type: size;
   box-sizing: border-box;
   padding: 0.63rem;
-  width: 100%;
+  width: 5rem;
   height: 100%;
   display: grid;
   grid-template: 1fr 1fr 10fr / 1fr;
@@ -33,25 +33,6 @@ $border-radius: 10px;
       background-size: contain;
     }
   }
-
-  // .spinnerContainer{
-    
-  //   container-type: size;
-  //   aspect-ratio: 1/1;
-    
-  //   margin: 0;
-  //   color: white;
-    
-  //   font-family: $default-font;
-  //   font-size: $font-size-small;
-  //   font-weight: 500;
-
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-
-    
-  // }
 
   span{
     aspect-ratio: 1/1 !important;
