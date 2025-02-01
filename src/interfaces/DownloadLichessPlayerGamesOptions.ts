@@ -2,9 +2,7 @@ import { TimeControl } from "../types/TimeControl"
 
 export default interface DownloadLichessPlayerGamesOptions{
 
-    maxNumber? : number
-    timeControls?: TimeControl[]
-    vsPlayer?: string
+    username: string
+    fen : string
     color : 'white'|'black'
-    
 }

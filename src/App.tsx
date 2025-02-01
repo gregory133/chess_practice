@@ -11,6 +11,7 @@ import Navbar from './components/Navbar/Navbar';
 import LandscapeLayout from './components/Layouts/LandscapeLayout/LandscapeLayout';
 import Portrait from './components/Layouts/PortraitLayout/PortraitLayout';
 import PortraitLayout from './components/Layouts/PortraitLayout/PortraitLayout';
+import PlayerGameDownloader from './api/PlayerGameDownloader';
 
 function App() {
   const evaluation=useChessStore(state=>state.evaluation)
@@ -24,7 +25,16 @@ function App() {
   })
 
   useEffect(()=>{
+    new PlayerGameDownloader().downloadGames({
+      username: 'greg133', color: 'white', fen: 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'})
+    .then(o=>{
+      console.log(o)
+    })
+  }, [])
+
+  useEffect(()=>{
     hookupArrowKeyEvents()
+    
     
   }, [])
 

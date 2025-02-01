@@ -16,6 +16,9 @@ export default class Playrate{
         }
     }
 
+    /**Returns a dictionary object which matches each move to an object encapsulating the winrate and playrate of
+     * that move
+     */
     public getDict(){
         return this.playrateDict
     }
