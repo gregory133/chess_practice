@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, ReactElement } from 'react'
+import InfoIcon from '@mui/icons-material/Info';
 import styles from './Sidebar.module.scss'
-import WinrateBar from './WinrateBar/WinrateBar'
-import Winrate from '../../classes/Winrate'
-import MoveStats from './MoveStats/MoveStats'
-import SetFen from './SetFen/SetFen'
+
 import { useChessStore } from '../../stores/chessStore'
-import ColorSelect from './ColorSelect/ColorSelect'
-import DatabaseSelect from './DatabaseSelect/DatabaseSelect'
+
 import LichessDatabaseJSONParser from '../../api/LichessDatabaseJSONParser'
 import { Database, fetchDB } from '../../api/DBApi'
 import * as cg from 'chessground/types.js';
@@ -15,13 +12,23 @@ import DatabaseSettings from '../../interfaces/DatabaseSettings'
 import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatabaseSettings'
 import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings'
 import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings'
+
 import { Dictionary } from 'typescript-collections'
-import DatabaseSelectParams from './DatabaseSelectParams/DatabaseSelectParams'
-import ResetBar from './ResetBar/ResetBar'
+
 import { useMediaQuery } from 'react-responsive'
+import SettingsIcon from '@mui/icons-material/Settings';
+import InfoLayout from './InfoLayout/InfoLayout';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import DatabaseLayout from './DatabaseLayout/DatabaseLayout';
+
+interface TopBarOption{
+  name:string,
+  icon: ReactElement<any, any>
+}
 
 export default function Sidebar() {
 
+  const [selectedTopbarIcon, setSelectedTopbarIcon] = useState<string>('Database')
   const [stockfishArrowSuggestion, setStockfishArrowSuggestion]=useState<{from:cg.Key, to:cg.Key}|null>(null)
 
   const currentFen=useChessStore(state=>state.currentFen)
@@ -32,18 +39,38 @@ export default function Sidebar() {
     query : '(min-aspect-ratio: 4/5)'
   })
 
+  const topBarOptionsSx = {margin: '0 0.5rem 0 0', width: '2.5rem', height: '2.5rem'}
 
-  const openingName=useChessStore(state=>state.openingName)
+  const topBarOptions : TopBarOption[] = [
+    {
+      name: 'Info',
+      icon: <InfoIcon sx={topBarOptionsSx}/>
+    },
+    {
+      name: 'Database',
+      icon: <MenuBookIcon sx={topBarOptionsSx}/>
+    },
+    {
+      name: 'Settings',
+      icon: <SettingsIcon sx={topBarOptionsSx}/>
+    }
+
+  ]
+
+  const contentLayoutDict = new Dictionary<string, ReactElement>();{
+    contentLayoutDict.setValue('Info', <InfoLayout/>)
+    contentLayoutDict.setValue('Database', <DatabaseLayout/>)
+  }
+
+  
   const winrate=useChessStore(state=>state.winrate)
-  const numGamesInDB=useChessStore(state=>state.numGamesInDB)
-  const numMovesInDB=useChessStore(state=>state.numMovesInDB)
+  
   const evaluation=useChessStore(state=>state.evaluation)
 
   const setWinrate=useChessStore(state=>state.setWinrate)
 	const setOpeningName=useChessStore(state=>state.setOpeningName)
 	const setNumGamesInDB=useChessStore(state=>state.setNumGamesInDB)
 	const setNumMovesInDB=useChessStore(state=>state.setNumMovesInDB)
-
 
   const isStockfishArrowActive=useChessStore(state=>state.isStockfishArrowActive)
   const setIsStockfishArrowActive=useChessStore(state=>state.setIsStockfishArrowActive)
@@ -144,35 +171,28 @@ export default function Sidebar() {
 
   return (
 
-    <div className={styles.sidebar}>
-      <p className={styles.openingName} style={{
-          fontSize: openingNameFontSize(openingName)
-        }}>
-        {openingName}
-      </p>
-      <div className={styles.winrateBarContainer}>
-        {
-          winrate ? <WinrateBar winrate={winrate}/> : <WinrateBar winrate={null}/>
-        }
-      </div>
-      <div className={styles.moveStatsContainer}>
-        {
-          (numGamesInDB && numMovesInDB && winrate) 
-            ? (<MoveStats numGamesInDB={numGamesInDB} 
-            numMovesInDB={numMovesInDB}/>)
-            : <div className={styles.noMoreGame}>There are no more Games in the Database</div>
-        }
-      </div>
-      <SetFen/>
-      {
-        isLandscape 
-          ? <ResetBar/>
-          : null
-      }
-      
-      <ColorSelect/>
-      <DatabaseSelect/>
-      <DatabaseSelectParams/>
+    <div className={styles.main}>
+        <div className={styles.topOptions}>
+          {
+            topBarOptions.map((option, key)=>{
+              let backgroundColor = 'none'
+              if (option.name == selectedTopbarIcon){
+                backgroundColor = '#545454'
+              }
+              return (
+                <div key={key} className={styles.topOptionButton} style={{backgroundColor: backgroundColor}} >
+                  {option.icon}
+                  {option.name}
+                </div>
+              )
+            })
+          }        
+        </div>
+        <div className={styles.content}>
+          {
+            contentLayoutDict.getValue(selectedTopbarIcon)
+          }
+        </div>
     </div>
   )
 }

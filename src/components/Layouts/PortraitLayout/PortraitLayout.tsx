@@ -6,8 +6,6 @@ import SidebarPortrait from '../../SidebarPortrait/SidebarPortrait'
 import EvalBar from '../../EvalBar/EvalBar'
 import StockfishComponent from '../../Stockfish/StockfishComponent'
 import Sidebar from '../../Sidebar/Sidebar'
-import ResetBar from '../../Sidebar/ResetBar/ResetBar'
-
 
 export default function PortraitLayout() {
   return (
@@ -16,7 +14,6 @@ export default function PortraitLayout() {
       <div className={styles.boardAndEvalContainer}>
         <div className={styles.boardContainer}>
           <Board/>
-          <ResetBar/>
         </div>
         <EvalBar/> 
       </div>

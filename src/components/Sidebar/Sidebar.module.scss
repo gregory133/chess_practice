@@ -3,79 +3,32 @@
 @import '../../styles/Fonts.scss';
 @import '../../styles/Mixins.module.scss';
 
-.sidebar{
+.main{
+  
+  outline: 1px solid white;
+  width: 30rem;
+  height: fit-content;
 
-  font-size: 1rem;
-  max-width: 30rem;
-  box-sizing: border-box;
-  padding: 1rem;
-  display: grid;
+  .topOptions{
 
-  grid-template: 1fr 0.6fr 1fr 0.6fr 1fr 1fr 3fr / 1fr;
-  @media (min-aspect-ratio: 4/5) {
-    grid-template: 1fr 0.6fr 1fr 0.6fr 1fr 1fr 1fr 3fr  / 1fr;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    outline: 1px solid red;
+
+    .topOptionButton{
+      height: 3rem;
+      outline: 1px solid blue;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+    }
+
   }
 
-  height: 100%;
-  width: 100%;
-  margin: auto;
-
-  border-radius: 0.31rem;
-
-  > :nth-child(odd){
-    background-color: $sidebar-bg-light;
-    box-shadow: 0 0 1px white;
-  }
-
-  > :nth-child(even){
-    box-shadow: 0px 0px 1px white; 
-  }
-
-  .openingName{
-    container-type: size;
-    box-sizing: border-box;
-    border-radius: 0.31rem 0.31rem 0 0;
-    margin: 0;
-    padding: 1cqh 0.31rem;
-    text-align: center;
-    width: 100%;
-    align-content: center;
+  .content{
     
   }
-  
-  .winrateBarContainer{
-    container-type: size;
-    box-sizing: border-box;
-    padding: 1cqh 0.63rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-  }
 
-  .noMoreGame{
-    box-sizing: border-box;
-    padding: 0 0.5cqw;
-    flex: 0 1 10%;
-    @include text-mixin();
-    font-weight: 500;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .moveStatsContainer{
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    flex: 0 1 10%;
-  }
-  
 }
-
-
-
