@@ -85,9 +85,9 @@ export default function Sidebar() {
     
     const numChar = openingName.length
     const sizesDict = new Dictionary<number, string>();{
-      sizesDict.setValue(0, '3.5cqh')
-      sizesDict.setValue(30, '2.5cqh')    
-      sizesDict.setValue(80, '2cqh')   
+      sizesDict.setValue(0, '3ch')
+      sizesDict.setValue(30, '2ch')    
+      sizesDict.setValue(60, '1.5ch')   
     }
 
     const keys = sizesDict.keys().sort()

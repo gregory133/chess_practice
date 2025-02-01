@@ -3,17 +3,15 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App';
 import './styles/Index.scss'
+import MovesBar from './components/MovesBar/MovesBar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-document.documentElement.style.fontSize = '16px'
-
-
 root.render(
   // null
   <App/> 
-  // <Navbar/>
+  // <MovesBar/>
   // <OpeningsSeachBar/>
 );

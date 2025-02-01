@@ -5,6 +5,7 @@
 
 .sidebar{
 
+  font-size: 1rem;
   max-width: 30rem;
   box-sizing: border-box;
   padding: 1rem;
@@ -57,7 +58,6 @@
     flex: 0 1 10%;
     @include text-mixin();
     font-weight: 500;
-    font-size: 2.5cqh;
     display: flex;
     text-align: center;
     align-items: center;
