@@ -41,7 +41,9 @@ export function fetchDBByUrl(url:URL){
 export function fetchDB(databaseSettings:DatabaseSettings):Promise<any>{
   return new Promise((res, rej)=>{
     fetchDBByUrl(databaseSettings.getURL())
-    .then(json=>res(json))
+    .then(json=>{
+      res(json)
+    })
   })
 }
 

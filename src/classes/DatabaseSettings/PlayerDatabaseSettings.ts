@@ -5,21 +5,14 @@ import { TimeControl } from "../../types/TimeControl";
 
 export default class PlayerDatabaseSettings implements DatabaseSettings{
 
-    private username : string
+    private player : string
     private color : 'white'|'black'
+    private fen : string
 
-    private maxGames? : number
-    private vsPlayer? : string
-    private timeControls? : TimeControl[]
-
-    public constructor(username : string, color : 'white'|'black', maxGames? : number, vsPlayer? : string,
-        timeControls? : TimeControl[]
-    ){
-        this.username = username
-        this.maxGames = maxGames
-        this.vsPlayer = vsPlayer
+    public constructor(player : string, color : 'white'|'black', fen:string){
+        this.player = player
+        this.fen = fen
         this.color = color
-        this.timeControls = timeControls
     }
 
     public getDatabaseName() : Database{
@@ -28,18 +21,11 @@ export default class PlayerDatabaseSettings implements DatabaseSettings{
 
     public getURL() : URL{
 
-        const url = new URL(`https://lichess.org/api/games/user/${this.username}`)
+        const url = new URL(`https://explorer.lichess.ovh/player`)
 
-        if (this.vsPlayer){
-            url.searchParams.set('vs', this.vsPlayer)
-        }
-        if (this.maxGames){
-            url.searchParams.set('max', this.maxGames.toString())
-        }
-        if (this.timeControls){
-            url.searchParams.set('perfType', this.timeControls.toString())
-        }
         url.searchParams.set('color', this.color)
+        url.searchParams.set('player', this.player)
+        url.searchParams.set('fen', this.fen)
         
         return url
 

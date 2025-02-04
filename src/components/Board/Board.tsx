@@ -20,6 +20,7 @@ import MastersDatabaseSettings from '../../classes/DatabaseSettings/MastersDatab
 import LichessDatabaseSettings from '../../classes/DatabaseSettings/LichessDatabaseSettings';
 import PlayerDatabaseSettings from '../../classes/DatabaseSettings/PlayerDatabaseSettings';
 import styles from './Board.module.scss'
+import Playrate from '../../classes/Playrate';
 
 export default function Board() {
 
@@ -82,11 +83,15 @@ export default function Board() {
 			setLastFromToSquares([])
 		}
 
-		fetchDB(getDatabaseSettings(lastFen))
-		.then(json=>{
-			jsonParserRef.current.setJson(json)
-			makeEngineMoveIfNeeded(json)	
-		})	
+		const databaseSettings = getDatabaseSettings(lastFen)
+		if (databaseSettings){
+			console.log(databaseSettings.getDatabaseName(), databaseSettings.getURL())
+			fetchDB(databaseSettings)
+			.then(json=>{
+				jsonParserRef.current.setJson(json)
+				makeEngineMoveIfNeeded(json)	
+			})	
+		}
 	}, [lastFen])
 
 	useEffect(()=>{
@@ -146,6 +151,7 @@ export default function Board() {
 		}
 	}, [isStockfishArrowActive])
 
+
 	useEffect(()=>{
 		if (isPromotionVisible){
 			setBoardOpacity(DISABLED_BOARD_OPACITY)
@@ -159,16 +165,24 @@ export default function Board() {
 	function updatePlayrateMoves(){
 		
 		const color = fen.split(' ')[1] == 'w' ? 'white' : 'black'
-		fetchDB(getDatabaseSettings(fen))
-		.then(json=>{
-			const playrate = getPlayrateFromDB(database, color, json)
-			setPlayrate(playrate)
-		})
+		const databaseSettings = getDatabaseSettings(fen)
+		if (databaseSettings){
+			fetchDB(databaseSettings)
+			.then(json=>{
+				// console.log(json)
+				const playrate = getPlayrateFromDB(database, color, json)
+				// console.log(playrate)
+		
+				
+				setPlayrate(playrate)
+			})
+		}
+		
 	}
 
 	/**returns the DatabaseSettingsObject corresponding to the current database */
-	function getDatabaseSettings(fen:string):DatabaseSettings{
-		let databaseSettings : DatabaseSettings
+	function getDatabaseSettings(fen:string):DatabaseSettings|null{
+		let databaseSettings : DatabaseSettings|null = null
 		if (database=='masters'){
 			databaseSettings = new MastersDatabaseSettings(fen, mastersOptions.since, 
 			mastersOptions.until)
@@ -177,10 +191,11 @@ export default function Board() {
 			databaseSettings = new LichessDatabaseSettings(fen, lichessOptions.timeControls, 
 			lichessOptions.ratings)
 		}
-		else{
-			databaseSettings = new PlayerDatabaseSettings(playerOptions.username, 
-			playerOptions.color, playerOptions.maxGames, playerOptions.vsPlayer, 
-			playerOptions.timeControl)
+		else if (database == 'player'){
+			// databaseSettings = new PlayerDatabaseSettings(playerOptions.username, playerOptions.color, fen)
+			const playerColor = fen.split(' ')[1]=='w' ? 'white' : 'black'
+			databaseSettings = new PlayerDatabaseSettings('greg133', playerColor, fen)
+			// console.log(databaseSettings)
 		}
 		return databaseSettings
 	}

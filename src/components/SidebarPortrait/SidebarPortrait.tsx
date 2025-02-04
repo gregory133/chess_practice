@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './SidebarPortrait.module.scss'
 import { useChessStore } from '../../stores/chessStore'
-import MoveStats from '../Sidebar/MoveStats/MoveStats'
 
 export default function SidebarPortrait() {
 
@@ -19,10 +18,10 @@ export default function SidebarPortrait() {
             </div>
             <div className={styles.moveStats}>
                 {
-                (numGamesInDB && numMovesInDB && winrate) 
-                    ? (<MoveStats numGamesInDB={numGamesInDB} 
-                    numMovesInDB={numMovesInDB}/>)
-                    : <div className={styles.noMoreGame}>There are no more Games in the Database</div>
+                // (numGamesInDB && numMovesInDB && winrate) 
+                //     ? (<MoveStats numGamesInDB={numGamesInDB} 
+                //     numMovesInDB={numMovesInDB}/>)
+                //     : <div className={styles.noMoreGame}>There are no more Games in the Database</div>
                 }
             </div>
             <div className={styles.colorSelect}>

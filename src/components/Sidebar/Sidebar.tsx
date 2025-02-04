@@ -145,30 +145,7 @@ export default function Sidebar() {
     }
   }, [isStockfishArrowActive])
 
-  useEffect(()=>{
-
-    let databaseSettings : DatabaseSettings
-    if (database=='masters'){
-      databaseSettings = new MastersDatabaseSettings(currentFen, mastersOptions.since, 
-      mastersOptions.until)
-    }
-    else if (database == 'lichess'){
-      databaseSettings = new LichessDatabaseSettings(currentFen, lichessOptions.timeControls, 
-      lichessOptions.ratings)
-    }
-    else{
-      databaseSettings = new PlayerDatabaseSettings(playerOptions.username, playerOptions.color, 
-      playerOptions.maxGames, playerOptions.vsPlayer, playerOptions.timeControl)
-    }
-
-    fetchDB(databaseSettings)
-		.then(json=>{
-			jsonParserRef.current.setJson(json)
-      updateSidebar()
-		})	
-
-  }, [currentFen])
-
+  
   return (
 
     <div className={styles.main}>
