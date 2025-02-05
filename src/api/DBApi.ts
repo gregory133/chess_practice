@@ -39,6 +39,7 @@ export function fetchDBByUrl(url:URL){
  * @param uciList 
  */
 export function fetchDB(databaseSettings:DatabaseSettings):Promise<any>{
+  console.log(databaseSettings.getURL())
   return new Promise((res, rej)=>{
     fetchDBByUrl(databaseSettings.getURL())
     .then(json=>{

@@ -112,7 +112,7 @@ function initialize(set:any):ChessStoreState{
     colorPlayerCanControl: randomColor,
     orientation: randomColor,
     selectedColor: 'random',
-    selectedDatabase: 'player',
+    selectedDatabase: 'lichess',
     positionList: new PositionList(),
     evaluation: null,
     blueArrow:null,

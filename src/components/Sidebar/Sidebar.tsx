@@ -20,6 +20,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import InfoLayout from './InfoLayout/InfoLayout';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import DatabaseLayout from './DatabaseLayout/DatabaseLayout';
+import SettingsLayout from './SettingsLayout/SettingsLayout';
 
 interface TopBarOption{
   name:string,
@@ -60,6 +61,7 @@ export default function Sidebar() {
   const contentLayoutDict = new Dictionary<string, ReactElement>();{
     contentLayoutDict.setValue('Info', <InfoLayout/>)
     contentLayoutDict.setValue('Database', <DatabaseLayout/>)
+    contentLayoutDict.setValue('Settings', <SettingsLayout/>)
   }
 
   
@@ -128,6 +130,14 @@ export default function Sidebar() {
     return returnVal
   }
 
+  function onClickTopOptionButton(option: TopBarOption){
+    setSelectedTopbarIcon(option.name)
+  }
+
+  // useEffect(()=>{
+  //   console.log(selectedTopbarIcon)
+  // }, [selectedTopbarIcon])
+
   useEffect(()=>{
     if (!isStockfishArrowActive){
       setStockfishArrowSuggestion(null)
@@ -152,12 +162,13 @@ export default function Sidebar() {
         <div className={styles.topOptions}>
           {
             topBarOptions.map((option, key)=>{
-              let backgroundColor = 'none'
+              let backgroundColor = '#26231e'
               if (option.name == selectedTopbarIcon){
                 backgroundColor = '#545454'
               }
               return (
-                <div key={key} className={styles.topOptionButton} style={{backgroundColor: backgroundColor}} >
+                <div key={key} className={styles.topOptionButton} onClick={()=>onClickTopOptionButton(option)}
+                 style={{backgroundColor: backgroundColor}} >
                   {option.icon}
                   {option.name}
                 </div>

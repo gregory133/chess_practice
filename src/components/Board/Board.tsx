@@ -85,7 +85,7 @@ export default function Board() {
 
 		const databaseSettings = getDatabaseSettings(lastFen)
 		if (databaseSettings){
-			console.log(databaseSettings.getDatabaseName(), databaseSettings.getURL())
+			// console.log(databaseSettings.getDatabaseName(), databaseSettings.getURL())
 			fetchDB(databaseSettings)
 			.then(json=>{
 				jsonParserRef.current.setJson(json)
