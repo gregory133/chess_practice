@@ -18,7 +18,7 @@ export default function LandscapeLayout() {
       <Board/>
       <EvalBar/>
       <Sidebar/> 
-      <StockfishComponent/>
+      {/* <StockfishComponent/> */}
     </div>
   )
 }

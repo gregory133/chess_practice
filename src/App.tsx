@@ -42,6 +42,7 @@ function App() {
    * hooks the arrow key press events. must be called once inside useEffect
    */
   function hookupArrowKeyEvents(){
+    console.log('here')
     document.addEventListener('keydown', function(event){
       if (event.key=='ArrowLeft'){
         onLeftArrowKeyPressed()
