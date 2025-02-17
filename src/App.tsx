@@ -1,9 +1,13 @@
 import React from 'react'
+import Board from './Board/Board'
 
 export default function App() {
+
+  
+
   return (
     <div>
-      hello world
+      <Board/>
     </div>
   )
 }
