@@ -43,9 +43,15 @@ export default function Board(props:Props) {
 
 		DatabaseAPI.getInstance()?.getMastersDatabase(fen)
 		.then(move=>{
-			let chess = new Chess(fen)
-			chess.move(move)
-			setFen(chess.fen())
+			if (move == ''){
+				console.log('database out of moves')
+			}
+			else{
+				let chess = new Chess(fen)
+				chess.move(move)
+				setFen(chess.fen())
+			}
+			
 		})
 	}
 

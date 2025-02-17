@@ -14,15 +14,43 @@ export default class DatabaseAPI{
 
     }
 
-    private pickRandomMove(responseObject : any) : string{
+
+    /**given a list of objects containing moves and their playrate data, pick a random move 
+     * according to its playrate (more play = higher chance of getting picked) and returns 
+     * the move in SAN notation
+     */
+    private pickWeightedMove(moves : any[]) : string{
+
+        const total = moves.reduce((accumulator:any, currentValue:any)=>{
+            return accumulator + currentValue.white + currentValue.black + currentValue.draws
+        }, 0)
         
-        return responseObject.moves[Math.floor(Math.random() * responseObject.moves.length)].san
+        const playrates = moves.map((move:any)=>{
+            return {move: move.san, playrate:(move.white + move.black + move.draws) / total}
+        })
+
+        for (let i = 1; i < playrates.length; i++){
+            playrates[i].playrate += playrates[i - 1].playrate
+        }
+
+        const randomNum = Math.random()
+
+        for (let i = 0; i < playrates.length; i++){
+            if (randomNum < playrates[i].playrate){
+                return playrates[i].move
+            }
+        }
+
+        return ''
+
+
     }
+
 
     /**returns a promise that resolves into the SAN of a move returned by Lichess' Masters Database
      * for the given fen
      */
-    public getMastersDatabase(fen:string) : Promise<string>{
+    public getMastersDatabase(fen:string, options? : any) : Promise<string>{
 
         return new Promise((resolve, reject)=>{
 
@@ -32,7 +60,7 @@ export default class DatabaseAPI{
             fetch(url)
             .then(response => response.json())
             .then(data=>{
-                resolve(this.pickRandomMove(data))
+                resolve(this.pickWeightedMove(data.moves))
             })
 
         })
