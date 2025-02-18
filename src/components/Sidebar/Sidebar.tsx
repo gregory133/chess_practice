@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, ReactElement } from 'react'
+import { useState, ReactElement } from 'react'
 import InfoIcon from '@mui/icons-material/Info';
 import styles from './Sidebar.module.scss'
 
 import { Dictionary } from 'typescript-collections'
 
-import { useMediaQuery } from 'react-responsive'
 import SettingsIcon from '@mui/icons-material/Settings';
 import InfoLayout from './InfoLayout/InfoLayout';
 import DatabaseLayout from './DatabaseLayout/DatabaseLayout';
@@ -17,7 +16,7 @@ interface TopBarOption{
 }
 
 export default function Sidebar() {
-
+  
   const [selectedTopbarIcon, setSelectedTopbarIcon] = useState<string>('Database')
 
   const topBarOptionsSx = {margin: '0 0.5rem 0 0', width: '2.5rem', height: '2.5rem'}
@@ -44,7 +43,10 @@ export default function Sidebar() {
     contentLayoutDict.setValue('Settings', <SettingsLayout/>)
   }
 
-  
+  function onClickTopbarOption(option:string){
+    setSelectedTopbarIcon(option)
+  }
+
   return (
 
     <div className={styles.main}>
@@ -57,6 +59,7 @@ export default function Sidebar() {
               }
               return (
                 <div key={key} className={styles.topOptionButton}
+                onClick={()=>onClickTopbarOption(option.name)}
                  style={{backgroundColor: backgroundColor}} >
                   {option.icon}
                   {option.name}
