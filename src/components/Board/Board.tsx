@@ -9,7 +9,7 @@ import { Chess, Square } from 'chess.js'
 import styles from './styles/Board.module.scss'
 import * as cg from 'chessground/types.js';
 import { use, useEffect, useState } from 'react';
-import DatabaseAPI from '../api/DatabaseAPI';
+import DatabaseAPI from '../../api/DatabaseAPI';
 
 interface Props{
 

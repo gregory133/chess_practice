@@ -1,0 +1,39 @@
+.main{
+
+    padding: 1rem;
+
+    .openingName{
+
+        outline: 1px solid brown;
+        padding: 0.5rem;
+        font-size: 1.5rem;
+
+        .winrateBarContainer{
+
+            margin: 1rem;
+
+        }
+
+    }
+
+    .dbInfo{
+
+        padding: 0.5rem;
+        justify-content: space-around;
+        align-items: center;
+        outline: 1px solid brown;
+        display: flex;
+        text-align: center;
+        
+
+        .numGamesInDB{
+            width: 40%;
+        }
+
+        .numMovesInDB{
+            width: 40%;
+        }
+
+    }
+
+}
