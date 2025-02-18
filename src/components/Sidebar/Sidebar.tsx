@@ -19,10 +19,6 @@ interface TopBarOption{
 export default function Sidebar() {
 
   const [selectedTopbarIcon, setSelectedTopbarIcon] = useState<string>('Database')
-  
-  const isLandscape = useMediaQuery({
-    query : '(min-aspect-ratio: 4/5)'
-  })
 
   const topBarOptionsSx = {margin: '0 0.5rem 0 0', width: '2.5rem', height: '2.5rem'}
 

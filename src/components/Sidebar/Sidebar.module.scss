@@ -1,5 +1,10 @@
+@import "../../style/Colors.scss";
+@import "../../style/Fonts.scss";
+
 .main{
-  
+
+  color: white;
+  font-family: $default-font;
   outline: 1px solid white;
   width: 30rem;
   height: fit-content;
