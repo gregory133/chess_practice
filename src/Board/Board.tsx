@@ -13,6 +13,7 @@ import DatabaseAPI from '../api/DatabaseAPI';
 
 interface Props{
 
+	onFenChange : (fen:string)=>void
 }
 
 export default function Board(props:Props) {
@@ -27,9 +28,10 @@ export default function Board(props:Props) {
 	const [fen, setFen] = useState<string>('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
 
+
 	useEffect(()=>{
 
-		// console.log(new Chess(fen).ascii())
+		props.onFenChange(fen)
 		
 		const colorToMove : 'white' | 'black'= fen.split(' ')[1] == 'w' ? 'white' : 'black'
 		if (colorToMove != colorCanMove){
@@ -49,7 +51,7 @@ export default function Board(props:Props) {
 			else{
 				let chess = new Chess(fen)
 				chess.move(move)
-				setFen(chess.fen())
+				setFen(chess.fen()) 
 			}
 			
 		})
