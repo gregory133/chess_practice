@@ -60,7 +60,43 @@ export default class DatabaseAPI{
             fetch(url)
             .then(response => response.json())
             .then(data=>{
-                resolve(this.pickWeightedMove(data.moves))
+                let openingName = null
+                if (data.opening){
+                    openingName = data.opening.name
+                }
+
+                resolve(this.pickWeightedMove(data.moves),)
+            })
+
+            
+            
+
+        })
+
+    }
+
+    /**given the fen of a position and a particular database to be queried, returns useful info
+     * from that database
+     */
+    public getPositionInfo(fen:string, database:'masters'|'lichess') : Promise<{openingName:string|null}>{
+
+        return new Promise((resolve, reject)=>{
+
+            const url = new URL(`https://explorer.lichess.ovh/${database}`)
+            url.searchParams.append('fen', fen)
+
+            fetch(url)
+            .then(response=>response.json())
+            .then(data=>{
+
+                let openingName = null
+                if (data.opening){
+                    openingName = data.opening.name
+                }
+                
+
+                resolve({openingName: openingName})
+
             })
 
         })

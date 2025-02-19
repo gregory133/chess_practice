@@ -5,6 +5,7 @@ import { createContext, useState } from 'react'
 import * as cg from 'chessground/types.js';
 
 interface BoardContextInterface{
+	fen:string
 	setFen : (fen:string) => void
 	lastMove : cg.Key[]
 	setLastMove : (lastMove : cg.Key[]) => void
@@ -19,9 +20,9 @@ export default function App() {
 
 	return (
 
-		<BoardContext.Provider value={{setFen, lastMove, setLastMove}}>
+		<BoardContext.Provider value={{fen, setFen, lastMove, setLastMove}}>
 			<div className={styles.main}>
-				<Board fen={fen}/>
+				<Board/>
 				<Sidebar/>
 			</div>
 		</BoardContext.Provider>
