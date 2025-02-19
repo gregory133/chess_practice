@@ -27,7 +27,7 @@ export default function Board(props:Props) {
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-	const {setFen} = useContext(BoardContext)!
+	const {setFen, lastMove, setLastMove} = useContext(BoardContext)!
 
 	useEffect(()=>{
 
@@ -49,7 +49,10 @@ export default function Board(props:Props) {
 			else{
 				let chess = new Chess(props.fen)
 				chess.move(move)
+				const verboseMove = chess.history({verbose: true})[0]
+
 				setFen(chess.fen()) 
+				setLastMove([verboseMove.from, verboseMove.to])
 			}
 			
 		})
@@ -58,6 +61,7 @@ export default function Board(props:Props) {
 	/**called after the user makes a move on the board */
 	function afterMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
 		updateFen(orig, dest)
+		setLastMove([orig, dest])
 	}
 
 	/**updates the fen state variable given the origin and destination squares*/
@@ -108,7 +112,8 @@ export default function Board(props:Props) {
 				color: 'both',
 				dests: getDests(),
 				showDests: true
-			}
+			},
+			lastMove: lastMove
 		}
 
 	}
