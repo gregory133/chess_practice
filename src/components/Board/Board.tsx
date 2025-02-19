@@ -8,13 +8,13 @@ import { Chess, Square } from 'chess.js'
 
 import styles from './styles/Board.module.scss'
 import * as cg from 'chessground/types.js';
-import { use, useEffect, useState } from 'react';
+import { use, useContext, useEffect, useState } from 'react';
 import DatabaseAPI from '../../api/DatabaseAPI';
+import { BoardContext } from '../../App';
 
 interface Props{
 
 	fen: string
-	setFen: (fen:string)=>void
 }
 
 export default function Board(props:Props) {
@@ -27,7 +27,7 @@ export default function Board(props:Props) {
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-
+	const {setFen} = useContext(BoardContext)!
 
 	useEffect(()=>{
 
@@ -49,7 +49,7 @@ export default function Board(props:Props) {
 			else{
 				let chess = new Chess(props.fen)
 				chess.move(move)
-				props.setFen(chess.fen()) 
+				setFen(chess.fen()) 
 			}
 			
 		})
@@ -64,7 +64,7 @@ export default function Board(props:Props) {
 	function updateFen(orig: cg.Key, dest: cg.Key){
 		let chess = new Chess(props.fen)
 		chess.move({from: orig, to: dest})
-		props.setFen(chess.fen())
+		setFen(chess.fen())
 	}
 
 	/**returns a dests object which maps all legal moves possible on the current

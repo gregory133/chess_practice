@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import styles from './SettingsLayout.module.scss'
 import { FormControlLabel, Icon, Radio, RadioGroup } from '@mui/material'
 import { Chess } from 'chess.js'
@@ -6,18 +6,16 @@ import IconButton from '@mui/material/IconButton';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
+import { BoardContext } from '../../../App';
 
-interface Props{
 
-    requestResetBoardPosition : (fen:string)=>void
-
-}
-
-export default function SettingsLayout(props:Props) {
+export default function SettingsLayout() {
 
     const [selectedColor, setSelectedColor] = useState<string>('random')
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
     const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
+
+    const {setFen} = useContext(BoardContext)!
 
     const fenInputRef = useRef<HTMLInputElement>(null)
 
@@ -49,7 +47,10 @@ export default function SettingsLayout(props:Props) {
     function onClickReset(){
         const fen = fenInputRef.current?.value
         if (fen && isStringValidFen(fen)){
-            props.requestResetBoardPosition(fen)
+            setFen(fen)
+        }
+        else{
+            setFen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
         }
     }
 
@@ -70,7 +71,7 @@ export default function SettingsLayout(props:Props) {
     return (
         <div className={styles.main}>
 
-            <div className={styles.reset} style={{
+            <div className={styles.reset} onClick={onClickReset} style={{
                 backgroundColor: isResetButtonHovered ? '#545454' : '#26241e'
             }} onMouseEnter={()=>setIsResetButtonHovered(true)}
             onMouseLeave={()=>setIsResetButtonHovered(false)}>
