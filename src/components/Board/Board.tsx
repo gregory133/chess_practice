@@ -23,7 +23,7 @@ export default function Board() {
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-	const {fen, setFen, lastMove, setLastMove} = useContext(BoardContext)!
+	const {fen, addMove, cursor, positionList, lastMove, setLastMove} = useContext(BoardContext)!
 
 	useEffect(()=>{
 
@@ -39,16 +39,16 @@ export default function Board() {
 
 		DatabaseAPI.getInstance()?.getMastersDatabase(fen)
 		.then(move=>{
-
+			
 			if (move == ''){
 				console.log('database out of moves')
 			}
-			else{
+			else if (cursor == positionList.length - 1){
+
 				let chess = new Chess(fen)
 				chess.move(move)
 				const verboseMove = chess.history({verbose: true})[0]
-
-				setFen(chess.fen()) 
+				addMove(verboseMove.from + verboseMove.to)
 				setLastMove([verboseMove.from, verboseMove.to])
 			}
 			
@@ -63,9 +63,7 @@ export default function Board() {
 
 	/**updates the fen state variable given the origin and destination squares*/
 	function updateFen(orig: cg.Key, dest: cg.Key){
-		let chess = new Chess(fen)
-		chess.move({from: orig, to: dest})
-		setFen(chess.fen())
+		addMove(orig + dest)
 	}
 
 	/**returns a dests object which maps all legal moves possible on the current

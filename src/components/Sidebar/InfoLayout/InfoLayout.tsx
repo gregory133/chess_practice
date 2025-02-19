@@ -39,12 +39,14 @@ export default function InfoLayout() {
 
     return (
         <div className={styles.main}>
+
             <div className={styles.openingName}>
                 {openingName}
                 <div className={styles.winrateBarContainer}>
                     <WinrateBar winrate={winrate}/>
                 </div>
             </div>
+
             <div className={styles.dbInfo}>
 
                 <div className={styles.numGamesInDB}>
@@ -58,6 +60,10 @@ export default function InfoLayout() {
                     {numPossibleMoves} possible move(s) in database
                 </div>
 
+            </div>
+
+            <div className={styles.playedMoves}>
+                
             </div>
         </div>
     )
