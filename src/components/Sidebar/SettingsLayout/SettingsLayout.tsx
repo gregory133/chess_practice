@@ -1,15 +1,54 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styles from './SettingsLayout.module.scss'
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
+import { FormControlLabel, Icon, Radio, RadioGroup } from '@mui/material'
+import { Chess } from 'chess.js'
+import IconButton from '@mui/material/IconButton';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import Button from '@mui/material/Button';
+import { Delete } from '@mui/icons-material';
+
 
 export default function SettingsLayout() {
 
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
+    const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
 
+    const fenInputRef = useRef<HTMLInputElement>(null)
 
-    // function onChangeSelectedColor(event:any){
-    //     setSelectedColor(event.target.value)
-    // }
+    /**returns true if the given string is a legal and valid fen string */
+    function isStringValidFen(potentialFen : string):boolean{
+        try{
+            new Chess(potentialFen)
+        }
+        catch (err){
+            return false
+        }
+        return true
+    }
+
+    function onClickCopyFen(){
+        const fen = fenInputRef?.current?.value
+        if (fen){
+            if (isStringValidFen(fen)){
+                navigator.clipboard.writeText(fen)
+            }
+        }    
+    }
+
+    function onClickDeleteFen(){
+        fenInputRef.current!.value = ''
+        setInputUnderlineColor('white')
+    }
+
+    function onFenInputChange(event:any){
+        const fen = event.target.value
+        if (fen == '' || isStringValidFen(fen)){
+            setInputUnderlineColor('white')
+        }
+        else{
+            setInputUnderlineColor('red') 
+        }
+    }
         
     return (
         <div className={styles.main}>
@@ -38,6 +77,19 @@ export default function SettingsLayout() {
                     <FormControlLabel  value="black" control={<Radio />} label="Black" />
                 </RadioGroup>
                 
+            </div>
+            
+            <div className={styles.fen}>
+                <div className={styles.input}>
+                    <input onChange={onFenInputChange} ref={fenInputRef} placeholder='Paste FEN here'></input>
+                    <div className={styles.line} style={{backgroundColor: inputUnderlineColor}}/>
+                </div>
+                <IconButton onClick={onClickCopyFen} sx={{color: 'white','&:hover': {backgroundColor: '#545454'}}}>
+                    <ContentCopyIcon sx={{fill: 'white'}}/>
+                </IconButton> 
+                <IconButton onClick={onClickDeleteFen} sx={{color: 'white','&:hover': {backgroundColor: '#545454'}}}>
+                    <Delete sx={{fill: 'white'}}/>
+                </IconButton> 
             </div>
             
         </div>

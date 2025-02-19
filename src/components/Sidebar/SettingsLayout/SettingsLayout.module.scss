@@ -25,4 +25,42 @@
         outline: 1px solid palevioletred;
         padding: 1rem;
     }
+
+    .fen{
+
+        margin: 0.5rem 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .input{
+
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            input{
+            
+                all: unset;
+                height: 2rem;
+            }
+    
+            .line{
+                height: 1px;
+                // background-color: white;
+            }
+        }
+
+        .icon{
+
+            margin: 0.5rem;
+            height: 1.5rem;
+            aspect-ratio: 1/1;
+            background-image: url('/images/copy.png');
+            background-size: contain;
+
+        }
+
+        
+    }
 }
