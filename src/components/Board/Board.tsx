@@ -13,7 +13,8 @@ import DatabaseAPI from '../../api/DatabaseAPI';
 
 interface Props{
 
-	onFenChange : (fen:string)=>void
+	fen: string
+	setFen: (fen:string)=>void
 }
 
 export default function Board(props:Props) {
@@ -25,33 +26,30 @@ export default function Board(props:Props) {
 		'e3' , 'f3' , 'g3' , 'h3' , 'a2' , 'b2' , 'c2' , 'd2' , 'e2' , 'f2' , 'g2' , 'h2' , 
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
-	const [fen, setFen] = useState<string>('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
 
 
 	useEffect(()=>{
 
-		props.onFenChange(fen)
-		
-		const colorToMove : 'white' | 'black'= fen.split(' ')[1] == 'w' ? 'white' : 'black'
+		const colorToMove : 'white' | 'black'= props.fen.split(' ')[1] == 'w' ? 'white' : 'black'
 		if (colorToMove != colorCanMove){
 			makeEngineMove()
 		}
 
-	}, [fen])
+	}, [props.fen])
 
 	/**called to make the engine move when it is its turn */
 	function makeEngineMove(){
 
-		DatabaseAPI.getInstance()?.getMastersDatabase(fen)
+		DatabaseAPI.getInstance()?.getMastersDatabase(props.fen)
 		.then(move=>{
 			if (move == ''){
 				console.log('database out of moves')
 			}
 			else{
-				let chess = new Chess(fen)
+				let chess = new Chess(props.fen)
 				chess.move(move)
-				setFen(chess.fen()) 
+				props.setFen(chess.fen()) 
 			}
 			
 		})
@@ -64,9 +62,9 @@ export default function Board(props:Props) {
 
 	/**updates the fen state variable given the origin and destination squares*/
 	function updateFen(orig: cg.Key, dest: cg.Key){
-		let chess = new Chess(fen)
+		let chess = new Chess(props.fen)
 		chess.move({from: orig, to: dest})
-		setFen(chess.fen())
+		props.setFen(chess.fen())
 	}
 
 	/**returns a dests object which maps all legal moves possible on the current
@@ -74,10 +72,10 @@ export default function Board(props:Props) {
 	 */
 	function getDests() : cg.Dests{
 
-		let chess = new Chess(fen)
+		let chess = new Chess(props.fen)
 		let dests:Map<cg.Key, cg.Key[]>=new Map();
 
-		const colorToMove : 'white' | 'black' = fen.split(' ')[1] == 'w' ? 'white' : 'black'
+		const colorToMove : 'white' | 'black' = props.fen.split(' ')[1] == 'w' ? 'white' : 'black'
 
 		if (colorToMove != colorCanMove){
 			return dests
@@ -100,7 +98,7 @@ export default function Board(props:Props) {
 	function getConfig() : Config{
 
 		return {
-			fen: fen,
+			fen: props.fen,
 			coordinates: false,
 			movable: {
 				events: {

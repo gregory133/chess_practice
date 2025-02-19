@@ -7,9 +7,15 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
 
+interface Props{
 
-export default function SettingsLayout() {
+    requestResetBoardPosition : (fen:string)=>void
 
+}
+
+export default function SettingsLayout(props:Props) {
+
+    const [selectedColor, setSelectedColor] = useState<string>('random')
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
     const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
 
@@ -40,6 +46,13 @@ export default function SettingsLayout() {
         setInputUnderlineColor('white')
     }
 
+    function onClickReset(){
+        const fen = fenInputRef.current?.value
+        if (fen && isStringValidFen(fen)){
+            props.requestResetBoardPosition(fen)
+        }
+    }
+
     function onFenInputChange(event:any){
         const fen = event.target.value
         if (fen == '' || isStringValidFen(fen)){
@@ -48,6 +61,10 @@ export default function SettingsLayout() {
         else{
             setInputUnderlineColor('red') 
         }
+    }
+
+    function onChangeSelectedColor(event:any){
+        setSelectedColor(event.target.value)
     }
         
     return (
@@ -69,8 +86,8 @@ export default function SettingsLayout() {
                             color: 'white'
                         }
                     }}   
-                    // value={selectedColor}
-                    // onChange={onChangeSelectedColor}
+                    value={selectedColor}
+                    onChange={onChangeSelectedColor}
                 >
                     <FormControlLabel value="white" control={<Radio />} label="White" />
                     <FormControlLabel value="random" control={<Radio />} label="Random" />
