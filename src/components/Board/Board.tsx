@@ -23,7 +23,7 @@ export default function Board() {
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-	const {fen, addMove, cursor, positionList, lastMove, setLastMove} = useContext(BoardContext)!
+	const {fen, addMove, cursor, positionList} = useContext(BoardContext)!
 
 	useEffect(()=>{
 
@@ -39,7 +39,7 @@ export default function Board() {
 
 		DatabaseAPI.getInstance()?.getMastersDatabase(fen)
 		.then(move=>{
-			
+
 			if (move == ''){
 				console.log('database out of moves')
 			}
@@ -49,7 +49,7 @@ export default function Board() {
 				chess.move(move)
 				const verboseMove = chess.history({verbose: true})[0]
 				addMove(verboseMove.from + verboseMove.to)
-				setLastMove([verboseMove.from, verboseMove.to])
+				// setLastMove([verboseMove.from, verboseMove.to])
 			}
 			
 		})
@@ -57,8 +57,11 @@ export default function Board() {
 
 	/**called after the user makes a move on the board */
 	function afterMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
-		updateFen(orig, dest)
-		setLastMove([orig, dest])
+		if (cursor == positionList.length - 1){
+			updateFen(orig, dest)
+			// setLastMove([orig, dest])
+		}
+		
 	}
 
 	/**updates the fen state variable given the origin and destination squares*/
@@ -93,6 +96,32 @@ export default function Board() {
 		return dests
 	}
 
+	function getLastMove():cg.Key[]{
+
+		let returnList : cg.Key[] = []
+
+		if (cursor != 0){
+			const oldFen = positionList[cursor - 1]
+			const newFen = positionList[cursor]
+			let chess = new Chess(oldFen)
+
+			chess.moves().forEach(move=>{
+				let newChess = new Chess(oldFen)
+				newChess.move(move)
+				if (newChess.fen() == newFen){
+					const lan = newChess.history({verbose:true})[0].lan
+					console.log([lan.substring(0, 2), lan.substring(2, 4)])
+					returnList = [lan.substring(0, 2) as cg.Key, lan.substring(2, 4) as cg.Key]
+					return
+				}
+			})
+		}
+		
+		
+
+		return returnList
+	}
+
 	/**returns the configs of the board */
 	function getConfig() : Config{
 
@@ -108,7 +137,7 @@ export default function Board() {
 				dests: getDests(),
 				showDests: true
 			},
-			lastMove: lastMove
+			lastMove: getLastMove()
 		}
 
 	}

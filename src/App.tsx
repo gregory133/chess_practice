@@ -10,8 +10,6 @@ interface BoardContextInterface{
 	addMove: (lan:string)=>void
 	cursor: number
 	positionList: string[]
-	lastMove : cg.Key[]
-	setLastMove : (lastMove : cg.Key[]) => void
 }
 
 export const BoardContext = createContext<null | BoardContextInterface>(null)
@@ -22,15 +20,9 @@ export default function App() {
 	const CARO = 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
 
 	const {addMove, positionList, cursor, navigateBack, navigateForward} = usePositionList(INITIAL_FEN)
-
-	const [lastMove, setLastMove] = useState<cg.Key[]>([])
 	
 	useEffect(()=>{
 		addPositionListKeyListeners()
-
-		addMove('e2e4')
-		addMove('e7e5')
-		
 	}, [])
 
 	function addPositionListKeyListeners(){
@@ -55,8 +47,7 @@ export default function App() {
 
 	return (
 
-		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList,
-		lastMove, setLastMove}}>
+		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList}}>
 			<div className={styles.main}>
 				<Board/>
 				<Sidebar/>
