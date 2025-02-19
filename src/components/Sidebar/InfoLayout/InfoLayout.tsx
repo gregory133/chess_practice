@@ -3,10 +3,14 @@ import WinrateBar from '../../Winrate/WinrateBar'
 import { useContext, useEffect, useState } from 'react'
 import DatabaseAPI from '../../../api/DatabaseAPI'
 import { BoardContext } from '../../../App'
+import Winrate from '../../../classes/Winrate'
 
 export default function InfoLayout() {
 
     const [openingName, setOpeningName] = useState<string>('')
+    const [numGamesInDB, setNumGamesInDB] = useState<number>(0)
+    const [numPossibleMoves, setNumPossibleMoves] = useState<number>(0)
+    const [winrate, setWinrate] = useState<Winrate>(new Winrate(0, 0))
 
     const {fen} = useContext(BoardContext)!
 
@@ -19,7 +23,9 @@ export default function InfoLayout() {
             if (openingName){
                 setOpeningName(openingName)
             }
-
+            setNumGamesInDB(response.numGamesInDatabase)
+            setNumPossibleMoves(response.numPossibleMoves)
+            setWinrate(response.winrate)
         })
  
 
@@ -36,19 +42,20 @@ export default function InfoLayout() {
             <div className={styles.openingName}>
                 {openingName}
                 <div className={styles.winrateBarContainer}>
-                    {/* <WinrateBar winrate={winrate}/> */}
+                    <WinrateBar winrate={winrate}/>
                 </div>
             </div>
             <div className={styles.dbInfo}>
 
                 <div className={styles.numGamesInDB}>
-                    {/* {prettyPrintNumber(numGamesInDB!)}  game(s) in database */}
+                    {prettyPrintNumber(numGamesInDB!)}  game(s) in database
                 </div>
-                
+
+      
                 •
 
                 <div className={styles.numMovesInDB}>
-                    {/* {numMovesInDB} possible move(s) in database */}
+                    {numPossibleMoves} possible move(s) in database
                 </div>
 
             </div>

@@ -1,3 +1,5 @@
+import Winrate from "../classes/Winrate"
+
 export default class DatabaseAPI{
 
     private static instance : DatabaseAPI | null = null
@@ -78,7 +80,13 @@ export default class DatabaseAPI{
     /**given the fen of a position and a particular database to be queried, returns useful info
      * from that database
      */
-    public getPositionInfo(fen:string, database:'masters'|'lichess') : Promise<{openingName:string|null}>{
+    public getPositionInfo(fen:string, database:'masters'|'lichess') : Promise<
+    {
+        openingName:string|null,
+        numGamesInDatabase: number,
+        numPossibleMoves:number,
+        winrate: Winrate
+    }>{
 
         return new Promise((resolve, reject)=>{
 
@@ -93,9 +101,14 @@ export default class DatabaseAPI{
                 if (data.opening){
                     openingName = data.opening.name
                 }
-                
 
-                resolve({openingName: openingName})
+                resolve({
+                    openingName: openingName,
+                    numGamesInDatabase: data.white + data.black + data.draws,
+                    numPossibleMoves: data.moves.length,
+                    winrate: new Winrate(data.black/(data.white + data.black + data.draws), 
+                        data.white/(data.white + data.black + data.draws))
+                })
 
             })
 
