@@ -4,6 +4,7 @@ import styles from './App.module.scss'
 import { createContext, useEffect, useRef, useState } from 'react'
 import * as cg from 'chessground/types.js';
 import usePositionList from './hooks/usePositionList';
+import Navbar from './components/Navbar/Navbar';
 
 interface BoardContextInterface{
 	fen:string
@@ -49,8 +50,11 @@ export default function App() {
 
 		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList}}>
 			<div className={styles.main}>
-				<Board/>
-				<Sidebar/>
+				<Navbar/>
+				<div className={styles.content}>
+					<Board/>
+					<Sidebar/>
+				</div>
 			</div>
 		</BoardContext.Provider>
 		

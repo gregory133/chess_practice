@@ -116,8 +116,6 @@ export default function Board() {
 				}
 			})
 		}
-		
-		
 
 		return returnList
 	}

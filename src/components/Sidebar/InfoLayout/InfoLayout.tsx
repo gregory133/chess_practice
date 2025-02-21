@@ -63,7 +63,7 @@ export default function InfoLayout() {
             </div>
 
             <div className={styles.playedMoves}>
-                
+                hello
             </div>
         </div>
     )
