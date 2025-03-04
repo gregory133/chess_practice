@@ -11,7 +11,7 @@ interface Props{
 export default function Navbar(props:Props) {
 
     const isSmallWidth = useMediaQuery('(min-width: 400px)')
-    console.log(import.meta.env.BASE_URL)
+    // console.log(import.meta.env.BASE_URL)
 
     return (
         <div style={props.mainStyles} className={styles.main}>

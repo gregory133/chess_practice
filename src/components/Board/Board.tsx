@@ -110,7 +110,7 @@ export default function Board() {
 				newChess.move(move)
 				if (newChess.fen() == newFen){
 					const lan = newChess.history({verbose:true})[0].lan
-					console.log([lan.substring(0, 2), lan.substring(2, 4)])
+					// console.log([lan.substring(0, 2), lan.substring(2, 4)])
 					returnList = [lan.substring(0, 2) as cg.Key, lan.substring(2, 4) as cg.Key]
 					return
 				}

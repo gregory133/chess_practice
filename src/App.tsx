@@ -5,6 +5,10 @@ import { createContext, useEffect, useRef, useState } from 'react'
 import * as cg from 'chessground/types.js';
 import usePositionList from './hooks/usePositionList';
 import Navbar from './components/Navbar/Navbar';
+import MovesBar from './components/MovesBar/MovesBar';
+import Playrate from './classes/Playrate';
+import Winrate from './classes/Winrate';
+import DatabaseAPI from './api/DatabaseAPI';
 
 interface BoardContextInterface{
 	fen:string
@@ -38,13 +42,7 @@ export default function App() {
 		})
 
 	}
-	
 
-	// useEffect(()=>{
-	// 	console.log(cursor)
-	// }, [cursor])
-
-	
 
 	return (
 
@@ -52,6 +50,7 @@ export default function App() {
 			<div className={styles.main}>
 				<Navbar/>
 				<div className={styles.content}>
+					<MovesBar fen={positionList[cursor]}/>
 					<Board/>
 					<Sidebar/>
 				</div>

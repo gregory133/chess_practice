@@ -96,7 +96,7 @@ export default class DatabaseAPI{
             fetch(url)
             .then(response=>response.json())
             .then(data=>{
-
+                
                 let openingName = null
                 if (data.opening){
                     openingName = data.opening.name
@@ -110,6 +110,30 @@ export default class DatabaseAPI{
                         data.white/(data.white + data.black + data.draws))
                 })
 
+            })
+
+        })
+
+    }
+
+    /**
+     * Similar to the getPositionInfo function, but returns the raw json object
+     * @param fen 
+     * @param database 
+     */
+    public getPositionInfoVerbose(fen:string, database: 'masters'|'lichess') : Promise<any>{
+
+        return new Promise((resolve, reject)=>{
+
+            const url = new URL(`https://explorer.lichess.ovh/${database}`)
+            url.searchParams.append('fen', fen)
+
+            fetch(url)
+            .then(response=>response.json())
+            .then(data=>{
+
+               resolve(data)
+               
             })
 
         })
