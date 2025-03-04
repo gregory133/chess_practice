@@ -15,6 +15,7 @@ interface BoardContextInterface{
 	addMove: (lan:string)=>void
 	cursor: number
 	positionList: string[]
+	reset: (initialPosition?:string)=>void
 }
 
 export const BoardContext = createContext<null | BoardContextInterface>(null)
@@ -24,7 +25,8 @@ export default function App() {
 	const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 	const CARO = 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
 
-	const {addMove, positionList, cursor, navigateBack, navigateForward} = usePositionList(INITIAL_FEN)
+	const {addMove, positionList, cursor, navigateBack, navigateForward, reset}
+	= usePositionList(INITIAL_FEN)
 	
 	useEffect(()=>{
 		addPositionListKeyListeners()
@@ -46,7 +48,9 @@ export default function App() {
 
 	return (
 
-		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList}}>
+		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList
+			,reset
+		}}>
 			<div className={styles.main}>
 				<Navbar/>
 				<div className={styles.content}>
