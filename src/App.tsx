@@ -9,6 +9,7 @@ import MovesBar from './components/MovesBar/MovesBar';
 import Playrate from './classes/Playrate';
 import Winrate from './classes/Winrate';
 import DatabaseAPI from './api/DatabaseAPI';
+import Stockfish from './components/Stockfish/Stockfish';
 
 interface BoardContextInterface{
 	fen:string
@@ -28,6 +29,7 @@ export default function App() {
 	
 	useEffect(()=>{
 		addPositionListKeyListeners()
+		
 	}, [])
 
 	function addPositionListKeyListeners(){
@@ -55,6 +57,7 @@ export default function App() {
 					<Sidebar/>
 				</div>
 			</div>
+			<Stockfish fen={positionList[cursor]}/>
 		</BoardContext.Provider>
 		
 		
