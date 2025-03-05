@@ -15,7 +15,7 @@ export default function SettingsLayout() {
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
     const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
 
-    const {setFen, setLastMove} = useContext(BoardContext)!
+    const {reset} = useContext(BoardContext)!
 
     const fenInputRef = useRef<HTMLInputElement>(null)
 
@@ -46,13 +46,14 @@ export default function SettingsLayout() {
 
     function onClickReset(){
         const fen = fenInputRef.current?.value
-        setLastMove([])
-        if (fen && isStringValidFen(fen)){
-            setFen(fen)
-        }
-        else{
-            setFen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-        }
+        reset(fen)
+        // setLastMove([])
+        // if (fen && isStringValidFen(fen)){
+        //     setFen(fen)
+        // }
+        // else{
+        //     setFen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        // }
     }
 
     function onFenInputChange(event:any){

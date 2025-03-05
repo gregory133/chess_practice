@@ -3,11 +3,23 @@ import { useEffect, useRef, useState } from "react";
 
 export default function usePositionList(initialPosition:string){
 
+    const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
     const [cursor, setCursor] = useState<number>(0)
     const cursorRef = useRef<number>(cursor)
 
     const [positionList, setPositionList] = useState<string[]>([initialPosition])
     const positionListRef = useRef(positionList)
+
+    function reset(initialPosition = INITIAL_FEN){
+
+        positionListRef.current = [initialPosition]
+        cursorRef.current = 0
+
+        setPositionList(positionListRef.current)
+        setCursor(cursorRef.current)
+
+    }
 
     function addMove(lan:string){
 
@@ -42,7 +54,7 @@ export default function usePositionList(initialPosition:string){
         }
     }
 
-    return {addMove, positionList, cursor, navigateBack, navigateForward}
+    return {addMove, positionList, cursor, navigateBack, navigateForward, reset}
 
 
 }
