@@ -36,7 +36,7 @@ export default function MovesBar(props:Props) {
   /**this function computes and returns the Playrate object associated with the current FEN string*/
 	function getPlayrate(fen:string): Promise<Playrate>{
 
-    const MAX_NUM_MOVES_DISPLAYED = 10
+    const MAX_NUM_MOVES_DISPLAYED = 5
 
 		return new Promise((resolve, reject)=>{
 

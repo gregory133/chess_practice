@@ -56,12 +56,14 @@ export default function App() {
 			<div className={styles.main}>
 				<Navbar/>
 				<div className={styles.content}>
-					<MovesBar fen={positionList[cursor]}/>
+					<div className={styles.leftSection}>
+						<MovesBar fen={positionList[cursor]}/>
+						{/* <Stockfish fen={positionList[cursor]}/> */}
+					</div>
 					<Board/>
 					<Sidebar/>
 				</div>
 			</div>
-			<Stockfish fen={positionList[cursor]}/>
 		</BoardContext.Provider>
 		
 		
