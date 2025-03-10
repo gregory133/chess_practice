@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from 'react'
 import DatabaseAPI from '../../../api/DatabaseAPI'
 import { BoardContext } from '../../../App'
 import Winrate from '../../../classes/Winrate'
+import { IconButton } from '@mui/material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export default function InfoLayout() {
 
@@ -35,6 +37,10 @@ export default function InfoLayout() {
         const formatter=Intl.NumberFormat('en', {notation: 'compact'})
         return formatter.format(num)
     }
+
+    function onClickCopyFen(){
+        navigator.clipboard.writeText(fen)  
+    }
     
 
     return (
@@ -46,6 +52,8 @@ export default function InfoLayout() {
                     <WinrateBar winrate={winrate}/>
                 </div>
             </div>
+
+            <div className={styles.separator}/>
 
             <div className={styles.dbInfo}>
 
@@ -62,8 +70,13 @@ export default function InfoLayout() {
 
             </div>
 
-            <div className={styles.playedMoves}>
-                {/* hello */}
+            <div className={styles.separator}/>
+
+            <div>
+                Copy Current FEN
+                <IconButton onClick={onClickCopyFen} sx={{color: 'white','&:hover': {backgroundColor: '#545454'}}}>
+                    <ContentCopyIcon sx={{fill: 'white'}}/>
+                </IconButton> 
             </div>
         </div>
     )

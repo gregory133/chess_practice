@@ -23,12 +23,12 @@ export default function Board() {
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-	const {fen, addMove, cursor, positionList} = useContext(BoardContext)!
+	const {fen, addMove, cursor, positionList, isEditModeActive} = useContext(BoardContext)!
 
 	useEffect(()=>{
 
 		const colorToMove : 'white' | 'black'= fen.split(' ')[1] == 'w' ? 'white' : 'black'
-		if (colorToMove != colorCanMove){
+		if (colorToMove != colorCanMove && !isEditModeActive){
 			makeEngineMove()
 		}
 
@@ -59,13 +59,13 @@ export default function Board() {
 	function afterMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
 		if (cursor == positionList.length - 1){
 			updateFen(orig, dest)
-			// setLastMove([orig, dest])
 		}
 		
 	}
 
 	/**updates the fen state variable given the origin and destination squares*/
 	function updateFen(orig: cg.Key, dest: cg.Key){
+
 		addMove(orig + dest)
 	}
 
@@ -74,12 +74,16 @@ export default function Board() {
 	 */
 	function getDests() : cg.Dests{
 
+		if (cursor != positionList.length - 1){
+			return new Map()
+		}
+
 		let chess = new Chess(fen)
 		let dests:Map<cg.Key, cg.Key[]>=new Map();
 
 		const colorToMove : 'white' | 'black' = fen.split(' ')[1] == 'w' ? 'white' : 'black'
 
-		if (colorToMove != colorCanMove){
+		if (colorToMove != colorCanMove && !isEditModeActive){
 			return dests
 		}
 
@@ -135,7 +139,10 @@ export default function Board() {
 				dests: getDests(),
 				showDests: true
 			},
-			lastMove: getLastMove()
+			lastMove: getLastMove(),
+			draggable: {
+				deleteOnDropOff: isEditModeActive
+			}
 		}
 
 	}

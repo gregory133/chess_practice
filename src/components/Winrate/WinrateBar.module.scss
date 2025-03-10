@@ -1,4 +1,6 @@
 .bar{
+
+ 
   width: 100%;
   box-sizing: border-box;
   padding: 0px 0.63rem;
@@ -23,6 +25,7 @@
 $border-radius: 50px;
 
 .blackBar{
+  box-shadow: 0px 0px 1px white; 
   border-top-left-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
 
@@ -32,15 +35,16 @@ $border-radius: 50px;
 }
 
 .drawBar{
+  box-shadow: 0px 0px 1px white; 
   background-color: #6B6B6B;
   color: white;
   justify-content: center;
 }
 
 .whiteBar{
+  box-shadow: 0px 0px 1px white; 
   border-top-right-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
-
   background-color: #BCBCBC;
   color: #3C3C3C;
   justify-content: left;
