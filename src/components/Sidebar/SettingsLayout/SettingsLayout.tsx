@@ -15,11 +15,13 @@ export default function SettingsLayout() {
     
     const [selectedColor, setSelectedColor] = useState<string>('random')
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
+    const [isEditToggled, setIsEditToggled] = useState(false)
     const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
 
-    const {reset} = useContext(BoardContext)!
+    const {reset, isEditModeActive, setIsEditModeActive} = useContext(BoardContext)!
 
     const fenInputRef = useRef<HTMLInputElement>(null)
+    
 
     /**returns true if the given string is a legal and valid fen string */
     function isStringValidFen(potentialFen : string):boolean{
@@ -57,6 +59,10 @@ export default function SettingsLayout() {
     
     }
 
+    function onClickEdit(){
+        setIsEditModeActive(!isEditModeActive)
+    }
+
     function onFenInputChange(event:any){
         const fen = event.target.value
         if (fen == '' || isStringValidFen(fen)){
@@ -74,13 +80,24 @@ export default function SettingsLayout() {
     return (
         <div className={styles.main}>
 
-            <div className={styles.reset} onClick={onClickReset} style={{
-                backgroundColor: isResetButtonHovered ? '#545454' : '#26241e'
-            }} onMouseEnter={()=>setIsResetButtonHovered(true)}
-            onMouseLeave={()=>setIsResetButtonHovered(false)}>
-                Reset Position
-                <div className={styles.resetImage}/>
+            <div className={styles.resetAndEdit}>
+
+                <div className={styles.reset} onClick={onClickReset} style={{
+                    backgroundColor: isResetButtonHovered ? '#545454' : '#26241e'
+                }} onMouseEnter={()=>setIsResetButtonHovered(true)}
+                onMouseLeave={()=>setIsResetButtonHovered(false)}>
+                    Reset Position
+                    <div className={styles.resetImage} />
+                </div>
+
+                <div className={styles.edit} onClick={onClickEdit} style={{
+                    backgroundColor: isEditModeActive ? '#545454' : '#26241e'
+                }}>
+                    Edit Mode
+                </div>
+
             </div>
+            
 
             <div className={styles.colorSelect}>
                 Play As:<br/>

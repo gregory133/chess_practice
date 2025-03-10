@@ -17,6 +17,8 @@ interface BoardContextInterface{
 	cursor: number
 	positionList: string[]
 	reset: (initialPosition?:string)=>void
+	isEditModeActive: boolean
+	setIsEditModeActive: (value:boolean)=>void
 }
 
 export const BoardContext = createContext<null | BoardContextInterface>(null)
@@ -28,6 +30,7 @@ export default function App() {
 
 	const {addMove, positionList, cursor, navigateBack, navigateForward, reset}
 	= usePositionList(INITIAL_FEN)
+	const [isEditModeActive, setIsEditModeActive] = useState(false)
 	
 	useEffect(()=>{
 		addPositionListKeyListeners()
@@ -44,14 +47,12 @@ export default function App() {
 				navigateForward()
 			}
 		})
-
 	}
-
 
 	return (
 
 		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList
-			,reset
+			,reset, isEditModeActive, setIsEditModeActive
 		}}>
 			<div className={styles.main}>
 				<Navbar/>
