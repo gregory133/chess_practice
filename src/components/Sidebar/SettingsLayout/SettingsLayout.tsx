@@ -11,6 +11,8 @@ import { BoardContext } from '../../../App';
 
 export default function SettingsLayout() {
 
+    const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+    
     const [selectedColor, setSelectedColor] = useState<string>('random')
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
     const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
@@ -45,15 +47,14 @@ export default function SettingsLayout() {
     }
 
     function onClickReset(){
-        const fen = fenInputRef.current?.value
-        reset(fen)
-        // setLastMove([])
-        // if (fen && isStringValidFen(fen)){
-        //     setFen(fen)
-        // }
-        // else{
-        //     setFen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-        // }
+        let fen = fenInputRef.current?.value
+        if (fen == ''){
+            fen = INITIAL_FEN
+        }
+        if (fen && isStringValidFen(fen)){
+            reset(fen)
+        }
+    
     }
 
     function onFenInputChange(event:any){
