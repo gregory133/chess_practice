@@ -19,6 +19,7 @@ interface BoardContextInterface{
 	reset: (initialPosition?:string)=>void
 	isEditModeActive: boolean
 	setIsEditModeActive: (value:boolean)=>void
+	removeAfter: (index:number)=>void
 }
 
 export const BoardContext = createContext<null | BoardContextInterface>(null)
@@ -34,18 +35,12 @@ export default function App() {
 	
 	useEffect(()=>{
 		addPositionListKeyListeners()
-
-		document.addEventListener('keydown', (event)=>{
-			if (event.shiftKey){
-				removeAfter(3)
-			}
-		})
 		
 	}, [])
 
-	useEffect(()=>{
-		console.log(positionList)
-	}, [positionList])
+	// useEffect(()=>{
+	// 	console.log(positionList)
+	// }, [positionList])
 
 	function addPositionListKeyListeners(){
 
@@ -62,7 +57,7 @@ export default function App() {
 	return (
 
 		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList
-			,reset, isEditModeActive, setIsEditModeActive
+			,reset, isEditModeActive, setIsEditModeActive, removeAfter
 		}}>
 			<div className={styles.main}>
 				<Navbar/>

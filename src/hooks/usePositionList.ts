@@ -45,11 +45,13 @@ export default function usePositionList(initialPosition:string){
             return
         }
 
-        positionListRef.current = positionListRef.current.splice(0, index)
+        positionListRef.current = positionListRef.current.splice(0, index+1)
         cursorRef.current = index
 
         setPositionList(positionListRef.current)
-        setCursor(positionListRef.current.length-1)
+        setCursor(cursorRef.current)
+
+        console.log(positionListRef.current, cursorRef.current)
 
     }
 

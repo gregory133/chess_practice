@@ -23,7 +23,7 @@ export default function Board() {
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
 	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-	const {fen, addMove, cursor, positionList, isEditModeActive} = useContext(BoardContext)!
+	const {fen, addMove, cursor, positionList, isEditModeActive, removeAfter} = useContext(BoardContext)!
 
 	useEffect(()=>{
 
@@ -59,6 +59,12 @@ export default function Board() {
 	function afterMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
 
 		if (cursor == positionList.length - 1){
+			//move has been played when cursor pointed to last position, normal
+			updateFen(orig, dest)
+		}
+		else{
+			//move has been played when cursor did not point to last position
+			removeAfter(cursor)
 			updateFen(orig, dest)
 		}
 		
