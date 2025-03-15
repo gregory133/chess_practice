@@ -34,6 +34,25 @@ export default function usePositionList(initialPosition:string){
         
     }    
 
+    /**
+     * given an index, removes all positions after the given index and sets the cursor to that 
+     * index value
+     * @param index 
+     */
+    function removeAfter(index:number){
+
+        if (index >= positionListRef.current.length - 1 || index < 0){
+            return
+        }
+
+        positionListRef.current = positionListRef.current.splice(0, index)
+        cursorRef.current = index
+
+        setPositionList(positionListRef.current)
+        setCursor(positionListRef.current.length-1)
+
+    }
+
     useEffect(()=>{
         positionListRef.current = positionList
     }, [positionList])
@@ -54,7 +73,7 @@ export default function usePositionList(initialPosition:string){
         }
     }
 
-    return {addMove, positionList, cursor, navigateBack, navigateForward, reset}
+    return {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter}
 
 
 }

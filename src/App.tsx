@@ -28,14 +28,24 @@ export default function App() {
 	const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 	const CARO = 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
 
-	const {addMove, positionList, cursor, navigateBack, navigateForward, reset}
+	const {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter}
 	= usePositionList(INITIAL_FEN)
 	const [isEditModeActive, setIsEditModeActive] = useState(false)
 	
 	useEffect(()=>{
 		addPositionListKeyListeners()
+
+		document.addEventListener('keydown', (event)=>{
+			if (event.shiftKey){
+				removeAfter(3)
+			}
+		})
 		
 	}, [])
+
+	useEffect(()=>{
+		console.log(positionList)
+	}, [positionList])
 
 	function addPositionListKeyListeners(){
 

@@ -57,6 +57,7 @@ export default function Board() {
 
 	/**called after the user makes a move on the board */
 	function afterMove(orig: cg.Key, dest: cg.Key, metadata: cg.MoveMetadata){
+
 		if (cursor == positionList.length - 1){
 			updateFen(orig, dest)
 		}
@@ -74,9 +75,9 @@ export default function Board() {
 	 */
 	function getDests() : cg.Dests{
 
-		if (cursor != positionList.length - 1){
-			return new Map()
-		}
+		// if (cursor != positionList.length - 1){
+		// 	return new Map()
+		// }
 
 		let chess = new Chess(fen)
 		let dests:Map<cg.Key, cg.Key[]>=new Map();
