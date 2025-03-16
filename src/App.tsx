@@ -16,10 +16,11 @@ interface BoardContextInterface{
 	addMove: (lan:string)=>void
 	cursor: number
 	positionList: string[]
-	reset: (initialPosition?:string)=>void
+	reset: (colorCanMove:'white'|'black', initialPosition?:string)=>void
 	isEditModeActive: boolean
 	setIsEditModeActive: (value:boolean)=>void
 	removeAfter: (index:number)=>void
+	colorCanMove : 'white'|'black'
 }
 
 export const BoardContext = createContext<null | BoardContextInterface>(null)
@@ -29,7 +30,9 @@ export default function App() {
 	const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 	const CARO = 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
 
-	const {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter}
+	const {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter,
+		colorCanMove
+	}
 	= usePositionList(INITIAL_FEN)
 	const [isEditModeActive, setIsEditModeActive] = useState(false)
 	
@@ -57,7 +60,7 @@ export default function App() {
 	return (
 
 		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList
-			,reset, isEditModeActive, setIsEditModeActive, removeAfter
+			,reset, isEditModeActive, setIsEditModeActive, removeAfter, colorCanMove
 		}}>
 			<div className={styles.main}>
 				<Navbar/>

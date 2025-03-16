@@ -1,8 +1,10 @@
 .main{
     padding: 1rem;
+    user-select: none;
 
     .resetAndEdit{
 
+        
         display: flex;
         flex-direction: row;
 

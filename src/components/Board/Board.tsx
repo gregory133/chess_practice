@@ -22,17 +22,21 @@ export default function Board() {
 		'e3' , 'f3' , 'g3' , 'h3' , 'a2' , 'b2' , 'c2' , 'd2' , 'e2' , 'f2' , 'g2' , 'h2' , 
 		'a1' , 'b1' , 'c1' , 'd1' , 'e1' , 'f1' , 'g1' , 'h1']
 
-	const [colorCanMove, setColorCanMove] = useState<'white' | 'black' | undefined>('white')
-	const {fen, addMove, cursor, positionList, isEditModeActive, removeAfter} = useContext(BoardContext)!
+	const {fen, addMove, cursor, positionList, isEditModeActive, removeAfter,
+		colorCanMove
+	} = useContext(BoardContext)!
 
 	useEffect(()=>{
-
 		const colorToMove : 'white' | 'black'= fen.split(' ')[1] == 'w' ? 'white' : 'black'
 		if (colorToMove != colorCanMove && !isEditModeActive){
 			makeEngineMove()
 		}
 
-	}, [fen])
+	}, [fen, colorCanMove])
+
+	useEffect(()=>{
+		// console.log(colorCanMove)
+	}, [colorCanMove])
 
 	/**called to make the engine move when it is its turn */
 	function makeEngineMove(){
@@ -137,6 +141,7 @@ export default function Board() {
 		return {
 			fen: fen,
 			coordinates: false,
+			orientation: colorCanMove,
 			movable: {
 				events: {
 					after: afterMove

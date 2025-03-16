@@ -49,12 +49,19 @@ export default function SettingsLayout() {
     }
 
     function onClickReset(){
+        
         let fen = fenInputRef.current?.value
         if (fen == ''){
             fen = INITIAL_FEN
         }
         if (fen && isStringValidFen(fen)){
-            reset(fen)
+
+            let colorCanMove = selectedColor
+            if (selectedColor == 'random'){
+                colorCanMove = ['white', 'black'][Math.floor(Math.random()*2)] as 'black'|'white'
+            }
+
+            reset(colorCanMove as 'white'|'black', fen)
         }
     
     }

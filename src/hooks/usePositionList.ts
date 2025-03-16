@@ -11,11 +11,25 @@ export default function usePositionList(initialPosition:string){
     const [positionList, setPositionList] = useState<string[]>([initialPosition])
     const positionListRef = useRef(positionList)
 
-    function reset(initialPosition = INITIAL_FEN){
+    const [colorCanMove, setColorCanMove] = useState<'white'|'black'>(getRandomColor())
+    const colorCanMoveRef = useRef(colorCanMove)
 
+    /**
+     * 
+     * @returns a random color 'white' or 'black'
+     */
+    function getRandomColor():'white'|'black'{
+        return ['white','black'][Math.floor(Math.random()*2)] as 'white'|'black'
+    }
+
+    function reset(colorCanMove:'white'|'black', initialPosition = INITIAL_FEN){
+
+        console.log(colorCanMove)
+        colorCanMoveRef.current = colorCanMove
         positionListRef.current = [initialPosition]
         cursorRef.current = 0
 
+        setColorCanMove(colorCanMoveRef.current)
         setPositionList(positionListRef.current)
         setCursor(cursorRef.current)
 
@@ -51,8 +65,6 @@ export default function usePositionList(initialPosition:string){
         setPositionList(positionListRef.current)
         setCursor(cursorRef.current)
 
-        console.log(positionListRef.current, cursorRef.current)
-
     }
 
     useEffect(()=>{
@@ -75,7 +87,9 @@ export default function usePositionList(initialPosition:string){
         }
     }
 
-    return {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter}
+    return {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter,
+        colorCanMove
+    }
 
 
 }
