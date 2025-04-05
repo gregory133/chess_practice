@@ -8,7 +8,7 @@ import { Chess, Square } from 'chess.js'
 
 import styles from './styles/Board.module.scss'
 import * as cg from 'chessground/types.js';
-import { use, useContext, useEffect, useState } from 'react';
+import { use, useContext, useEffect, useRef, useState } from 'react';
 import DatabaseAPI from '../../api/DatabaseAPI';
 import { BoardContext } from '../../App';
 
@@ -25,6 +25,15 @@ export default function Board() {
 	const {fen, addMove, cursor, positionList, isEditModeActive, removeAfter,
 		colorCanMove
 	} = useContext(BoardContext)!
+	const [isFlipped, setIsFlipped] = useState(false)
+
+	useEffect(()=>{
+		document.addEventListener('keydown', (event)=>{
+			if (event.key == 'f' || event.key == 'F'){
+				setIsFlipped(prev=>!prev)
+			}
+		})
+	}, [])
 
 	useEffect(()=>{
 		const colorToMove : 'white' | 'black'= fen.split(' ')[1] == 'w' ? 'white' : 'black'
@@ -135,13 +144,17 @@ export default function Board() {
 		return returnList
 	}
 
+	function inverseColor(color: 'white'|'black'): 'white'|'black'{
+		return color == 'white' ? 'black' : 'white'
+	}
+
 	/**returns the configs of the board */
 	function getConfig() : Config{
 
 		return {
 			fen: fen,
 			coordinates: false,
-			orientation: colorCanMove,
+			orientation: isFlipped ? inverseColor(colorCanMove) : colorCanMove,
 			movable: {
 				events: {
 					after: afterMove
