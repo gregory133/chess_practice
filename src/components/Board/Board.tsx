@@ -3,6 +3,7 @@ import Chessground from '@react-chess/chessground'
 import "./styles/chessground.base.scss";
 import "./styles/chessground.brown.scss";
 import "./styles/chessground.cburnett.scss";
+
 import { Config } from 'chessground/config';
 import { Chess, Square } from 'chess.js'
 
