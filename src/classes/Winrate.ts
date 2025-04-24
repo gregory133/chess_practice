@@ -25,12 +25,14 @@ export default class Winrate{
   }
   
   public toString():string{
+    
     return 'W:' + Math.round(this.white * 100) / 100 + ' / D:' + Math.round(this.draw * 100) / 100 
     + ' / ' + 'B:' + Math.round(this.black * 100) / 100
   }
 
   private constructorArgumentsValid(black:number, draw:number, white:number)
   :boolean{
+
     const list=[black, white, draw]
     let returnValue:boolean=true
     list.forEach(number=>{

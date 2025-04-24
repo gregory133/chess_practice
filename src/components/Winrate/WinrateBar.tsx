@@ -24,6 +24,9 @@ export default function WinrateBar(props:Props) {
    * @param winrate winrate at a decimal 0 <= x <= 1
    */
   function computeTextPercentage(winrate:number){
+    if (isNaN(winrate)){
+      return "-"
+    }
     return ""+(winrate*100).toFixed(0).toString()+'%'
   }
 
