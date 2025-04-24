@@ -7,6 +7,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
 import { BoardContext } from '../../../App';
+import { HIGHTLIGHTED_COLOR, HOVERED_COLOR, UNHIGHLIGHTED_COLOR } from '../../../classes/Constants';
 
 
 export default function SettingsLayout() {
@@ -14,7 +15,10 @@ export default function SettingsLayout() {
     const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
     
     const [selectedColor, setSelectedColor] = useState<string>('random')
+
     const [isResetButtonHovered, setIsResetButtonHovered] = useState(false)
+    const [isEditButtonHovered, setIsEditButtonHovered] = useState(false)
+
     const [isEditToggled, setIsEditToggled] = useState(false)
     const [inputUnderlineColor, setInputUnderlineColor] = useState<string>('white')
 
@@ -90,15 +94,20 @@ export default function SettingsLayout() {
             <div className={styles.resetAndEdit}>
 
                 <div className={styles.reset} onClick={onClickReset} style={{
-                    backgroundColor: isResetButtonHovered ? '#545454' : '#26241e'
+                    backgroundColor: isResetButtonHovered ? HOVERED_COLOR : UNHIGHLIGHTED_COLOR
                 }} onMouseEnter={()=>setIsResetButtonHovered(true)}
                 onMouseLeave={()=>setIsResetButtonHovered(false)}>
                     Reset Position
                     <div className={styles.resetImage} />
                 </div>
 
-                <div className={styles.edit} onClick={onClickEdit} style={{
-                    backgroundColor: isEditModeActive ? '#545454' : '#26241e'
+                <div className={styles.edit} onMouseEnter={()=>setIsEditButtonHovered(true)} 
+                onMouseLeave={()=>setIsEditButtonHovered(false)} onClick={onClickEdit} style={{
+                    backgroundColor: isEditModeActive 
+                        ? HIGHTLIGHTED_COLOR 
+                        : isEditButtonHovered 
+                            ? HOVERED_COLOR 
+                            : UNHIGHLIGHTED_COLOR
                 }}>
                     Edit Mode
                 </div>

@@ -9,6 +9,7 @@ import InfoLayout from './InfoLayout/InfoLayout';
 import DatabaseLayout from './DatabaseLayout/DatabaseLayout';
 import SettingsLayout from './SettingsLayout/SettingsLayout';
 import { MenuBook } from '@mui/icons-material';
+import { HIGHTLIGHTED_COLOR, HOVERED_COLOR, UNHIGHLIGHTED_COLOR } from '../../classes/Constants';
 
 interface TopBarOption{
   name:string,
@@ -17,11 +18,7 @@ interface TopBarOption{
 
 export default function Sidebar() {
 
-  //colors
-  const UNHIGHLIGHTED_COLOR = '#26231e'
-  const HIGHTLIGHTED_COLOR = '#545454'
-  const HOVERED_COLOR = '#1e1d18'
-  
+ 
   const [selectedTopbarIcon, setSelectedTopbarIcon] = useState<string>('Database')
   const [topBarButtonsHoverState, setTopBarButtonsHoverState] = useState<boolean[]>([false, false, false])
 
