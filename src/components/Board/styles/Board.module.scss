@@ -1,6 +1,9 @@
+@import '../../../style/Globals.scss';
+
 .main{
 
-    width: 30rem;
-    height: 30rem;
+    $base-board-width : 32rem;
+    width: $resize-factor * $base-board-width;
+    height: $resize-factor * $base-board-width;
 
 }
