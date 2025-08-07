@@ -11,6 +11,7 @@ import Winrate from './classes/Winrate';
 import DatabaseAPI from './api/DatabaseAPI';
 import Stockfish from './components/Stockfish/Stockfish';
 
+/**interface representing the variables associated with the chess board*/
 interface BoardContextInterface{
 	fen:string
 	addMove: (lan:string)=>void
@@ -23,10 +24,18 @@ interface BoardContextInterface{
 	colorCanMove : 'white'|'black'
 }
 
+/**interface representing the variables associated with the user settings*/
+interface SettingsContextInterface{
+	database : 'masters' | 'lichess',
+	setDatabase  : (val : 'masters' | 'lichess') => void
+}
+
 export const BoardContext = createContext<null | BoardContextInterface>(null)
+export const SettingsContext = createContext<null | SettingsContextInterface>(null)
 
 export default function App() {
 
+	const DEFAULT_DATABASE = 'masters'
 	const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 	const CARO = 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
 
@@ -34,6 +43,8 @@ export default function App() {
 		colorCanMove
 	}
 	= usePositionList(INITIAL_FEN)
+
+	const [database, setDatabase] = useState<'masters' | 'lichess'>(DEFAULT_DATABASE)
 	const [isEditModeActive, setIsEditModeActive] = useState(false)
 	
 	useEffect(()=>{
@@ -41,9 +52,7 @@ export default function App() {
 		
 	}, [])
 
-	// useEffect(()=>{
-	// 	console.log(positionList)
-	// }, [positionList])
+	
 
 	function addPositionListKeyListeners(){
 
@@ -59,6 +68,7 @@ export default function App() {
 
 	return (
 
+		<SettingsContext.Provider value={{database: database, setDatabase: setDatabase}}>
 		<BoardContext.Provider value={{fen:positionList[cursor], addMove, cursor, positionList
 			,reset, isEditModeActive, setIsEditModeActive, removeAfter, colorCanMove
 		}}>
@@ -74,6 +84,7 @@ export default function App() {
 				</div>
 			</div>
 		</BoardContext.Provider>
+		</SettingsContext.Provider>
 		
 		
 	)

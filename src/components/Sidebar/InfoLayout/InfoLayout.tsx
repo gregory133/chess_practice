@@ -2,7 +2,7 @@ import styles from './InfoLayout.module.scss'
 import WinrateBar from '../../Winrate/WinrateBar'
 import { useContext, useEffect, useState } from 'react'
 import DatabaseAPI from '../../../api/DatabaseAPI'
-import { BoardContext } from '../../../App'
+import { BoardContext, SettingsContext } from '../../../App'
 import Winrate from '../../../classes/Winrate'
 import { IconButton } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -14,11 +14,12 @@ export default function InfoLayout() {
     const [numPossibleMoves, setNumPossibleMoves] = useState<number>(0)
     const [winrate, setWinrate] = useState<Winrate>(new Winrate(0, 0))
 
+    const {database} = useContext(SettingsContext)!
     const {fen} = useContext(BoardContext)!
 
     useEffect(()=>{
 
-        DatabaseAPI.getInstance().getPositionInfo(fen, 'masters')
+        DatabaseAPI.getInstance().getPositionInfo(fen, database)
         .then(response=>{
 
             const openingName = response.openingName

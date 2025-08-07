@@ -11,7 +11,7 @@ import styles from './styles/Board.module.scss'
 import * as cg from 'chessground/types.js';
 import { use, useContext, useEffect, useRef, useState } from 'react';
 import DatabaseAPI from '../../api/DatabaseAPI';
-import { BoardContext } from '../../App';
+import { BoardContext, SettingsContext } from '../../App';
 
 
 export default function Board() {
@@ -27,6 +27,8 @@ export default function Board() {
 		colorCanMove
 	} = useContext(BoardContext)!
 	const [isFlipped, setIsFlipped] = useState(false)
+
+	const {database} = useContext(SettingsContext)!
 
 	useEffect(()=>{
 		document.addEventListener('keydown', (event)=>{
@@ -51,7 +53,7 @@ export default function Board() {
 	/**called to make the engine move when it is its turn */
 	function makeEngineMove(){
 
-		DatabaseAPI.getInstance()?.getMastersDatabase(fen)
+		DatabaseAPI.getInstance()?.getRandomResponse(fen, database)
 		.then(move=>{
 
 			if (move == ''){

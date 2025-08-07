@@ -3,6 +3,7 @@ import Winrate from "../classes/Winrate"
 export default class DatabaseAPI{
 
     private static instance : DatabaseAPI | null = null
+    private database : 'masters' | 'lichess' = 'masters'
 
     private constructor(){}
 
@@ -52,11 +53,11 @@ export default class DatabaseAPI{
     /**returns a promise that resolves into the SAN of a move returned by Lichess' Masters Database
      * for the given fen
      */
-    public getMastersDatabase(fen:string, options? : any) : Promise<string>{
+    public getRandomResponse(fen:string, database : 'lichess'|'masters', options? : any) : Promise<string>{
 
         return new Promise((resolve, reject)=>{
 
-            const url = new URL('https://explorer.lichess.ovh/masters')
+            const url = new URL(`https://explorer.lichess.ovh/${database}`)
             url.searchParams.append('fen', fen)
 
             fetch(url)

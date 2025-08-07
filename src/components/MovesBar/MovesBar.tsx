@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from './MovesBar.module.scss'
 import WinrateBar from '../Winrate/WinrateBar'
 // import { fetchDB, getPlayrateFromDB, getSanListFromDB } from '../../api/DBApi'
@@ -7,6 +7,7 @@ import Switch from '@mui/material/Switch';
 import Playrate from '../../classes/Playrate';
 import DatabaseAPI from '../../api/DatabaseAPI';
 import Winrate from '../../classes/Winrate';
+import { SettingsContext } from '../../App';
 
 interface Props{
   fen:string
@@ -19,29 +20,32 @@ export default function MovesBar(props:Props) {
   const [playrate, setPlayrate] = useState<Playrate>(new Playrate())
   const playrateRef = useRef<null | Playrate>(null)
 
+  const {database} = useContext(SettingsContext)!
+
 
   useEffect(()=>{
 
-    getPlayrate(props.fen)
+	getPlayrate(props.fen)
     .then(playrate=>{
-      setPlayrate(playrate)
+    	setPlayrate(playrate)
     })
 
-  }, [props.fen])
+  }, [props.fen, database])
 
   function onChangeDisableSwitch(event:any, checked:boolean){
     setIsDisabled(!checked)
   }
 
-  /**this function computes and returns the Playrate object associated with the current FEN string*/
+  	/**this function computes and returns the Playrate object associated with the current FEN string*/
 	function getPlayrate(fen:string): Promise<Playrate>{
 
     const MAX_NUM_MOVES_DISPLAYED = 5
 
 		return new Promise((resolve, reject)=>{
 
-	 		DatabaseAPI.getInstance().getPositionInfoVerbose(fen, 'masters').then(responseObj=>{
+	 		DatabaseAPI.getInstance().getPositionInfoVerbose(fen, database).then(responseObj=>{
 			
+				
 				const playrate = new Playrate()
 				const totalNumGames = responseObj.white + responseObj.black + responseObj.draws
 
@@ -56,7 +60,7 @@ export default function MovesBar(props:Props) {
 
 				}
 
-        resolve(playrate)
+        		resolve(playrate)
 
 			})
 

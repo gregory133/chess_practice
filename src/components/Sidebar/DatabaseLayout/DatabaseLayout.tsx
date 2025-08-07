@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styles from './DatabaseLayout.module.scss'
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
+import { BoardContext, SettingsContext } from '../../../App'
 
 export default function DatabaseLayout() {
 
-    const [selectedVal, setSelectedVal] = useState<'masters' | 'lichess'>('masters')
+    const {database, setDatabase} = useContext(SettingsContext)!
 
     function onChangeSelectedDatabase(event:any){
-        const newVal = event.target.value
-        setSelectedVal(newVal)
+        const newVal = event.target.value as 'lichess' | 'masters'
+        setDatabase(newVal)
     }
 
     return (
@@ -19,7 +20,7 @@ export default function DatabaseLayout() {
                         color: 'white'
                     }
                 }}   
-                value={selectedVal}
+                value={database}
                 onChange={onChangeSelectedDatabase}
             >
                 <FormControlLabel value="lichess" control={<Radio />} label="Lichess Database" />
