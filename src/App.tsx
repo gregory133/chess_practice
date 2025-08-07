@@ -77,7 +77,7 @@ export default function App() {
 				<div className={styles.content}>
 					<div className={styles.leftSection}>
 						<MovesBar fen={positionList[cursor]}/>
-						{/* <Stockfish fen={positionList[cursor]}/> */}
+						<Stockfish fen={positionList[cursor]}/>
 					</div>
 					<Board/>
 					<Sidebar/>
