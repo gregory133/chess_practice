@@ -36,7 +36,7 @@ export default function InfoLayout() {
 
     function prettyPrintNumber(num:number):string{
         const formatter=Intl.NumberFormat('en', {notation: 'compact'})
-        return formatter.format(num)
+        return formatter.format(num) 
     }
 
     function onClickCopyFen(){
