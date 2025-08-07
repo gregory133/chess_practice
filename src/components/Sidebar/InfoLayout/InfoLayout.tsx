@@ -18,12 +18,14 @@ export default function InfoLayout() {
     const {fen} = useContext(BoardContext)!
 
     useEffect(()=>{
-        console.log(openingName)
+        // console.log(openingName)
     }, [openingName])
 
     useEffect(()=>{
         DatabaseAPI.getInstance().getPositionInfo(fen, database)
         .then(response=>{
+
+            // console.log(response.winrate)
 
             if (response.openingName) setOpeningName(response.openingName); else if (!openingName) setOpeningName('')
             setNumGamesInDB(response.numGamesInDatabase)

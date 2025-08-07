@@ -1,1 +1,2 @@
 add stockfish
+fix info winrate collapsing
