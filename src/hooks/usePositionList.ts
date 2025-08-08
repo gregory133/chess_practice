@@ -11,7 +11,8 @@ export default function usePositionList(initialPosition:string){
     const [positionList, setPositionList] = useState<string[]>([initialPosition])
     const positionListRef = useRef(positionList)
 
-    const [colorCanMove, setColorCanMove] = useState<'white'|'black'>(getRandomColor())
+    // const [colorCanMove, setColorCanMove] = useState<'white'|'black'>(getRandomColor())
+    const [colorCanMove, setColorCanMove] = useState<'white'|'black'>('white')
     const colorCanMoveRef = useRef(colorCanMove)
 
     /**
@@ -24,7 +25,7 @@ export default function usePositionList(initialPosition:string){
 
     function reset(colorCanMove:'white'|'black', initialPosition = INITIAL_FEN){
 
-        console.log(colorCanMove)
+        // console.log(colorCanMove)
         colorCanMoveRef.current = colorCanMove
         positionListRef.current = [initialPosition]
         cursorRef.current = 0

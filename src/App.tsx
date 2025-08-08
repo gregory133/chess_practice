@@ -10,6 +10,7 @@ import Playrate from './classes/Playrate';
 import Winrate from './classes/Winrate';
 import DatabaseAPI from './api/DatabaseAPI';
 import Stockfish from './components/Stockfish/Stockfish';
+import ChessUtil from './classes/ChessUtil';
 
 /**interface representing the variables associated with the chess board*/
 interface BoardContextInterface{
@@ -36,13 +37,12 @@ export const SettingsContext = createContext<null | SettingsContextInterface>(nu
 export default function App() {
 
 	const DEFAULT_DATABASE = 'masters'
-	const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-	const CARO = 'rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'
+	
 
 	const {addMove, positionList, cursor, navigateBack, navigateForward, reset, removeAfter,
 		colorCanMove
 	}
-	= usePositionList(INITIAL_FEN)
+	= usePositionList(ChessUtil.STARTING_POS)
 
 	const [database, setDatabase] = useState<'masters' | 'lichess'>(DEFAULT_DATABASE)
 	const [isEditModeActive, setIsEditModeActive] = useState(false)

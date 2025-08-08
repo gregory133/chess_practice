@@ -5,7 +5,7 @@ import { Chess } from 'chess.js'
 import ChessUtil from '../../classes/ChessUtil'
 
 interface Props{fen:string}
-type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZING' | 'INITIALIZED' | 'IDLE' | 'ANALYSING' | 'STOPPING' | 'STOPPED'
+type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZED' | 'ANALYSING' | 'STOPPING'
 
 type StockfishFSMActions = 'send' | 'receive'
 
@@ -21,35 +21,46 @@ export default function Stockfish(props:Props) {
     const topMovesRef = useRef<{move:string, evalType:'cp'|'mate', evalValue:number}[]>(
         new Array(NUM_TOP_MOVES))
 
-    const [stockfishFSM, dispatchStockfishFSM] = useReducer(stockfishFSMReducer, 'UNINITIALIZED')
+    const [stockfishFSM, dispatchStockfishFSM] = useReducer(stockfishFSMReducer, {fsmState:'UNINITIALIZED', fen:''})
+    const stockfishFSMRef = useRef(stockfishFSM)
     const fenRef = useRef(props.fen)
     const [isDisabled, setIsDisabled] = useState(false)
 
     /**reducer function for the stockfish FSM */
-    function stockfishFSMReducer(state:StockfishFSMState, action:{type:StockfishFSMActions, payload:any})
-    :StockfishFSMState{
+    function stockfishFSMReducer(state:{fsmState:StockfishFSMState, fen:string}, action:{type:StockfishFSMActions, payload:{message:string, fen:string}})
+    :{fsmState:StockfishFSMState, fen:string}{
 
-        if (state == 'UNINITIALIZED'){
-            if (action.type == 'send' && action.payload == `setoption name MultiPV value ${NUM_TOP_MOVES}`) return 'INITIALIZING'
+        const fsmState = state.fsmState
+        const stateFen = state.fen
+        const actionFen = action.payload.fen
+        const message = action.payload.message
+
+        const fenChanged = stateFen != actionFen
+
+        // console.log(stateFen, actionFen)
+        // console.log(fenChanged)
+        
+        if (fsmState == 'UNINITIALIZED'){
+            if (action.type == 'send' && message == `setoption name MultiPV value ${NUM_TOP_MOVES}`) 
+                return {fsmState:'INITIALIZED', fen:stateFen}
         }
-        else if (state == 'INITIALIZING'){
-            if (action.type == 'send' && action.payload == 'isready') return 'INITIALIZED'
+        else if (fsmState == 'INITIALIZED'){
+            if (action.type == 'send' && message == 'go infinite') 
+                return {fsmState:'ANALYSING', fen:stateFen}
+            if (fenChanged) return {fsmState: 'INITIALIZED', fen:actionFen}
         }
-        else if (state == 'INITIALIZED'){
-            if (action.type == 'receive' && action.payload == 'readyok') return 'IDLE'
+        else if (fsmState == 'ANALYSING'){
+            // console.log('fc', fenChanged)
+            if (action.type == 'receive') parseAnalysisMessages(message)
+            
+            if (fenChanged){
+                if (action.type == 'send' && message == 'stop') return {fsmState: 'STOPPING', fen:actionFen}
+            }
         }
-        else if (state == 'IDLE'){
-            if (action.type == 'send' && action.payload == 'go infinite') return 'ANALYSING'
-        }
-        else if (state == 'ANALYSING'){
-            if (action.type == 'send' && action.payload == 'stop') return 'STOPPING'
-            else if (action.type == 'receive') parseAnalysisMessages(action.payload)
-        }
-        else if (state == 'STOPPING'){
-            if (action.type == 'send' && action.payload == 'isready') return 'STOPPED'
-        }
-        else if (state == 'STOPPED'){
-            if (action.type == 'receive' && action.payload == 'readyok') return 'IDLE'
+        else if (fsmState == 'STOPPING'){
+            if (action.type == 'receive' && message.split(' ')[0] == 'bestmove'){
+                return {fsmState:'ANALYSING', fen:actionFen}
+            }
         }
 
         return state
@@ -59,6 +70,7 @@ export default function Stockfish(props:Props) {
     /**called to parse the messages received from stockfish during analysis */
     function parseAnalysisMessages(message:string){
 
+        // console.log('parsing')
         const whoseTurnToPlay = props.fen.split(' ')[1]
         // console.log(message)
 
@@ -88,9 +100,13 @@ export default function Stockfish(props:Props) {
         initStockfish()
 
         document.addEventListener("keydown", function (event) {
-            if (event.key === " ") {
-                send(`position fen ${props.fen}`)
+            if (event.key === "g") {
+                send(`position fen ${fenRef.current}`)
                 send('go infinite')
+                event.preventDefault()
+            }
+            else if (event.key === "s") {
+                send('stop')
                 event.preventDefault()
             }
         });
@@ -98,18 +114,27 @@ export default function Stockfish(props:Props) {
     }, [])
 
     useEffect(()=>{
-        // console.log(topMoves)
-    }, [topMoves])
-
-    useEffect(()=>{
+        stockfishFSMRef.current = stockfishFSM
+        // console.log('fresh', stockfishFSM)
         console.log(stockfishFSM)
+
+        if (stockfishFSM.fsmState == 'INITIALIZED'){
+            send(`position fen ${stockfishFSM.fen}`)
+            send('go infinite')
+        }
+        else if (stockfishFSM.fsmState == 'ANALYSING'){
+            send(`position fen ${stockfishFSM.fen}`)
+            send('go infinite')
+        }
+
     }, [stockfishFSM])
 
     useEffect(()=>{
+        // console.log('time of fen update', stockfishFSMRef.current)
         fenRef.current = props.fen
         send('stop')
-        send(`position fen ${props.fen}`)
-        send('go infinite')
+        // send(`position fen ${props.fen}`)
+        // send('go infinite')
     }, [props.fen])
 
     
@@ -122,7 +147,7 @@ export default function Stockfish(props:Props) {
  
         // send('uci')
         send(`setoption name MultiPV value ${NUM_TOP_MOVES}`)
-        send('isready')
+        // send('isready')
     }
 
 
@@ -130,14 +155,19 @@ export default function Stockfish(props:Props) {
      * sends a uci message to stockfish
      */
     function send(message:string){
+        // console.log(message)
         stockfishRef.current?.postMessage(message)
-        dispatchStockfishFSM({type: 'send', payload: message})
+        dispatchStockfishFSM({type: 'send', payload: {message:message, fen:fenRef.current}})
     }
 
     /**receives a message from stockfish. Contains logic that needs to be done when received a message */
     function receive(message:string){
-        console.log(message)
-        dispatchStockfishFSM({type: 'receive', payload: message})
+        
+        // console.log(message)
+        if (message.split(' ')[0] == 'bestmove') console.log(message)
+        if (message.split(' ')[0] == 'stop') console.log(message)
+
+        dispatchStockfishFSM({type: 'receive', payload: {message:message, fen:fenRef.current}})
     }
 
     /**called when a stockfish message is received */
