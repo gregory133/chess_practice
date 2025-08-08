@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import styles from './Stockfish.module.scss'
-import { Switch } from '@mui/material'
+import { CircularProgress, Switch } from '@mui/material'
 import { Chess } from 'chess.js'
 import ChessUtil from '../../classes/ChessUtil'
 
@@ -27,7 +27,8 @@ export default function Stockfish(props:Props) {
     const [isDisabled, setIsDisabled] = useState(false)
 
     /**reducer function for the stockfish FSM */
-    function stockfishFSMReducer(state:{fsmState:StockfishFSMState, fen:string}, action:{type:StockfishFSMActions, payload:{message:string, fen:string}})
+    function stockfishFSMReducer(state:{fsmState:StockfishFSMState, fen:string}, action:{type:StockfishFSMActions, 
+        payload:{message:string, fen:string}})
     :{fsmState:StockfishFSMState, fen:string}{
 
         const fsmState = state.fsmState
@@ -236,13 +237,17 @@ export default function Stockfish(props:Props) {
                             return (
                                 <div key={key} className={styles.topMove}>
 
-                                    <div className={styles.eval}>
-                                        {stringifyEval(props.fen.split(' ')[1] as 'b'|'w', 
-                                        topMove.evalType, topMove.evalValue)}
-                                    </div>
-                                    
-                                    {/* {lanToSan(props.fen, topMove.move)} */}
-                                    {topMove.move}
+                                    {
+                                        stockfishFSM.fsmState == 'ANALYSING' 
+                                            ?  <>
+                                                <div className={styles.eval}>
+                                                    {stringifyEval(props.fen.split(' ')[1] as 'b'|'w', 
+                                                    topMove.evalType, topMove.evalValue)}
+                                                </div>
+                                                {topMove.move}
+                                            </>                      
+                                            : <CircularProgress size='2rem' sx={{color: '#bdbdbd'}} />
+                                    }        
                                     
                                 </div>
                             )
