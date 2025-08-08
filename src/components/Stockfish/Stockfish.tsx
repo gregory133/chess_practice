@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useRef, useState } from 'react'
 import styles from './Stockfish.module.scss'
 import { Switch } from '@mui/material'
 import { Chess } from 'chess.js'
+import ChessUtil from '../../classes/ChessUtil'
 
 interface Props{fen:string}
 type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZING' | 'INITIALIZED' | 'IDLE' | 'ANALYSING' | 'STOPPING' | 'STOPPED'
@@ -59,16 +60,25 @@ export default function Stockfish(props:Props) {
     function parseAnalysisMessages(message:string){
 
         const whoseTurnToPlay = props.fen.split(' ')[1]
-        console.log(message)
+        // console.log(message)
 
         if (message.split(' ')[0] == 'info'){
             const pv : number = parseInt(message.split(' multipv ')[1].split(' ')[0]) 
             const evaluation : {type:'cp'|'mate', value:number} = message.includes('mate') 
                 ? {type: 'mate', value: parseInt(message.split(' mate ')[1].split(' ')[0])} 
                 : {type: 'cp', value: parseInt(message.split(' cp ')[1].split(' ')[0])} 
-            const bestMoveUCI = message.split(' pv ')[1].split(' ')[0]
+            let bestMove = message.split(' pv ')[1].split(' ')[0]
+            
+            
+            try{
+                bestMove = lanToSan(props.fen, bestMove)
+            }
+            catch (err){
+                console.log('failed to convert lan to san')
+            }
+            
 
-            topMovesRef.current[pv-1] = {move: bestMoveUCI, evalType: evaluation.type, evalValue: evaluation.value}
+            topMovesRef.current[pv-1] = {move: bestMove, evalType: evaluation.type, evalValue: evaluation.value}
             setTopMoves([...topMovesRef.current])
         }
     }
@@ -76,11 +86,10 @@ export default function Stockfish(props:Props) {
     useEffect(()=>{
 
         initStockfish()
-        const LEGAL_MATE = 'rn1qkbnr/1pp2ppp/p2p4/4N3/2B1P3/2N5/PPPP1PPP/R1BbK2R w KQkq - 0 6'
 
         document.addEventListener("keydown", function (event) {
             if (event.key === " ") {
-                send(`position fen ${LEGAL_MATE}`)
+                send(`position fen ${props.fen}`)
                 send('go infinite')
                 event.preventDefault()
             }
@@ -89,7 +98,7 @@ export default function Stockfish(props:Props) {
     }, [])
 
     useEffect(()=>{
-        console.log(topMoves)
+        // console.log(topMoves)
     }, [topMoves])
 
     useEffect(()=>{
@@ -98,6 +107,9 @@ export default function Stockfish(props:Props) {
 
     useEffect(()=>{
         fenRef.current = props.fen
+        send('stop')
+        send(`position fen ${props.fen}`)
+        send('go infinite')
     }, [props.fen])
 
     
@@ -124,6 +136,7 @@ export default function Stockfish(props:Props) {
 
     /**receives a message from stockfish. Contains logic that needs to be done when received a message */
     function receive(message:string){
+        console.log(message)
         dispatchStockfishFSM({type: 'receive', payload: message})
     }
 
@@ -139,21 +152,12 @@ export default function Stockfish(props:Props) {
     }
 
     /**utility function used to convert a LAN move into its SAN move */
-    // function lanToSan(fen:string, lan:string):string{
-    //     let chess = new Chess(fen)
-    //     chess.move(lan)
-    //     return chess.history()[0]
-    // }
+    function lanToSan(fen:string, lan:string):string{
 
-    /**returns the proper cp value (+ve for white, -ve for black) */
-    // function getProperCpValueFromStockfish(stockfishCp:number, type: 'mate'|'cp', whoseTurn:'w'|'b'):number{
-
-    //     const factor = type == 'mate' ? 1 : 0.01
-
-    //     if (whoseTurn == 'b') return truncateTo1Decimal(stockfishCp * -factor)
-    //     else return truncateTo1Decimal(stockfishCp * factor)
-
-    // }
+        let chess = new Chess(fen)
+        chess.move(lan)
+        return chess.history()[0]
+    }
 
     function truncateTo1Decimal(num:number) {
         return Math.trunc(num * 10) / 10;
@@ -197,10 +201,10 @@ export default function Stockfish(props:Props) {
                 <div className={styles.topMovesList}>
 
                     {
-                        topMoves.map(topMove=>{
+                        topMoves.map((topMove, key)=>{
 
                             return (
-                                <div className={styles.topMove}>
+                                <div key={key} className={styles.topMove}>
 
                                     <div className={styles.eval}>
                                         {stringifyEval(props.fen.split(' ')[1] as 'b'|'w', 
