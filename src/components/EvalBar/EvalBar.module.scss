@@ -1,0 +1,35 @@
+.main{
+
+    position: relative;
+    $large-number : 1000rem;
+
+    width: 100%;
+    height: 1.2rem;
+    margin: 1rem;
+
+    border-radius: $large-number;
+
+    // outline: 1px solid red;
+    display: flex;
+    flex-direction: row;
+
+    .black{
+        border-radius: $large-number 0 0 $large-number;
+        background-color: #3d3d3d;
+    }
+
+    .midBar{
+        background-color: #ba7750;
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .white{
+        border-radius: 0 $large-number $large-number 0;
+        background-color: #bdbdbd;
+    }
+}

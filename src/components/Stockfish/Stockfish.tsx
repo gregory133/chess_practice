@@ -3,6 +3,7 @@ import styles from './Stockfish.module.scss'
 import { CircularProgress, Switch } from '@mui/material'
 import { Chess } from 'chess.js'
 import ChessUtil from '../../classes/ChessUtil'
+import EvalBar from '../EvalBar/evalBar'
 
 interface Props{fen:string}
 type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZED' | 'ANALYSING' | 'STOPPING'
@@ -157,6 +158,7 @@ export default function Stockfish(props:Props) {
      */
     function send(message:string){
         // console.log(message)
+        if (message.split(' ')[0] == 'stop') console.log(message)
         stockfishRef.current?.postMessage(message)
         dispatchStockfishFSM({type: 'send', payload: {message:message, fen:fenRef.current}})
     }
@@ -166,7 +168,7 @@ export default function Stockfish(props:Props) {
         
         // console.log(message)
         if (message.split(' ')[0] == 'bestmove') console.log(message)
-        if (message.split(' ')[0] == 'stop') console.log(message)
+        
 
         dispatchStockfishFSM({type: 'receive', payload: {message:message, fen:fenRef.current}})
     }
@@ -232,26 +234,32 @@ export default function Stockfish(props:Props) {
                 <div className={styles.topMovesList}>
 
                     {
-                        topMoves.map((topMove, key)=>{
+                    topMoves.map((topMove, key)=>{
 
-                            return (
-                                <div key={key} className={styles.topMove}>
+                        const stringifiedEval = stringifyEval(props.fen.split(' ')[1] as 'b'|'w', 
+                        topMove.evalType, topMove.evalValue)
 
-                                    {
-                                        stockfishFSM.fsmState == 'ANALYSING' 
-                                            ?  <>
-                                                <div className={styles.eval}>
-                                                    {stringifyEval(props.fen.split(' ')[1] as 'b'|'w', 
-                                                    topMove.evalType, topMove.evalValue)}
-                                                </div>
+                        return (
+                            <div key={key} className={styles.topMove}>
+
+                                {
+                                stockfishFSM.fsmState == 'ANALYSING' 
+                                    ?   <>
+                                            <div className={styles.san}>
                                                 {topMove.move}
-                                            </>                      
-                                            : <CircularProgress size='2rem' sx={{color: '#bdbdbd'}} />
-                                    }        
-                                    
-                                </div>
-                            )
-                        })
+                                            </div>
+                                            
+                                            <div className={styles.eval}>
+                                                {stringifiedEval}
+                                            </div>
+                                            <EvalBar evaluation={stringifiedEval}/>
+                                        </>                      
+                                    : <CircularProgress size='2rem' sx={{color: '#bdbdbd'}} />
+                                }        
+                                
+                            </div>
+                        )
+                    })
                     }
 
                 </div>

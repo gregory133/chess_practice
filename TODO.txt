@@ -1,1 +1,2 @@
-add stockfish
+add stockfish eval bar next to the eval
+debug and playtest stockfish features
