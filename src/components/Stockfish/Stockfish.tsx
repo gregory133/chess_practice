@@ -3,7 +3,7 @@ import styles from './Stockfish.module.scss'
 import { CircularProgress, Switch } from '@mui/material'
 import { Chess } from 'chess.js'
 import ChessUtil from '../../classes/ChessUtil'
-import EvalBar from '../EvalBar/evalBar'
+import EvalBar from '../EvalBar/EvalBar'
 
 interface Props{fen:string}
 type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZED' | 'ANALYSING' | 'STOPPING'
@@ -199,7 +199,7 @@ export default function Stockfish(props:Props) {
     function stringifyEval(turnColor:'w'|'b', evalType:'mate'|'cp', evalValue:number):string{
 
         if (evalType == 'mate'){
-            return `M ${evalValue}` 
+            return `#${evalValue}` 
         }
         else if (evalType == 'cp'){
 

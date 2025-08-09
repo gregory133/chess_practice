@@ -19,7 +19,7 @@ export default function EvalBar(props:Props) {
 	function processEvaluation(evaluation:string){
 
 		let evaluationNumber
-		if (evaluation.includes('M')){
+		if (evaluation.includes('#')){
 			evaluationNumber = evaluation.includes('-') ? -Infinity : Infinity
 		}
 		else{
@@ -27,14 +27,11 @@ export default function EvalBar(props:Props) {
 		}
 
 		const factor = 0.2
-		const evalFlexFunction = (x:number) => 1/(1 + Math.pow(Math.E, -1 * factor*x))
+		const evalFlexFunction = (x:number) => Math.exp(-factor * x)
 
 		const flexRatio = evalFlexFunction(evaluationNumber)
-		setBlackStyle({flex:1 - flexRatio})
-		setWhiteStyle({flex:flexRatio})
-
-		console.log(flexRatio)
-
+		setBlackStyle({flex:flexRatio})
+		setWhiteStyle({flex:1})
 
 	}
 
