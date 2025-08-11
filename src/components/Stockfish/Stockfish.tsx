@@ -15,7 +15,7 @@ type StockfishFSMActions = 'send' | 'receive'
 export default function Stockfish(props:Props) {
 
     const NUM_TOP_MOVES = 5
-    // const DEPTH = 20
+    const MAX_DEPTH = 5
 
     const stockfishRef = useRef<null | Worker>(null)
     const [topMoves, setTopMoves] = useState<{move:string, evalType:'cp'|'mate', evalValue:number}[]>([])
@@ -47,7 +47,7 @@ export default function Stockfish(props:Props) {
                 return {fsmState:'INITIALIZED', fen:stateFen}
         }
         else if (fsmState == 'INITIALIZED'){
-            if (action.type == 'send' && message == 'go infinite') 
+            if (action.type == 'send' && message == `go depth ${MAX_DEPTH}`) 
                 return {fsmState:'ANALYSING', fen:stateFen}
             if (fenChanged) return {fsmState: 'INITIALIZED', fen:actionFen}
         }
@@ -104,7 +104,7 @@ export default function Stockfish(props:Props) {
         document.addEventListener("keydown", function (event) {
             if (event.key === "g") {
                 send(`position fen ${fenRef.current}`)
-                send('go infinite')
+                send(`go depth ${MAX_DEPTH}`)
                 event.preventDefault()
             }
             else if (event.key === "s") {
@@ -120,23 +120,16 @@ export default function Stockfish(props:Props) {
         // console.log('fresh', stockfishFSM)
         console.log(stockfishFSM)
 
-        if (stockfishFSM.fsmState == 'INITIALIZED'){
+        if (stockfishFSM.fsmState == 'INITIALIZED' || stockfishFSM.fsmState == 'ANALYSING'){
             send(`position fen ${stockfishFSM.fen}`)
-            send('go infinite')
-        }
-        else if (stockfishFSM.fsmState == 'ANALYSING'){
-            send(`position fen ${stockfishFSM.fen}`)
-            send('go infinite')
+            send(`go depth ${MAX_DEPTH}`)
         }
 
     }, [stockfishFSM])
 
     useEffect(()=>{
-        // console.log('time of fen update', stockfishFSMRef.current)
         fenRef.current = props.fen
         send('stop')
-        // send(`position fen ${props.fen}`)
-        // send('go infinite')
     }, [props.fen])
 
     
@@ -166,7 +159,7 @@ export default function Stockfish(props:Props) {
     /**receives a message from stockfish. Contains logic that needs to be done when received a message */
     function receive(message:string){
         
-        // console.log(message)
+        console.log(message)
         if (message.split(' ')[0] == 'bestmove') console.log(message)
         
 
