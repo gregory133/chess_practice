@@ -4,13 +4,12 @@ import { CircularProgress, Switch } from '@mui/material'
 import { Chess } from 'chess.js'
 import ChessUtil from '../../classes/ChessUtil'
 import EvalBar from '../EvalBar/EvalBar'
+import PsychologyIcon from '@mui/icons-material/Psychology';
 
 interface Props{fen:string}
 type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZED' | 'ANALYSING' | 'FINISHED_ANALYSING' | 'STOPPING'
 
 type StockfishFSMActions = 'send' | 'receive'
-
-
 
 export default function Stockfish(props:Props) {
 
@@ -226,7 +225,11 @@ export default function Stockfish(props:Props) {
             <div className={styles.bar}>
 
                 <div className={styles.title}>
-                    Stockfish Top Moves
+                    <div className={styles.titleStockfish}>
+                        <PsychologyIcon sx={{margin: '0 1rem 0 0'}}/>
+                        Stockfish Top Moves
+                    </div>
+                    
                     <Switch onChange={onChangeDisableSwitch} defaultChecked/>
                 </div>
 

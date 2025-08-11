@@ -1,2 +1,3 @@
 debug and playtest stockfish features
-- fix bug where the engine is deadlocked when max depth is reached
+fix inconsistent fonts and sizes'
+add tooltips to buttons

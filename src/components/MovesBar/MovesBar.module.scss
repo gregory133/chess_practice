@@ -22,6 +22,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            .titleDatabase{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+            }
         }
 
         .playrateList{

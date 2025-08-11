@@ -9,6 +9,7 @@ import DatabaseAPI from '../../api/DatabaseAPI';
 import Winrate from '../../classes/Winrate';
 import { SettingsContext } from '../../App';
 
+import StorageIcon from '@mui/icons-material/Storage';
 interface Props{
   fen:string
 }
@@ -72,7 +73,11 @@ export default function MovesBar(props:Props) {
     <div className={styles.main}>
         <div className={styles.bar}>
           <div className={styles.title}>
-            Database Moves
+            <div className={styles.titleDatabase}>
+              <StorageIcon sx={{margin: '0 1rem 0 0'}}/>
+              Database Moves
+            </div>
+            
             <Switch onChange={onChangeDisableSwitch} defaultChecked/>
           </div>
           <div className={styles.playrateList}>

@@ -9,6 +9,7 @@ import InfoLayout from './InfoLayout/InfoLayout';
 import DatabaseLayout from './DatabaseLayout/DatabaseLayout';
 import SettingsLayout from './SettingsLayout/SettingsLayout';
 import { MenuBook } from '@mui/icons-material';
+import StorageIcon from '@mui/icons-material/Storage';
 import { HIGHTLIGHTED_COLOR, HOVERED_COLOR, UNHIGHLIGHTED_COLOR } from '../../classes/Constants';
 
 interface TopBarOption{
@@ -31,7 +32,7 @@ export default function Sidebar() {
     },
     {
       name: 'Database',
-      icon: <MenuBook sx={topBarOptionsSx}/>
+      icon: <StorageIcon sx={topBarOptionsSx}/>
     },
     {
       name: 'Settings',
