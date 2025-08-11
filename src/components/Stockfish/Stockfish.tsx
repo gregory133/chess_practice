@@ -6,7 +6,7 @@ import ChessUtil from '../../classes/ChessUtil'
 import EvalBar from '../EvalBar/EvalBar'
 
 interface Props{fen:string}
-type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZED' | 'ANALYSING' | 'STOPPING'
+type StockfishFSMState = 'UNINITIALIZED' | 'INITIALIZED' | 'ANALYSING' | 'FINISHED_ANALYSING' | 'STOPPING'
 
 type StockfishFSMActions = 'send' | 'receive'
 
@@ -15,7 +15,7 @@ type StockfishFSMActions = 'send' | 'receive'
 export default function Stockfish(props:Props) {
 
     const NUM_TOP_MOVES = 5
-    const MAX_DEPTH = 5
+    const MAX_DEPTH = 15
 
     const stockfishRef = useRef<null | Worker>(null)
     const [topMoves, setTopMoves] = useState<{move:string, evalType:'cp'|'mate', evalValue:number}[]>([])
@@ -53,11 +53,17 @@ export default function Stockfish(props:Props) {
         }
         else if (fsmState == 'ANALYSING'){
             // console.log('fc', fenChanged)
-            if (action.type == 'receive') parseAnalysisMessages(message)
+            if (action.type == 'receive'){
+                parseAnalysisMessages(message)
+                if (message.split(' ')[0] == 'bestmove') return {fsmState:'FINISHED_ANALYSING', fen:actionFen};
+            } 
             
             if (fenChanged){
                 if (action.type == 'send' && message == 'stop') return {fsmState: 'STOPPING', fen:actionFen}
             }
+        }
+        else if (fsmState == 'FINISHED_ANALYSING'){
+            if (fenChanged) return {fsmState:'ANALYSING', fen: actionFen}
         }
         else if (fsmState == 'STOPPING'){
             if (action.type == 'receive' && message.split(' ')[0] == 'bestmove'){
@@ -159,7 +165,7 @@ export default function Stockfish(props:Props) {
     /**receives a message from stockfish. Contains logic that needs to be done when received a message */
     function receive(message:string){
         
-        console.log(message)
+        // console.log(message)
         if (message.split(' ')[0] == 'bestmove') console.log(message)
         
 
@@ -236,7 +242,7 @@ export default function Stockfish(props:Props) {
                             <div key={key} className={styles.topMove}>
 
                                 {
-                                stockfishFSM.fsmState == 'ANALYSING' 
+                                stockfishFSM.fsmState == 'ANALYSING' || stockfishFSM.fsmState == 'FINISHED_ANALYSING'
                                     ?   <>
                                             <div className={styles.san}>
                                                 {topMove.move}
