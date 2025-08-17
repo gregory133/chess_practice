@@ -5,7 +5,7 @@ import { BoardContext, SettingsContext } from '../../../App'
 
 const formControlLabelSx = {
     "& .MuiFormControlLabel-label": {
-        fontWeight: 600,
+        fontWeight: 500,
         fontSize: "1.2rem"
     },
 }

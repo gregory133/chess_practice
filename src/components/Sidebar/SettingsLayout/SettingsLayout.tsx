@@ -25,6 +25,13 @@ export default function SettingsLayout() {
     const {reset, isEditModeActive, setIsEditModeActive} = useContext(BoardContext)!
 
     const fenInputRef = useRef<HTMLInputElement>(null)
+
+    const formControlLabelSx = {
+        "& .MuiFormControlLabel-label": {
+            fontWeight: 500,
+            fontSize: "1.2rem"
+        },
+    }
     
 
     /**returns true if the given string is a legal and valid fen string */
@@ -116,7 +123,7 @@ export default function SettingsLayout() {
             
 
             <div className={styles.colorSelect}>
-                Play As:<br/>
+                <div>Play As:</div> <br/>
 
                  <RadioGroup sx={{
                         '& .MuiRadio-root' : {
@@ -126,9 +133,9 @@ export default function SettingsLayout() {
                     value={selectedColor}
                     onChange={onChangeSelectedColor}
                 >
-                    <FormControlLabel value="white" control={<Radio />} label="White" />
-                    <FormControlLabel value="random" control={<Radio />} label="Random" />
-                    <FormControlLabel  value="black" control={<Radio />} label="Black" />
+                    <FormControlLabel sx={formControlLabelSx} value="white" control={<Radio />} label="White" />
+                    <FormControlLabel sx={formControlLabelSx} value="random" control={<Radio />} label="Random" />
+                    <FormControlLabel sx={formControlLabelSx}  value="black" control={<Radio />} label="Black" />
                 </RadioGroup>
                 
             </div>
