@@ -82,23 +82,35 @@ export default function Stockfish(props:Props) {
         // console.log(message)
 
         if (message.split(' ')[0] == 'info'){
-            const pv : number = parseInt(message.split(' multipv ')[1].split(' ')[0]) 
-            const evaluation : {type:'cp'|'mate', value:number} = message.includes('mate') 
-                ? {type: 'mate', value: parseInt(message.split(' mate ')[1].split(' ')[0])} 
-                : {type: 'cp', value: parseInt(message.split(' cp ')[1].split(' ')[0])} 
-            let bestMove = message.split(' pv ')[1].split(' ')[0]
-            
-            
+
+            let pv : number
+            let bestMove : string = ''
+
             try{
+                pv = parseInt(message.split(' multipv ')[1].split(' ')[0]) 
+                const evaluation : {type:'cp'|'mate', value:number} = message.includes('mate') 
+                    ? {type: 'mate', value: parseInt(message.split(' mate ')[1].split(' ')[0])} 
+                    : {type: 'cp', value: parseInt(message.split(' cp ')[1].split(' ')[0])} 
+                bestMove = message.split(' pv ')[1].split(' ')[0]
+
+                try{
                 bestMove = lanToSan(props.fen, bestMove)
-            }
-            catch (err){
-                console.log('failed to convert lan to san')
-            }
+                }
+                catch (err){
+                    console.log('failed to convert lan to san')
+                }
             
 
-            topMovesRef.current[pv-1] = {move: bestMove, evalType: evaluation.type, evalValue: evaluation.value}
-            setTopMoves([...topMovesRef.current])
+                topMovesRef.current[pv-1] = {move: bestMove, evalType: evaluation.type, evalValue: evaluation.value}
+                setTopMoves([...topMovesRef.current])
+            }
+            catch (err){
+                console.log('mate?')
+            }
+            
+            
+            
+            
         }
     }
 
@@ -123,7 +135,7 @@ export default function Stockfish(props:Props) {
     useEffect(()=>{
         stockfishFSMRef.current = stockfishFSM
         // console.log('fresh', stockfishFSM)
-        console.log(stockfishFSM)
+        // console.log(stockfishFSM)
 
         if (stockfishFSM.fsmState == 'INITIALIZED' || stockfishFSM.fsmState == 'ANALYSING'){
             send(`position fen ${stockfishFSM.fen}`)
@@ -197,7 +209,8 @@ export default function Stockfish(props:Props) {
     function stringifyEval(turnColor:'w'|'b', evalType:'mate'|'cp', evalValue:number):string{
 
         if (evalType == 'mate'){
-            return `#${evalValue}` 
+            if (turnColor == 'w') return `# ${evalValue}`; else return `# -${evalValue}`
+            
         }
         else if (evalType == 'cp'){
 

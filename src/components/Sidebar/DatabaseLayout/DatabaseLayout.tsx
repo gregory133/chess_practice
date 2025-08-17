@@ -3,6 +3,12 @@ import styles from './DatabaseLayout.module.scss'
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
 import { BoardContext, SettingsContext } from '../../../App'
 
+const formControlLabelSx = {
+    "& .MuiFormControlLabel-label": {
+        fontWeight: 600,
+        fontSize: "1.2rem"
+    },
+}
 export default function DatabaseLayout() {
 
     const {database, setDatabase} = useContext(SettingsContext)!
@@ -23,8 +29,8 @@ export default function DatabaseLayout() {
                 value={database}
                 onChange={onChangeSelectedDatabase}
             >
-                <FormControlLabel value="lichess" control={<Radio />} label="Lichess Database" />
-                <FormControlLabel value="masters" control={<Radio />} label="Masters Database" />
+                <FormControlLabel  sx={formControlLabelSx} value="lichess" control={<Radio />} label="Lichess Database" />
+                <FormControlLabel sx={formControlLabelSx} value="masters" control={<Radio />} label="Masters Database" />
                 {/* <FormControlLabel  value="player" control={<Radio />} label="Lichess Player" /> */}
             </RadioGroup>
 

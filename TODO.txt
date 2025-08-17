@@ -1,3 +1,4 @@
 debug and playtest stockfish features
 fix inconsistent fonts and sizes'
-add tooltips to buttons
+add tooltips to buttons?
+fix engine not working anymore after mate
