@@ -7,7 +7,7 @@ interface Props{
 
 export default function EvalBar(props:Props) {
 
-	console.log(props.evaluation)
+	// console.log(props.evaluation)
 
 	const BLACK = '#3d3d3d'
 	const WHITE = '#bdbdbd'
@@ -43,7 +43,7 @@ export default function EvalBar(props:Props) {
 		}
 		else{
 			const matingColor = evaluationNumber > 0 ? WHITE : BLACK
-			console.log(evaluation)
+			// console.log(evaluation)
 			setBlackStyle({flex:1, backgroundColor: matingColor})
 			setWhiteStyle({flex:1, backgroundColor: matingColor})
 		}

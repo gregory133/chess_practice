@@ -51,10 +51,19 @@ export default function Stockfish(props:Props) {
             if (fenChanged) return {fsmState: 'INITIALIZED', fen:actionFen}
         }
         else if (fsmState == 'ANALYSING'){
-            // console.log('fc', fenChanged)
+
+            // console.log('checkmate: ', ChessUtil.isCheckmate(actionFen))
+        
             if (action.type == 'receive'){
-                parseAnalysisMessages(message)
-                if (message.split(' ')[0] == 'bestmove') return {fsmState:'FINISHED_ANALYSING', fen:actionFen};
+                if (!ChessUtil.isCheckmate(actionFen)){
+                    parseAnalysisMessages(message)
+                    if (message.split(' ')[0] == 'bestmove') return {fsmState:'FINISHED_ANALYSING', fen:actionFen};
+                }
+                else{
+                    setTopMoves([])
+                    return {fsmState:'FINISHED_ANALYSING', fen:actionFen}
+                }
+                    
             } 
             
             if (fenChanged){
@@ -70,6 +79,7 @@ export default function Stockfish(props:Props) {
             }
         }
 
+        console.log(state)
         return state
 
     }
@@ -77,9 +87,7 @@ export default function Stockfish(props:Props) {
     /**called to parse the messages received from stockfish during analysis */
     function parseAnalysisMessages(message:string){
 
-        // console.log('parsing')
         const whoseTurnToPlay = props.fen.split(' ')[1]
-        // console.log(message)
 
         if (message.split(' ')[0] == 'info'){
 
@@ -105,12 +113,10 @@ export default function Stockfish(props:Props) {
                 setTopMoves([...topMovesRef.current])
             }
             catch (err){
+                // console.log(fenRef.current)
+                // console.log(stockfishFSMRef.current.fen)
                 console.log('mate?')
-            }
-            
-            
-            
-            
+            } 
         }
     }
 
@@ -168,7 +174,7 @@ export default function Stockfish(props:Props) {
      */
     function send(message:string){
         // console.log(message)
-        if (message.split(' ')[0] == 'stop') console.log(message)
+        // if (message.split(' ')[0] == 'stop') console.log(message)
         stockfishRef.current?.postMessage(message)
         dispatchStockfishFSM({type: 'send', payload: {message:message, fen:fenRef.current}})
     }
@@ -177,7 +183,7 @@ export default function Stockfish(props:Props) {
     function receive(message:string){
         
         // console.log(message)
-        if (message.split(' ')[0] == 'bestmove') console.log(message)
+        // if (message.split(' ')[0] == 'bestmove') console.log(message)
         
 
         dispatchStockfishFSM({type: 'receive', payload: {message:message, fen:fenRef.current}})
