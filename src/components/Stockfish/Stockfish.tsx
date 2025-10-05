@@ -79,7 +79,7 @@ export default function Stockfish(props:Props) {
             }
         }
 
-        console.log(state)
+        // console.log(state)
         return state
 
     }
@@ -88,6 +88,7 @@ export default function Stockfish(props:Props) {
     function parseAnalysisMessages(message:string){
 
         const whoseTurnToPlay = props.fen.split(' ')[1]
+        // console.log(message)
 
         if (message.split(' ')[0] == 'info'){
 
@@ -102,14 +103,19 @@ export default function Stockfish(props:Props) {
                 bestMove = message.split(' pv ')[1].split(' ')[0]
 
                 try{
-                bestMove = lanToSan(props.fen, bestMove)
+                    bestMove = lanToSan(props.fen, bestMove)
                 }
                 catch (err){
                     console.log('failed to convert lan to san')
                 }
+
+                if (whoseTurnToPlay=='b'){
+                    evaluation.value *= -1
+                }
             
 
-                topMovesRef.current[pv-1] = {move: bestMove, evalType: evaluation.type, evalValue: evaluation.value}
+                topMovesRef.current[pv-1] = {move: bestMove, evalType: evaluation.type, 
+                    evalValue: evaluation.value}
                 setTopMoves([...topMovesRef.current])
             }
             catch (err){
@@ -214,20 +220,15 @@ export default function Stockfish(props:Props) {
 
     function stringifyEval(turnColor:'w'|'b', evalType:'mate'|'cp', evalValue:number):string{
 
+        // console.log(evalType, evalValue)
+
         if (evalType == 'mate'){
-            if (turnColor == 'w') return `# ${evalValue}`; else return `# -${evalValue}`
+            if (turnColor == 'w') return `# ${evalValue}`; else return `# ${evalValue}`
             
         }
         else if (evalType == 'cp'){
 
-            let returnString = ''
-
-            if (turnColor == 'w'){
-                returnString = `${evalValue/100}`
-            }
-            else if (turnColor == 'b'){
-                returnString = `${-1 * evalValue/100}` 
-            }
+            let returnString = `${evalValue/100}`
 
             if (returnString.charAt(0) != '-'){
                 returnString = '+' + returnString
