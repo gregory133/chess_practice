@@ -4,8 +4,12 @@ export default class DatabaseAPI{
 
     private static instance : DatabaseAPI | null = null
     private database : 'masters' | 'lichess' = 'masters'
+    private oauth_token = import.meta.env.VITE_LICHESS_APIKEY
+    private get_request_header = {method: 'GET', headers: {"Authorization": `Bearer ${this.oauth_token}`}}
 
-    private constructor(){}
+    private constructor(){
+        
+    }
 
     public static getInstance() : DatabaseAPI{
 
@@ -57,10 +61,12 @@ export default class DatabaseAPI{
 
         return new Promise((resolve, reject)=>{
 
-            const url = new URL(`https://explorer.lichess.ovh/${database}`)
+            if (!this.oauth_token) reject('Error, API key is invalid')
+
+            const url = new URL(`https://explorer.lichess.org/${database}`)
             url.searchParams.append('fen', fen)
 
-            fetch(url)
+            fetch(url, this.get_request_header)
             .then(response => response.json())
             .then(data=>{
                 let openingName = null
@@ -70,9 +76,6 @@ export default class DatabaseAPI{
 
                 resolve(this.pickWeightedMove(data.moves),)
             })
-
-            
-            
 
         })
 
@@ -91,10 +94,12 @@ export default class DatabaseAPI{
 
         return new Promise((resolve, reject)=>{
 
-            const url = new URL(`https://explorer.lichess.ovh/${database}`)
+            if (!this.oauth_token) reject('Error, API key is invalid')
+
+            const url = new URL(`https://explorer.lichess.org/${database}`)
             url.searchParams.append('fen', fen)
 
-            fetch(url)
+            fetch(url, this.get_request_header)
             .then(response=>response.json())
             .then(data=>{
                 
@@ -126,10 +131,12 @@ export default class DatabaseAPI{
 
         return new Promise((resolve, reject)=>{
 
-            const url = new URL(`https://explorer.lichess.ovh/${database}`)
+            if (!this.oauth_token) reject('Error, API key is invalid')
+
+            const url = new URL(`https://explorer.lichess.org/${database}`)
             url.searchParams.append('fen', fen)
 
-            fetch(url)
+            fetch(url, this.get_request_header)
             .then(response=>response.json())
             .then(data=>{
 
@@ -140,5 +147,6 @@ export default class DatabaseAPI{
         })
 
     }
+    
 
 }
